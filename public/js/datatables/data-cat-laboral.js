@@ -1,0 +1,4 @@
+$(function () {
+    $('#dataCategoriaLaboral').DataTable();
+  })
+  

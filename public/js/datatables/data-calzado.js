@@ -1,0 +1,3 @@
+$(function () {
+    $("#dataTiposCalzado").DataTable();
+});

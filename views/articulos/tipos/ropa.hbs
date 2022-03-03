@@ -1,0 +1,31 @@
+<div class="container">
+    <h1 class="mb-4"> Ropa </h1>
+
+    <div class="d-grid gap-2 d-md-block">
+        <button class="btn btn-success" data-bs-toggle="modal" 
+        data-bs-target="#exampleModal">
+            <i class="fas fa-plus-square mr-2"></i> Nuevo
+        </button>
+        <button class="btn btn-danger" type="button">
+            <i class="fas fa-file-pdf"></i> Reporte
+        </button>
+    </div>
+
+
+    <div class="container col-lg-8 mx-auto mt-4">
+        <div class="card shadow mb-4">
+            {{> tipos/ropa/list-ropa }}
+        </div>
+    </div>
+</div>
+
+
+{{!-- Modales --}}
+{{!-- Agregar Marca --}}
+{{> tipos/ropa/add }}
+
+
+{{!-- Scripts SRC --}}
+<script src="/js/tipos/ropa.js"></script>
+{{!-- Level Custom --}}
+<script src="/js/datatables/data-ropa.js"></script>

@@ -29,6 +29,7 @@ app.use(morgan('dev'))
 app.use(require('./routes'))
 app.use('/dashboard', require('./routes/dashboard'))
 app.use('/articulos', require('./routes/articulos'))
+app.use('/config', require('./routes/config'))
 
 // Public
 app.use(express.static(path.join(__dirname, 'public')))
