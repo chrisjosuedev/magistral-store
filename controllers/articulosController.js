@@ -8,7 +8,13 @@ artController.listArticulos = async (req, res) => {
                     FROM articulos
                     INNER JOIN marca ON articulos.ID_MARCA = articulos.ID_MARCA;`
     const articulos = await myConn.query(queryArt)
-    res.render('articulos/items', { articulos })
+
+    // Consultas para Selects
+    const color = await myConn.query("SELECT * FROM color_articulo")
+    const marca = await myConn.query("SELECT * FROM marca")
+    const linea_articulo = await myConn.query("SELECT * FROM linea_articulo")
+
+    res.render('articulos/items', { articulos, color, marca, linea_articulo })
 }
 
 // Marcas Listar
@@ -40,6 +46,26 @@ artController.listCalzado = async (req, res) => {
 artController.listAccesorios = async (req, res) => {
     const tipos_accesorios = await myConn.query("SELECT * FROM tipos_accesorios")
     res.render('articulos/tipos/accesorios', { tipos_accesorios })
+}
+
+// JSON Tipos de Cada Articulo
+
+// Tipos de Ropa
+artController.listTiposRopa = async (req, res) => {
+    const tipos_ropa = await myConn.query("SELECT * FROM tipos_ropa")
+    res.json(tipos_ropa)
+}
+
+// Tipos de Calzado
+artController.listTiposCalzado = async (req, res) => {
+    const tipos_calzado = await myConn.query("SELECT * FROM tipos_calzado")
+    res.json(tipos_calzado)
+}
+
+// Tipos de Accesorios
+artController.listTiposAccesorios = async (req, res) => {
+    const tipos_accesorio = await myConn.query("SELECT * FROM tipos_accesorios")
+    res.json(tipos_accesorio)
 }
 
 /* Fin Tipos de Articulos */

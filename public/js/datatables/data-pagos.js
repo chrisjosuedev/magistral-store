@@ -1,0 +1,4 @@
+$(function () {
+    $("#dataPagos").DataTable();
+  });
+  

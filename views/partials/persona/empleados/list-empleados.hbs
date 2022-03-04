@@ -1,0 +1,70 @@
+<div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">Listado de Empleados</h6>
+</div>
+<div class="card-body">
+    <div class="table-responsive">
+
+        <table class="table table-bordered" id="dataEmpleados" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Empleado</th>
+                    <th>Sexo</th>
+                    <th>Celular</th>
+                    <th>Puesto</th>
+                    <th>Salario</th>
+                    <th>Contratado</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>ID</th>
+                    <th>Empleado</th>
+                    <th>Sexo</th>
+                    <th>Celular</th>
+                    <th>Puesto</th>
+                    <th>Salario</th>
+                    <th>Contratado</th>
+                    <th></th>
+                </tr>
+            </tfoot>
+            <tbody>
+                {{#each persona_empleado}}
+                <tr >
+                    <td>
+                        {{ID_PERSONA}}
+                    </td>
+                    <td>
+                        {{EMPLEADOS}}
+                    </td>
+                    <td>
+                        {{SEXO}}
+                    </td>
+                    <td>
+                        {{CELULAR}}
+                    </td>
+                    <td>
+                        {{DESCRIPCION_CATEGORIA}}
+                    </td>
+                    <td class="text-left">
+                        L. {{SALARIO}}
+                    </td>
+                     <td>
+                        {{format FECHA_CONTRATACION}}
+                    </td>
+                    <td class="text-center">
+                        <button class="btn btn-primary edit-item">
+                            <i class="fas fa-pen"></i>
+                        </button>
+                        <button href="/productos/delete/{{ID_PRODUCTOS}}" class="btn btn-danger del-item mt-2">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+
+    </div>
+</div>

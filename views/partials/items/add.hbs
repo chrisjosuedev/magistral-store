@@ -1,25 +1,86 @@
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Modal HTML -->
+<div id="newArticulo" class="modal fade">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title">AGREGAR NUEVO ARTÍCULO</h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       <div class="modal-body">
         <form>
-          <div class="mb-3">
-            <label for="recipient-name" class="col-form-label">Recipient:</label>
-            <input type="text" class="form-control" id="recipient-name">
+          <label> Datos Generales </label>
+          <div class="form-group">
+            <input type="text" class="form-control" name="descripcion" placeholder="Descripción del artículo" required>
           </div>
-          <div class="mb-3">
-            <label for="message-text" class="col-form-label">Message:</label>
-            <textarea class="form-control" id="message-text"></textarea>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <select id="inputState" name="id_marca" class="custom-select" required>
+                <option value="0" selected> - Seleccione Marca - </option>
+                {{#each marca}}
+                <option value="{{ID_MARCA}}"> {{NOMBRE_MARCA}}</option>
+                {{/each}}
+              </select>
+            </div>
+            <div class="form-group col-md-6">
+              <select id="inputState" name="id_linea_articulo" class="custom-select" require>
+                <option value="0" selected> - Seleccione Línea - </option>
+                {{#each linea_articulo}}
+                <option value="{{ID_LINEA_ARTICULO}}"> {{DESC_LINEA}}</option>
+                {{/each}}
+              </select>
+            </div>
           </div>
+          <label> Caracteristicas del Artículo </label>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <select id="inputState" name="id_color" class="custom-select" required>
+                <option value="0" selected> - Seleccione Color - </option>
+                {{#each color}}
+                <option value="{{ID_COLOR}}"> {{DESC_COLOR}}</option>
+                {{/each}}
+              </select>
+            </div>
+            <div class="form-group col-md-6">
+              <input type="number" min="0" step="0.01" class="form-control" 
+              name="precio_unit" placeholder="Precio" required>
+            </div>
+          </div>
+          <div class="form-row">
+
+            <div class="form-group col-md-6 text-center mt-2">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="genre" id="inlineRadio1" value="0">
+                <label class="form-check-label" for="inlineRadio1"> Masculino </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="genre" id="inlineRadio2" value="1">
+                <label class="form-check-label" for="inlineRadio2"> Femenino </label>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <input type="text" class="form-control" name="celular" placeholder="Talla">
+            </div>
+          </div>
+          <label> Tipo de Artículo </label>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <select id="tipo_articulo" name="tipo_articulo" class="custom-select" require>
+                <option value="0" selected> - Seleccione Tipo - </option>
+                <option value="1"> ROPA </option>
+                <option value="2"> CALZADO </option>
+                <option value="3"> ACCESORIOS </option>
+              </select>
+            </div>
+            <div class="form-group col-md-6">
+              <select id="detalle_articulo" name="temp" class="custom-select" required>
+                <option value="0" selected> - Seleccione Detalle - </option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary mt-4 float-right">
+            <i class="fas fa-save"></i> Guardar
+          </button>
         </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Send message</button>
       </div>
     </div>
   </div>

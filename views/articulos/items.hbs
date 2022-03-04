@@ -2,17 +2,17 @@
     <h1 class="mb-4"> Artículos </h1>
 
     <div class="d-grid gap-2 d-md-block">
-        <button class="btn btn-success" data-bs-toggle="modal" 
-        data-bs-target="#exampleModal">
+        {{!-- Nuevo Articulo Modal --}}
+        <a href="#newArticulo" class="btn btn-success" id="#addArticulo" data-toggle="modal">
             <i class="fas fa-plus-square mr-2"></i> Nuevo
-        </button>
+        </a>
         <button class="btn btn-danger" type="button">
             <i class="fas fa-file-pdf"></i> Reporte
         </button>
     </div>
 
 
-    <div class="container mt-5">
+    <div class="container-fluid mt-5">
         <div class="card shadow mb-4">
             {{> items/list-items }}
         </div>

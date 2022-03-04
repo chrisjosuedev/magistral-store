@@ -1,5 +1,5 @@
 <div class="container">
-    <h1 class="mb-4"> Accesorios </h1>
+    <h1 class="mb-4"> Clientes </h1>
 
     <div class="d-grid gap-2 d-md-block">
         <button class="btn btn-success" data-bs-toggle="modal" 
@@ -12,20 +12,21 @@
     </div>
 
 
-    <div class="container-fluid col-lg-8 mx-auto mt-4">
+    <div class="container-fluid mt-5">
         <div class="card shadow mb-4">
-            {{> tipos/accesorios/list-accesorios }}
+            {{> persona/clientes/list-clientes }}
         </div>
     </div>
 </div>
 
 
 {{!-- Modales --}}
-{{!-- Agregar Marca --}}
-{{> tipos/accesorios/add }}
-
+{{!-- Agregar Articulo --}}
+{{> persona/clientes/add }}
 
 {{!-- Scripts SRC --}}
-<script src="/js/tipos/accesorios.js"></script>
+
+
+<script src="/js/persona/clientes.js"></script>
 {{!-- Level Custom --}}
-<script src="/js/datatables/data-accesorios.js"></script>
+<script src="/js/datatables/data-clientes.js"></script>

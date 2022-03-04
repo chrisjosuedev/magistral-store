@@ -9,3 +9,11 @@
 .text-nav {
   font-size: 0.95rem;
 }
+
+.modal {
+  color: black;
+}
+
+.to-mayus {
+  text-transform: uppercase;
+}

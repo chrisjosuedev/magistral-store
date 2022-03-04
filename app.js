@@ -17,7 +17,8 @@ app.engine('.hbs', exphbs.engine({
     defaultLayout: 'main',
     layoutsDir: path.join(app.get('views'), 'layouts'),
     partialsDir: path.join(app.get('views'), 'partials'),
-    extname: '.hbs'
+    extname: '.hbs',
+    helpers: require('./lib/handlebars')
 }))
 
 app.set('view engine', '.hbs')
@@ -30,6 +31,8 @@ app.use(require('./routes'))
 app.use('/dashboard', require('./routes/dashboard'))
 app.use('/articulos', require('./routes/articulos'))
 app.use('/config', require('./routes/config'))
+app.use('/transacciones', require('./routes/transacciones'))
+app.use('/persona', require('./routes/persona'))
 
 // Public
 app.use(express.static(path.join(__dirname, 'public')))
