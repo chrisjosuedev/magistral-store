@@ -1,7 +1,13 @@
+// Server, View Engine, Middleware Variables
 const express = require('express')
 const morgan = require('morgan')
 const exphbs = require('express-handlebars')
 const path = require('path')
+
+// Session Variables
+const flash = require('connect-flash')
+const sessions = require('express-session')
+const MySqlStore = require('express-mysql-session')
 
 // DB Conection Variables
 const { database } = require('./keys')
@@ -25,6 +31,25 @@ app.set('view engine', '.hbs')
 
 // Middlewares
 app.use(morgan('dev'))
+
+app.use(sessions({
+    secret: 'test',
+    resave: false,
+    saveUninitialized: false,
+    store: new MySqlStore(database)
+}))
+
+app.use(flash())
+app.use(express.urlencoded({
+    extended: false
+}))
+
+app.use((req, res, next) => {
+    app.locals.success = req.flash('success')
+    app.locals.message = req.flash('message')
+    app.locals.user = req.user
+    next()
+})
 
 // Routes
 app.use(require('./routes'))

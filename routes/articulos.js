@@ -2,14 +2,41 @@ const express = require('express')
 const router = express.Router()
 const articulosController = require('../controllers/articulosController')
 
-// /articulos 
+/* ----------- ARTICULOS --------------- */
+// GET 
 router.get('/', articulosController.listArticulos)
+
+// Ropa
+router.get('/ropa', articulosController.listRopaArticulos)
+
+// Calzado
+router.get('/calzado', articulosController.listRopaCalzado)
+
+// Accesorio
+router.get('/accesorios', articulosController.listRopaAccesorio)
+
+// POST - AGREGAR A ARTICULOS A DB
+// Ropa
+router.post('/newRopa', articulosController.newRopa)
+
+// Calzado
+router.post('/newCalzado', articulosController.newCalzado)
+
+// Accesorio
+router.post('/newAccesorio', articulosController.newAccesorio)
+
+
+
+/* ------------ FIN ARTICULOS ------------- */
+
 
 // /articulos/marcas
 router.get('/marcas', articulosController.listMarcas)
 
 // /articulos/colores
 router.get('/colores', articulosController.listColores)
+
+router.get('/colores/new', articulosController.newColor)
 
 /* /articulos/tipos/~ */
  
