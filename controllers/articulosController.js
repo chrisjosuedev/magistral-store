@@ -239,6 +239,20 @@ artController.listMarcas = async (req, res) => {
     res.render('articulos/marca', { marca })
 }
 
+artController.newMarca = async (req, res) => {
+    const { nombre_marca } = req.body
+
+    const newMarca = {
+        nombre_marca
+    }
+
+    await myConn.query("INSERT INTO marca set ?", [newMarca])
+
+    req.flash("success", "Marca Agregada Correctamente")
+
+    res.redirect('/articulos/marcas')
+}
+
 /* ---------- COLORES ----------- */
 
 // Colores Listar
@@ -248,7 +262,17 @@ artController.listColores = async (req, res) => {
 }
 
 artController.newColor = async(req, res) => {
-    
+    const { desc_color } = req.body
+
+    const newColor = {
+        desc_color
+    }
+
+    await myConn.query("INSERT INTO color_articulo set ?", [newColor])
+
+    req.flash("success", "Color Agregado Correctamente")
+
+    res.redirect('/articulos/colores')
 }
 
 /* Tipos de Articulo List */
@@ -258,16 +282,61 @@ artController.listRopa = async (req, res) => {
     res.render('articulos/tipos/ropa', { tipos_ropa })
 }
 
+artController.newTipoRopa = async (req, res) => {
+    const { desc_tiposropa } = req.body
+
+    const newTipoRopa = {
+        desc_tiposropa
+    }
+    
+    await myConn.query("INSERT INTO tipos_ropa set ?", [newTipoRopa])
+
+    req.flash("success", "Tipo de Ropa Agregado Correctamente")
+
+    res.redirect('/articulos/tipos/ropa')
+
+}
+
 // Calzado
 artController.listCalzado = async (req, res) => {
     const tipos_calzado = await myConn.query("SELECT * FROM tipos_calzado")
     res.render('articulos/tipos/calzado', { tipos_calzado })
 }
 
+artController.newTipoCalzado = async (req, res) => {
+    const { desc_tipocalzado } = req.body
+
+    const newTipoCalzado = {
+        desc_tipocalzado
+    }
+
+    await myConn.query("INSERT INTO tipos_calzado set ?", [newTipoCalzado])
+
+    req.flash("success", "Tipo de Calzado Agregado Correctamente")
+
+    res.redirect('/articulos/tipos/calzado')
+
+
+}
+
 // Accesorios
 artController.listAccesorios = async (req, res) => {
     const tipos_accesorios = await myConn.query("SELECT * FROM tipos_accesorios")
     res.render('articulos/tipos/accesorios', { tipos_accesorios })
+}
+
+artController.newTipoAccesorio = async (req, res) => {
+    const { desc_tipoaccesorio } = req.body
+
+    const newTipoAccesorio = {
+        desc_tipoaccesorio
+    }
+
+    await myConn.query("INSERT INTO tipos_accesorios set ?", [newTipoAccesorio])
+
+    req.flash("success", "Tipo de Accesorio Agregado Correctamente")
+
+    res.redirect('/articulos/tipos/accesorios')
 }
 
 // JSON Tipos de Cada Articulo
@@ -296,6 +365,27 @@ artController.listTiposAccesorios = async (req, res) => {
 artController.listProveedores = async (req, res) => {
     const proveedores = await myConn.query("SELECT * FROM proveedores")
     res.render('articulos/proveedores', { proveedores })
+}
+
+/* POST Proveedores */
+artController.newProveedor = async (req, res) => {
+    const { id_proveedor, 
+        nombre_proveedor, 
+        email_proveedor, 
+        cel_proveedor } = req.body;
+
+  const newProveedor = {
+    id_proveedor,
+    nombre_proveedor,
+    email_proveedor,
+    cel_proveedor,
+  }
+
+  await myConn.query("INSERT INTO proveedores set ?", [newProveedor])
+
+  req.flash("success", "Proveedor Agregado Correctamente")
+
+  res.redirect("/articulos/proveedores");
 }
 
 
