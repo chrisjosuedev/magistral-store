@@ -36,5 +36,17 @@ personaController.listEmpleados = async (req, res) => {
     res.render('persona/empleado', { persona_empleado })
 }
 
+// JSON Empleado por ID
+personaController.getEmpleadobyId = async (req, res) => {
+    const { id } = req.params
+    const queryEmp = `SELECT empleado.*, 
+                      concat_ws(' ', persona.NOMBRE_PERSONA, persona.APELLIDO_PERSONA) as NOMBRE_EMPLEADO
+                      FROM empleado
+                      INNER JOIN persona ON persona.ID_PERSONA = empleado.ID_PERSONA
+                      WHERE empleado.ID_PERSONA = ?`
+    const empJSON = await myConn.query(queryEmp, [id]);
+    res.json(empJSON)
+}
+
 
 module.exports = personaController
