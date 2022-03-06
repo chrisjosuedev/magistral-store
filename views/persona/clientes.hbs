@@ -2,10 +2,10 @@
     <h1 class="mb-4"> Clientes </h1>
 
     <div class="d-grid gap-2 d-md-block">
-        <button class="btn btn-success" data-bs-toggle="modal" 
-        data-bs-target="#exampleModal">
+        {{!-- Nuevo Cliente Modal --}}
+        <a href="#newCliente" class="btn btn-success" data-toggle="modal">
             <i class="fas fa-plus-square mr-2"></i> Nuevo
-        </button>
+        </a>
         <button class="btn btn-danger" type="button">
             <i class="fas fa-file-pdf"></i> Reporte
         </button>
@@ -28,5 +28,9 @@
 
 
 <script src="/js/persona/clientes.js"></script>
+
+{{!-- Script de Select de Ciudad Dinamico --}}
+<script src="/js/ciudad.js"></script>
+
 {{!-- Level Custom --}}
 <script src="/js/datatables/data-clientes.js"></script>

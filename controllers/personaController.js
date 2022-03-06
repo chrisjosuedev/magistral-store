@@ -16,8 +16,41 @@ personaController.listClientes = async (req, res) => {
 
     const persona_cliente = await myConn.query(clientesQuery)
 
-    res.render('persona/clientes', { persona_cliente })
+    const departamentos = await myConn.query("SELECT * FROM departamentos")
 
+    res.render('persona/clientes', { persona_cliente, departamentos })
+
+}
+
+// ----------- NUEVO CLIENTE ------------ //
+personaController.newCliente = async (req, res) => {
+    const {
+        id_persona,
+        nombre_persona,
+        apellido_persona,
+        sexo,
+        celular,
+        direccion_residencia,
+        id_ciudad,
+        id_depto,
+      } = req.body
+
+    const newCliente = {
+        id_persona,
+        nombre_persona,
+        apellido_persona,
+        sexo,
+        celular,
+        direccion_residencia,
+        id_ciudad,
+        id_depto,
+      }
+
+      await myConn.query("INSERT INTO persona set ?", [newCliente]);
+      
+      req.flash("success", "Cliente Agregado Correctamente");
+      
+      res.redirect("/persona/clientes");
 }
 
 personaController.listEmpleados = async (req, res) => {
@@ -33,7 +66,54 @@ personaController.listEmpleados = async (req, res) => {
 
     const persona_empleado = await myConn.query(empleadoQuery)
 
-    res.render('persona/empleado', { persona_empleado })
+    const categoria_laboral = await myConn.query("SELECT * FROM categoria_laboral")
+
+    const departamentos = await myConn.query("SELECT * FROM departamentos");
+
+    res.render('persona/empleado', { persona_empleado, categoria_laboral, departamentos })
+}
+
+/* NUEVO EMPLEADO */
+personaController.newEmpleado = async (req, res) => {
+    const {
+        id_persona,
+        nombre_persona,
+        apellido_persona,
+        sexo,
+        celular,
+        fecha_contratacion,
+        id_categoria,
+        direccion_residencia,
+        id_ciudad,
+        id_depto,
+    } = req.body
+
+    const newPersona = {
+        id_persona,
+        nombre_persona,
+        apellido_persona,
+        sexo,
+        celular,
+        direccion_residencia,
+        id_ciudad,
+        id_depto,
+    }
+  
+    // Empleado
+  
+    const newEmpleado = {
+        id_persona,
+        id_categoria,
+        fecha_contratacion,
+  }
+
+  await myConn.query("INSERT INTO persona set ?", [newPersona])
+
+  await myConn.query("INSERT INTO empleado set ?", [newEmpleado])
+  
+  req.flash("success", "Empleado Agregado Correctamente");
+  
+  res.redirect("/persona/empleados");
 }
 
 // JSON Empleado por ID
@@ -48,5 +128,12 @@ personaController.getEmpleadobyId = async (req, res) => {
     res.json(empJSON)
 }
 
+
+// JSON Ciudad por Departamento
+personaController.getDeptoByCiudad = async (req, res) => {
+    const { id } = req.params
+    const ciudad = await myConn.query("SELECT * FROM ciudad WHERE ID_DEPTO = ?", [id])
+    res.json(ciudad)
+}
 
 module.exports = personaController

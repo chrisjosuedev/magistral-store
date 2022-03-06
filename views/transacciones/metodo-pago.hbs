@@ -2,10 +2,10 @@
     <h1 class="mb-4"> Métodos de Pago </h1>
 
     <div class="d-grid gap-2 d-md-block">
-        <button class="btn btn-success" data-bs-toggle="modal" 
-        data-bs-target="#exampleModal">
+        {{!-- Nuevo Metodo de Pago Modal --}}
+        <a href="#newMetodoDePago" class="btn btn-success btn-payment" data-toggle="modal">
             <i class="fas fa-plus-square mr-2"></i> Nuevo
-        </button>
+        </a>
         <button class="btn btn-danger" type="button">
             <i class="fas fa-file-pdf"></i> Reporte
         </button>
@@ -27,5 +27,6 @@
 
 {{!-- Scripts SRC --}}
 <script src="/js/metodos-pago/metodos-pago.js"></script>
+
 {{!-- Level Custom --}}
 <script src="/js/datatables/data-pagos.js"></script>

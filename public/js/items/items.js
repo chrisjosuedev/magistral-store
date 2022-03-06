@@ -41,8 +41,6 @@ $(function () {
 
   
   tipoArticulo.on('change', function () {
-    
-
     if (this.value === '1') {
       var url = '/articulos/tipos/ropa-list'
       detalleArticulo.prop('name', 'id_tiposropa')
