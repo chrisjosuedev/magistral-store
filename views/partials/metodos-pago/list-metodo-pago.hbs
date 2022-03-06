@@ -24,7 +24,9 @@
                     <td> {{ID_MODOPAGO}} </td>
                     <td> {{DESC_MODOPAGO}} </td>
                     <td class="text-center">
-                        <button class="btn btn-primary edit-item">
+                        <button class="btn btn-primary editModoPago"
+                            data-toggle="modal" data-target="#editPayment"
+                            data-pagos="{{ID_MODOPAGO}}">
                             <i class="fas fa-pen"></i>
                         </button>
                         <button href="/productos/delete/{{ID_PRODUCTOS}}" class="btn btn-danger del-item">

@@ -27,7 +27,9 @@
                     <td> {{DESCRIPCION_CATEGORIA}} </td>
                     <td> L. {{SALARIO}} </td>
                     <td class="text-center">
-                        <button class="btn btn-primary edit-item">
+                        <button class="btn btn-primary editCatLaboral"
+                            data-toggle="modal" data-target="#editCatLaboral"
+                            data-catlaboral="{{ID_CATEGORIA}}">
                             <i class="fas fa-pen"></i>
                         </button>
                         <button href="/productos/delete/{{ID_PRODUCTOS}}" class="btn btn-danger del-item">

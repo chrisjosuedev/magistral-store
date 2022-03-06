@@ -18,6 +18,35 @@ confController.newCategoriaLaboral = async (req, res) => {
     res.redirect("/config/categoria-laboral");
 }
 
+// ------- Editar Categoria Laboral
+// Editar
+confController.getCategoriaById = async (req, res) => {
+    const { id } = req.params;
+    const categoria_laboral = await myConn.query(
+      "SELECT * FROM categoria_laboral WHERE id_categoria = ?",
+      [id]
+    );
+    res.json(categoria_laboral)
+}
+
+confController.editCategoriaLaboral = async (req, res) => {
+    const { id } = req.params;
+    const { descripcion_categoria, salario } = req.body;
+    const newCategoriaLaboral = {
+      descripcion_categoria,
+      salario,
+    };
+    await myConn.query("UPDATE categoria_laboral set ? WHERE id_categoria = ?", [
+      newCategoriaLaboral,
+      id
+    ]);
+    req.flash("success", "Categoria Actualizada Correctamente");
+    res.redirect("/config/categoria-laboral");
+    
+}
+
+// ---------------- USUARIOS
+
 confController.listUsuarios = async (req, res) => {
     const userQuery = `SELECT usuario.USERNAME, rol_users.DESC_ROL, 
                         concat_ws(' ', persona.    NOMBRE_PERSONA, persona.APELLIDO_PERSONA) as NOMBRE_EMPLEADO
@@ -49,6 +78,37 @@ confController.newUsuario = async (req, res) => {
     await myConn.query("INSERT INTO usuario set ?", [newUser])
     req.flash("success", "Usuario Guardado Correctamente")
     res.redirect("/config/usuarios");
+}
+
+confController.getEmpleadoByUser = async (req, res) => {
+    const { username } = req.params;
+    const users = await myConn.query("SELECT * FROM usuario WHERE username = ?", [
+    username])
+
+    res.json(users)
+}
+
+confController.editUser = async (req, res) => {
+    const { username } = req.params;
+    const { password, id_rol } = req.body;
+
+    var newUser = {}
+
+    if (password === '') {
+        newUser = {id_rol}
+    }
+    else {
+        newUser = {id_rol, password}
+        newUser.password = await helpers.encryptPassword(password)
+    }
+    
+    await myConn.query("UPDATE usuario set ? WHERE username = ?", [
+        newUser,
+        username,
+  ]);
+
+  req.flash("success", "Usuario Actualizado Correctamente");
+  res.redirect("/config/usuarios");
 }
 
 module.exports = confController

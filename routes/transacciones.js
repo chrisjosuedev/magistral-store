@@ -8,7 +8,9 @@ router.get('/metodos-pago', transaccionCont.listMetodosPago)
 
 router.post('/metodos-pago/new', transaccionCont.newMetodoPago)
 
+router.get('/metodos-pago/:id', transaccionCont.getMetodoPago)
 
+router.post('/metodos-pago/edit/:id', transaccionCont.editMetodoPago)
 
 module.exports = router
 

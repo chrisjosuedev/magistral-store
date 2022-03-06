@@ -24,7 +24,9 @@
                     <td> {{ID_TIPOACCESORIO}} </td>
                     <td> {{DESC_TIPOACCESORIO}} </td>
                     <td class="text-center">
-                        <button class="btn btn-primary edit-item">
+                        <button class="btn btn-primary editTipoAccesorio"
+                            data-toggle="modal" data-target="#editTipoAccesorio"
+                            data-taccesorio="{{ID_TIPOACCESORIO}}">
                             <i class="fas fa-pen"></i>
                         </button>
                         <button href="/productos/delete/{{ID_PRODUCTOS}}" class="btn btn-danger del-item">

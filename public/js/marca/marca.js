@@ -1,16 +1,21 @@
 $(function () {
-    // Agregar Articulos
-    var exampleModal = document.getElementById("exampleModal");
-    exampleModal.addEventListener("show.bs.modal", function (event) {
-      var button = event.relatedTarget;
-  
-      var recipient = button.getAttribute("data-bs-whatever");
-  
-      var modalTitle = exampleModal.querySelector(".modal-title");
-      var modalBodyInput = exampleModal.querySelector(".modal-body input");
-  
-      modalTitle.textContent = "Agregar Marca";
-      modalBodyInput.value = recipient;
-    });
-  });
+  const actionForm = $('#edit-marca')
+
+    $('.editMarca').click(function(){
+        const dataMarca = $(this).data("marca")
+
+        var urlMarcaForm = '/articulos/marcas/edit/' + dataMarca
+
+        actionForm.prop('action', urlMarcaForm)
+        
+        $.ajax({
+            url: '/articulos/marcas/' + dataMarca,
+            success: function(res) {
+                $('#nombre_marca').val(res[0].NOMBRE_MARCA);
+            }
+        })
+
+    })
+      
+})
   

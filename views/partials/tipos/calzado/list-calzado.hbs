@@ -24,7 +24,9 @@
                     <td> {{ID_TIPOCALZADO}} </td>
                     <td> {{DESC_TIPOCALZADO}} </td>
                     <td class="text-center">
-                        <button class="btn btn-primary edit-item">
+                        <button class="btn btn-primary editTipoCalzado"
+                            data-toggle="modal" data-target="#editTipoCalzado"
+                            data-tcalzado="{{ID_TIPOCALZADO}}">
                             <i class="fas fa-pen"></i>
                         </button>
                         <button href="/productos/delete/{{ID_PRODUCTOS}}" class="btn btn-danger del-item">

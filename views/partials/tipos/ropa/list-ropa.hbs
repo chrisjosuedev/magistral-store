@@ -24,7 +24,9 @@
                     <td> {{ID_TIPOSROPA}} </td>
                     <td> {{DESC_TIPOSROPA}} </td>
                     <td class="text-center">
-                        <button class="btn btn-primary edit-item">
+                        <button class="btn btn-primary editTipoRopa"
+                            data-toggle="modal" data-target="#editTipoRopa"
+                            data-tropa="{{ID_TIPOSROPA}}">
                             <i class="fas fa-pen"></i>
                         </button>
                         <button href="/productos/delete/{{ID_PRODUCTOS}}" class="btn btn-danger del-item">

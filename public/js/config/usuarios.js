@@ -40,4 +40,39 @@ $(function() {
         })
         
     });
+
+    // ---------- Editar ----------------
+
+
+    const actionForm = $('#edit-Usuario')
+
+    $('.editUsuario').click(function(){
+        const dataUsuarios = $(this).data("usuario")
+
+        var urlUsuariosForm = '/config/usuarios/edit/' + dataUsuarios
+
+        actionForm.prop('action', urlUsuariosForm)
+        
+        $.ajax({
+            url: '/config/usuarios/' + dataUsuarios,
+            success: function(res) {
+                $('#username').val(res[0].USERNAME)
+                $('#select-rol').val(res[0].ID_ROL)  
+            }
+        })        
+
+    })
+
+    // Verificar si se desea una nueva contraseña para el usuario
+    $('#verify-Password').click(function() {
+        if ($('#verify-Password').prop('checked')) {
+            $('#password').removeClass('d-none')
+            $('#password').focus()
+        }
+        else {
+            $('#password').addClass('d-none')
+        }
+    })
+    
+
 })

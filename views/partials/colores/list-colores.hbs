@@ -24,7 +24,8 @@
                     <td> {{ID_COLOR}} </td>
                     <td> {{DESC_COLOR}} </td>
                     <td class="text-center">
-                        <button class="btn btn-primary edit-item">
+                        <button class="btn btn-primary editColor" data-toggle="modal" data-target="#editColor"
+                            data-color="{{ID_COLOR}}">
                             <i class="fas fa-pen"></i>
                         </button>
                         <button href="/productos/delete/{{ID_PRODUCTOS}}" class="btn btn-danger del-item">

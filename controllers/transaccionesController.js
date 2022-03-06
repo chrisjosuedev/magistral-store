@@ -21,4 +21,29 @@ transaccionController.newMetodoPago = async (req, res) => {
     res.redirect("/transacciones/metodos-pago");
 }
 
+// JSON Tipos Metodos Pago
+transaccionController.getMetodoPago = async (req, res) => {
+  const { id } = req.params
+
+  const modo_pago = await myConn.query("SELECT * FROM modo_pago WHERE id_modopago = ?", [id])
+
+  res.json(modo_pago)
+}
+
+// ------- EDITAR METODO DE PAGO
+transaccionController.editMetodoPago = async (req, res) => {
+  const { id } = req.params;
+  const { desc_modopago } = req.body;
+  const newModoPago = {
+    desc_modopago,
+  };
+  await myConn.query("UPDATE modo_pago set ? WHERE id_modopago = ?", [
+    newModoPago,
+    id,
+  ])
+
+  req.flash("success", "Modo Pago Actualizado Correctamente");
+  res.redirect("/transacciones/metodos-pago");
+}
+
 module.exports = transaccionController

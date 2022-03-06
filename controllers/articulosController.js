@@ -253,6 +253,29 @@ artController.newMarca = async (req, res) => {
     res.redirect('/articulos/marcas')
 }
 
+// ------ EDITAR MARCA
+artController.getMarcaById = async (req, res) => {
+    const { id } = req.params
+    const marca = await myConn.query("SELECT * FROM marca WHERE id_marca = ?", [id])
+    res.json(marca)
+}
+
+artController.editMarca = async (req, res) => {
+    const { id } = req.params;
+    const { nombre_marca } = req.body;
+    const newMarca = {
+        nombre_marca,
+    }
+
+    await myConn.query("UPDATE marca set ? WHERE id_marca = ?", [
+        newMarca,
+        id,
+    ])
+
+    req.flash("success", "Marca Actualizada Correctamente");
+    res.redirect("/articulos/marcas");
+}
+
 /* ---------- COLORES ----------- */
 
 // Colores Listar
@@ -275,6 +298,26 @@ artController.newColor = async(req, res) => {
     res.redirect('/articulos/colores')
 }
 
+artController.getColorById = async (req, res) => {
+    const { id } = req.params
+    const color = await myConn.query("SELECT * FROM color_articulo WHERE id_color = ?", [id])
+    res.json(color)
+}
+
+artController.editColor = async (req, res) => {
+    const { id } = req.params;
+    const { desc_color } = req.body;
+    const newColor = {
+        desc_color,
+    }
+
+    await myConn.query("UPDATE color_articulo set ? WHERE id_color = ?", [newColor, id])
+
+    req.flash("success", "Color Actualizado Correctamente")
+
+    res.redirect("/articulos/colores")
+}
+
 /* Tipos de Articulo List */
 // Ropa
 artController.listRopa = async (req, res) => {
@@ -294,7 +337,32 @@ artController.newTipoRopa = async (req, res) => {
     req.flash("success", "Tipo de Ropa Agregado Correctamente")
 
     res.redirect('/articulos/tipos/ropa')
+}
 
+// -- Editar Tipo de Ropa
+artController.getTipoRopaById = async (req, res) => {
+    const { id } = req.params;
+    const ropa = await myConn.query("SELECT * FROM tipos_ropa WHERE id_tiposropa = ?",
+      [id]
+    )
+    res.json(ropa)
+}
+
+artController.editTipoRopa = async (req, res) => {
+    const { id } = req.params;
+    const { desc_tiposropa } = req.body;
+    const newTipoRopa = {
+        desc_tiposropa
+    }
+
+    await myConn.query("UPDATE tipos_ropa set ? WHERE id_tiposropa = ?", [
+      newTipoRopa,
+      id,
+    ])
+
+    req.flash("success", "Tipo de Ropa Editado Correctamente");
+    
+    res.redirect("/articulos/tipos/ropa");
 }
 
 // Calzado
@@ -316,7 +384,33 @@ artController.newTipoCalzado = async (req, res) => {
 
     res.redirect('/articulos/tipos/calzado')
 
+}
 
+// -- Editar Tipo de Calzado
+artController.getTipoCalzadoById = async (req, res) => {
+    const { id } = req.params;
+    const calzado = await myConn.query("SELECT * FROM tipos_calzado WHERE id_tipocalzado = ?",
+      [id]
+    )
+    res.json(calzado)
+}
+
+artController.editTipoCalzado = async (req, res) => {
+    const { id } = req.params;
+    const { desc_tipocalzado } = req.body;
+
+    const newTipoCalzado = {
+        desc_tipocalzado
+    }
+    
+    await myConn.query("UPDATE tipos_calzado set ? WHERE id_tipocalzado = ?", [
+        newTipoCalzado,
+      id,
+    ])
+
+    req.flash("success", "Tipo de Calzado Editado Correctamente");
+    
+    res.redirect('/articulos/tipos/calzado')
 }
 
 // Accesorios
@@ -336,6 +430,30 @@ artController.newTipoAccesorio = async (req, res) => {
 
     req.flash("success", "Tipo de Accesorio Agregado Correctamente")
 
+    res.redirect('/articulos/tipos/accesorios')
+}
+
+// -- Editar Tipo de Accesorios
+artController.getTipoAccesorioById = async (req, res) => {
+    const { id } = req.params;
+    const accesorio = await myConn.query("SELECT * FROM tipos_accesorios WHERE id_tipoaccesorio = ?",
+      [id]
+    )
+    res.json(accesorio)
+}
+
+artController.editTipoAccesorio = async (req, res) => {
+    const { id } = req.params;
+    const { desc_tipoaccesorio } = req.body
+
+    const newTipoAccesorio = {
+        desc_tipoaccesorio
+    }
+    
+    await myConn.query("UPDATE tipos_accesorios set ? WHERE id_tipoaccesorio = ?", [newTipoAccesorio, id])
+
+    req.flash("success", "Tipo de Accesorio Editado Correctamente");
+    
     res.redirect('/articulos/tipos/accesorios')
 }
 
@@ -374,19 +492,45 @@ artController.newProveedor = async (req, res) => {
         email_proveedor, 
         cel_proveedor } = req.body;
 
-  const newProveedor = {
-    id_proveedor,
-    nombre_proveedor,
-    email_proveedor,
-    cel_proveedor,
-  }
+    const newProveedor = {
+      id_proveedor,
+      nombre_proveedor,
+      email_proveedor,
+      cel_proveedor,
+    }
 
-  await myConn.query("INSERT INTO proveedores set ?", [newProveedor])
+    await myConn.query("INSERT INTO proveedores set ?", [newProveedor])
 
-  req.flash("success", "Proveedor Agregado Correctamente")
+    req.flash("success", "Proveedor Agregado Correctamente")
 
-  res.redirect("/articulos/proveedores");
+    res.redirect("/articulos/proveedores");
 }
 
+// -- Editar Proveedor
+artController.getProveedorById = async (req, res) => {
+    const { id } = req.params;
+    const proveedores = await myConn.query("SELECT * FROM proveedores WHERE id_proveedor = ?",
+      [id]
+    )
+    res.json(proveedores)
+}
+
+artController.editProveedor = async (req, res) => {
+    const { id } = req.params;
+    const { nombre_proveedor, email_proveedor, cel_proveedor } = req.body;
+    const newProveedor = {
+      nombre_proveedor,
+      email_proveedor,
+      cel_proveedor,
+    };
+    await myConn.query("UPDATE proveedores set ? WHERE id_proveedor = ?", [
+      newProveedor,
+      id,
+    ])
+
+    req.flash("success", "Proveedor Editado Correctamente");
+    
+    res.redirect("/articulos/proveedores");
+}
 
 module.exports = artController
