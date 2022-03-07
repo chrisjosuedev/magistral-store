@@ -9,12 +9,22 @@ router.get('/clientes', personController.listClientes)
 /* POST CLIENTES */
 router.post('/clientes/new', personController.newCliente)
 
+// Edit Clientes
+router.get('/clientes/:id', personController.getClienteById)
+
+router.post('/clientes/edit/:id', personController.editCliente)
+
 
 // Empleados
 router.get('/empleados', personController.listEmpleados)
 
 /* POST EMPLEADOS */
 router.post('/empleados/new', personController.newEmpleado)
+
+// Edit Empleado
+router.get('/empleados/:id', personController.getEmpleadoById)
+
+router.post('/empleados/edit/:id', personController.editEmpleado)
 
 // -- GET Empleados JSON
 router.get('/empleados/:id', personController.getEmpleadobyId)

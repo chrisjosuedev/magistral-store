@@ -1,6 +1,6 @@
 $(function() {
 
-    const actionForm = $('#edit-payment')
+    const actionForm = $('#edit-proveedor')
 
     $('.editProveedor').click(function(){
         const dataProveedor = $(this).data("proveedor")

@@ -53,6 +53,49 @@ personaController.newCliente = async (req, res) => {
       res.redirect("/persona/clientes");
 }
 
+// -------- EDITAR CLIENTE -------------------
+personaController.getClienteById = async (req, res) => {
+    const { id } = req.params;
+  
+    const persona = await myConn.query("SELECT * FROM persona WHERE id_persona = ?",
+      [id]
+    );
+    
+    res.json(persona)
+}
+
+personaController.editCliente = async (req, res) => {
+    const { id } = req.params;
+    const {
+      nombre_persona,
+      apellido_persona,
+      sexo,
+      celular,
+      direccion_residencia,
+      id_ciudad,
+      id_depto,
+    } = req.body
+
+    const newPersona = {
+      nombre_persona,
+      apellido_persona,
+      sexo,
+      celular,
+      direccion_residencia,
+      id_ciudad,
+      id_depto,
+    }
+
+    await myConn.query("UPDATE persona set ? WHERE id_persona = ?", [
+      newPersona,
+      id
+    ])
+
+    req.flash("success", "Cliente Actualizado Correctamente");
+    res.redirect("/persona/clientes");
+}
+
+
 personaController.listEmpleados = async (req, res) => {
     const empleadoQuery = `SELECT persona.ID_PERSONA, concat_ws(' ', persona.NOMBRE_PERSONA, persona.APELLIDO_PERSONA) as EMPLEADOS, 
 	(if(persona.SEXO = 1, 'F', 'M')) as SEXO, persona.CELULAR,
@@ -114,6 +157,61 @@ personaController.newEmpleado = async (req, res) => {
   req.flash("success", "Empleado Agregado Correctamente");
   
   res.redirect("/persona/empleados");
+}
+
+// -------- EDITAR EMPLEADO -------------------
+personaController.getEmpleadoById = async (req, res) => {
+    const { id } = req.params;
+  
+    const empleado = await myConn.query("SELECT persona.*, empleado.FECHA_CONTRATACION, empleado.ID_CATEGORIA as PUESTO FROM persona INNER JOIN empleado ON empleado.ID_PERSONA = persona.ID_PERSONA HAVING id_persona = ?",
+      [id]
+    );
+    
+    res.json(empleado)
+}
+
+personaController.editEmpleado = async (req, res) => {
+    const { id } = req.params;
+    const {
+      nombre_persona,
+      apellido_persona,
+      sexo,
+      celular,
+      direccion_residencia,
+      id_ciudad,
+      fecha_contratacion,
+      id_depto,
+      id_categoria,
+    } = req.body;
+    const newPersona = {
+      nombre_persona,
+      apellido_persona,
+      sexo,
+      celular,
+      direccion_residencia,
+      id_ciudad,
+      id_depto,
+    }
+
+    const newEmpleado = {
+      id_categoria,
+      fecha_contratacion
+    }
+
+    await myConn.query("UPDATE persona set ? WHERE id_persona = ?", [
+      newPersona,
+      id
+    ])
+
+    await myConn.query("UPDATE empleado set ? WHERE id_persona = ?", [
+      newEmpleado,
+      id
+    ])
+
+    req.flash("success", "Empleado Actualizado Correctamente")
+
+    res.redirect("/persona/empleados")
+
 }
 
 // JSON Empleado por ID

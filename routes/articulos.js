@@ -9,11 +9,26 @@ router.get('/', articulosController.listArticulos)
 // Ropa
 router.get('/ropa', articulosController.listRopaArticulos)
 
+/* Editar Ropa */
+router.get('/ropa/:id', articulosController.getArticuloByRopa)
+
+router.post('/ropa/edit/:id', articulosController.editArticuloRopa)
+
 // Calzado
 router.get('/calzado', articulosController.listRopaCalzado)
 
+/* Editar Calzado */
+router.get('/calzado/:id', articulosController.getArticuloByCalzado)
+
+router.post('/calzado/edit/:id', articulosController.editArticuloCalzado)
+
 // Accesorio
 router.get('/accesorios', articulosController.listRopaAccesorio)
+
+/* Editar Accesorios */
+router.get('/accesorios/:id', articulosController.getArticuloByAccesorio)
+
+router.post('/accesorios/edit/:id', articulosController.editArticuloAccesorio)
 
 // POST - AGREGAR A ARTICULOS A DB
 // Ropa

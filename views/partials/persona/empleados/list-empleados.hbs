@@ -54,7 +54,9 @@
                         {{format FECHA_CONTRATACION}}
                     </td>
                     <td class="text-center">
-                        <button class="btn btn-primary edit-item">
+                        <button class="btn btn-primary editEmpleado"
+                            data-toggle="modal" data-target="#editEmpleado"
+                            data-empleado="{{ID_PERSONA}}">
                             <i class="fas fa-pen"></i>
                         </button>
                         <button href="/productos/delete/{{ID_PRODUCTOS}}" class="btn btn-danger del-item mt-2">

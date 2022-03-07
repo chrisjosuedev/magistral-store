@@ -1,16 +1,16 @@
 $(function() {
 
-    const actionForm = $('#edit-cliente')
+    const actionForm = $('#edit-empleado')
 
-    $('.editCliente').click(function(){
-        const dataCliente = $(this).data("cliente")
+    $('.editEmpleado').click(function(){
+        const dataEmpleado = $(this).data("empleado")
 
-        var urlPersonaForm = '/persona/clientes/edit/' + dataCliente
+        var urlEmpleadoForm = '/persona/empleados/edit/' + dataEmpleado
 
-        actionForm.prop('action', urlPersonaForm)
+        actionForm.prop('action', urlEmpleadoForm)
         
         $.ajax({
-            url: '/persona/clientes/' + dataCliente,
+            url: '/persona/empleados/' + dataEmpleado,
             success: function(res) {
                 $('#id_persona').val(res[0].ID_PERSONA);
                 $('#nombre_persona').val(res[0].NOMBRE_PERSONA);
@@ -24,7 +24,19 @@ $(function() {
 
                 $('#celular').val(res[0].CELULAR)
 
-                $('#direccion_residencia').val(res[0].DIRECCION_RESIDENCIA);
+                $('#direccion_residencia').val(res[0].DIRECCION_RESIDENCIA)
+
+                $('#sel-laboral').val(res[0].PUESTO)
+
+                var dateLaboral = new Date(res[0].FECHA_CONTRATACION)
+
+                var day = dateLaboral.getDate()
+                var month = dateLaboral.getMonth() + 1
+                var year =  dateLaboral.getFullYear()
+
+                var contratadoFecha = year + "-" + month + "-" +  day
+
+                $('#fecha_contratacion').val(contratadoFecha)
 
                 $('#select-depto').val(res[0].ID_DEPTO)
 

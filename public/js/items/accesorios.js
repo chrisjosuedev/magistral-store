@@ -1,16 +1,16 @@
 $(function() {
 
-    const actionForm = $('#edit-ropaart')
+    const actionForm = $('#edit-accesorioart')
 
-    $('.editRopaArt').click(function(){
-        const dataRopaArt = $(this).data("ropaart")
+    $('.editAccesorioArt').click(function(){
+        const dataAccesorioArt = $(this).data("accesorioart")
 
-        var urlRopaArtForm = '/articulos/ropa/edit/' + dataRopaArt
+        var urlAccesorioArtForm = '/articulos/accesorios/edit/' + dataAccesorioArt
 
-        actionForm.prop('action', urlRopaArtForm)
+        actionForm.prop('action', urlAccesorioArtForm)
         
         $.ajax({
-            url: '/articulos/ropa/' + dataRopaArt,
+            url: '/articulos/accesorios/' + dataAccesorioArt,
             success: function(res) {
                 $('#descripcion').val(res[0].DESCRIPCION);
                 $('#marca').val(res[0].ID_MARCA);
@@ -18,7 +18,7 @@ $(function() {
                 $('#color').val(res[0].ID_COLOR);
                 $('#talla').val(res[0].TALLA);
                 $('#precio').val(res[0].PRECIO_UNIT);
-                $('#tiposropa').val(res[0].ID_TIPOSROPA);
+                $('#tipoaccesorio').val(res[0].ID_TIPOACCESORIO);
             }
         })
 

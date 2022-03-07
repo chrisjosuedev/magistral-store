@@ -100,8 +100,6 @@ artController.listRopaAccesorio = async (req, res ) => {
     res.render('articulos/accesorios', { accesorios, color, marca, linea_articulo, tipos_accesorios })
 }
 
-
-
 /* POST */
 
 // Articulos Ropa Agregar
@@ -143,6 +141,65 @@ artController.newRopa = async (req, res) => {
 
     // Redirect
     (id_ban === 'ropa') ? res.redirect("/articulos/ropa") : res.redirect("/articulos")
+
+}
+
+// ------------- EDITAR ARTICULO ROPA -----------------
+artController.getArticuloByRopa = async (req, res) => {
+    const { id } = req.params
+
+    const queryRopa = `SELECT ropa.*, articulos.*, marca.NOMBRE_MARCA, linea_articulo.DESC_LINEA, color_articulo.DESC_COLOR, 
+	tipos_ropa.*
+    FROM ropa
+    INNER JOIN articulos ON articulos.ID_ARTICULO = ropa.ID_ARTICULO
+    INNER JOIN marca ON marca.ID_MARCA = articulos.ID_MARCA
+    INNER JOIN linea_articulo ON linea_articulo.ID_LINEA_ARTICULO = articulos.ID_LINEA_ARTICULO
+    INNER JOIN color_articulo ON color_articulo.ID_COLOR = articulos.ID_COLOR
+    INNER JOIN tipos_ropa ON ropa.ID_TIPOSROPA = tipos_ropa.ID_TIPOSROPA
+    WHERE articulos.ID_ARTICULO = ?
+    GROUP BY articulos.ID_ARTICULO
+    ORDER BY articulos.ID_ARTICULO ASC`
+
+    // Consulta Ropa
+    const ropa = await myConn.query(queryRopa, [id])
+
+    res.json(ropa)
+}
+
+artController.editArticuloRopa = async (req, res) => {
+    const { id } = req.params;
+    const { 
+        descripcion, 
+        precio_unit, 
+        talla, 
+        id_marca,
+        id_color,
+        id_linea_articulo,
+        id_tiposropa } = req.body
+
+    // Nuevo Articulo
+    const newArticulo = {
+        descripcion, 
+        precio_unit, 
+        talla, 
+        id_marca,
+        id_color,
+        id_linea_articulo,
+    }
+
+    const newRopa = {
+        id_tiposropa
+    }
+
+    await myConn.query("UPDATE articulos set ? WHERE id_articulo = ?", [newArticulo, id])
+
+    // Nueva Ropa
+
+    await myConn.query("UPDATE ropa set ? WHERE id_articulo = ?", [newRopa, id])
+
+    req.flash("success", "Ropa Editada Correctamente");
+
+    res.redirect("/articulos/ropa")
 
 }
 
@@ -188,6 +245,65 @@ artController.newCalzado = async (req, res) => {
   
 }
 
+// ------------- EDITAR ARTICULO CALZADO -----------------
+artController.getArticuloByCalzado = async (req, res) => {
+    const { id } = req.params
+
+    const queryCalzado = `SELECT calzado.*, articulos.*, marca.NOMBRE_MARCA, linea_articulo.DESC_LINEA, color_articulo.DESC_COLOR, 
+	tipos_calzado.*
+    FROM calzado
+    INNER JOIN articulos ON articulos.ID_ARTICULO = calzado.ID_ARTICULO
+    INNER JOIN marca ON marca.ID_MARCA = articulos.ID_MARCA
+    INNER JOIN linea_articulo ON linea_articulo.ID_LINEA_ARTICULO = articulos.ID_LINEA_ARTICULO
+    INNER JOIN color_articulo ON color_articulo.ID_COLOR = articulos.ID_COLOR
+    INNER JOIN tipos_calzado ON calzado.ID_TIPOCALZADO = tipos_calzado.ID_TIPOCALZADO
+    WHERE articulos.ID_ARTICULO = ?
+    GROUP BY articulos.ID_ARTICULO
+    ORDER BY articulos.ID_ARTICULO ASC`
+
+    // Consulta Calzado
+    const calzado = await myConn.query(queryCalzado, [id])
+
+    res.json(calzado)
+}
+
+artController.editArticuloCalzado = async (req, res) => {
+    const { id } = req.params;
+    const { 
+        descripcion, 
+        precio_unit, 
+        talla, 
+        id_marca,
+        id_color,
+        id_linea_articulo,
+        id_tipocalzado } = req.body
+
+    // Nuevo Articulo
+    const newArticulo = {
+        descripcion, 
+        precio_unit, 
+        talla, 
+        id_marca,
+        id_color,
+        id_linea_articulo,
+    }
+
+    const newCalzado = {
+        id_tipocalzado
+    }
+
+    await myConn.query("UPDATE articulos set ? WHERE id_articulo = ?", [newArticulo, id])
+
+    // Nueva Ropa
+
+    await myConn.query("UPDATE calzado set ? WHERE id_articulo = ?", [newCalzado, id])
+
+    req.flash("success", "Calzado Editado Correctamente");
+
+    res.redirect("/articulos/calzado")
+
+}
+
 // Articulos Accesorio Agregar
 artController.newAccesorio = async (req, res) => {
     const { 
@@ -227,6 +343,66 @@ artController.newAccesorio = async (req, res) => {
 
     // Redirect
     (id_ban === 'accesorio') ? res.redirect("/articulos/accesorios") : res.redirect("/articulos")
+
+}
+
+// ------------- EDITAR ARTICULO ACCESORIO -----------------
+
+artController.getArticuloByAccesorio = async (req, res) => {
+    const { id } = req.params
+
+    const queryAccesorio = `SELECT accesorios.*, articulos.*, marca.NOMBRE_MARCA, linea_articulo.DESC_LINEA, color_articulo.DESC_COLOR, 
+	tipos_accesorios.*
+    FROM accesorios
+    INNER JOIN articulos ON articulos.ID_ARTICULO = accesorios.ID_ARTICULO
+    INNER JOIN marca ON marca.ID_MARCA = articulos.ID_MARCA
+    INNER JOIN linea_articulo ON linea_articulo.ID_LINEA_ARTICULO = articulos.ID_LINEA_ARTICULO
+    INNER JOIN color_articulo ON color_articulo.ID_COLOR = articulos.ID_COLOR
+    INNER JOIN tipos_accesorios ON accesorios.ID_TIPOACCESORIO = tipos_accesorios.ID_TIPOACCESORIO
+    WHERE articulos.ID_ARTICULO = ?
+    GROUP BY articulos.ID_ARTICULO
+    ORDER BY articulos.ID_ARTICULO ASC`
+
+    // Consulta Accesorio
+    const accesorios = await myConn.query(queryAccesorio, [id])
+
+    res.json(accesorios)
+}
+
+artController.editArticuloAccesorio = async (req, res) => {
+    const { id } = req.params;
+    const { 
+        descripcion, 
+        precio_unit, 
+        talla, 
+        id_marca,
+        id_color,
+        id_linea_articulo,
+        id_tipoaccesorio } = req.body
+
+    // Nuevo Articulo
+    const newArticulo = {
+        descripcion, 
+        precio_unit, 
+        talla, 
+        id_marca,
+        id_color,
+        id_linea_articulo
+    }
+
+    const newAccesorio = {
+        id_tipoaccesorio
+    }
+
+    await myConn.query("UPDATE articulos set ? WHERE id_articulo = ?", [newArticulo, id])
+
+    // Nueva Accesorio
+
+    await myConn.query("UPDATE accesorios set ? WHERE id_articulo = ?", [newAccesorio, id])
+
+    req.flash("success", "Accesorio Editado Correctamente");
+
+    res.redirect("/articulos/accesorios")
 
 }
 
