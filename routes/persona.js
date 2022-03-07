@@ -14,6 +14,8 @@ router.get('/clientes/:id', personController.getClienteById)
 
 router.post('/clientes/edit/:id', personController.editCliente)
 
+// Eliminar
+router.get('/clientes/delete/:id', personController.deleteCliente)
 
 // Empleados
 router.get('/empleados', personController.listEmpleados)
@@ -25,6 +27,9 @@ router.post('/empleados/new', personController.newEmpleado)
 router.get('/empleados/:id', personController.getEmpleadoById)
 
 router.post('/empleados/edit/:id', personController.editEmpleado)
+
+// Eliminar
+router.get('/empleados/delete/:id', personController.deleteEmpleado)
 
 // -- GET Empleados JSON
 router.get('/empleados/:id', personController.getEmpleadobyId)

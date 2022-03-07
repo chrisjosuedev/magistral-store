@@ -28,14 +28,13 @@
                     <td> {{DESC_ROL}} </td>
                     {{!-- Buscar forma de mostrar ocultar texto password --}}
                     <td class="text-center">
-                        <button class="btn btn-primary editUsuario"
-                            data-toggle="modal" data-target="#editUsuario"
+                        <button class="btn btn-primary editUsuario" data-toggle="modal" data-target="#editUsuario"
                             data-usuario="{{USERNAME}}">
                             <i class="fas fa-pen"></i>
                         </button>
-                        <button href="/productos/delete/{{ID_PRODUCTOS}}" class="btn btn-danger del-item">
+                        <a href="/config/usuarios/delete/{{USERNAME}}" class="btn btn-danger">
                             <i class="fa fa-trash"></i>
-                        </button>
+                        </a>
                     </td>
                 </tr>
                 {{/each}}

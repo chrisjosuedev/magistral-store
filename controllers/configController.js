@@ -45,6 +45,14 @@ confController.editCategoriaLaboral = async (req, res) => {
     
 }
 
+//  -------- Eliminar Categoria Laboral
+confController.deleteCatLaboral = async (req, res) => {
+    const { id } = req.params;
+    await myConn.query("DELETE FROM categoria_laboral WHERE id_categoria = ?", [id]);
+    req.flash("success", "Categoria Laboral Eliminada Correctamente");
+    res.redirect("/config/categoria-laboral");
+}
+
 // ---------------- USUARIOS
 
 confController.listUsuarios = async (req, res) => {
@@ -109,6 +117,15 @@ confController.editUser = async (req, res) => {
 
   req.flash("success", "Usuario Actualizado Correctamente");
   res.redirect("/config/usuarios");
+}
+
+
+//  -------- Eliminar Usuario
+confController.deleteUsuario = async (req, res) => {
+    const { username } = req.params;
+    await myConn.query("DELETE FROM usuario WHERE username = ?", [username]);
+    req.flash("success", "Usuario Eliminado Correctamente");
+    res.redirect("/config/usuarios");
 }
 
 module.exports = confController

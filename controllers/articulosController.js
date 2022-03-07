@@ -203,6 +203,17 @@ artController.editArticuloRopa = async (req, res) => {
 
 }
 
+// ---------- Eliminar Ropa
+artController.deleteRopa = async (req, res) => {
+    const { id } = req.params;
+
+    await myConn.query("DELETE FROM ropa WHERE id_articulo = ?", [id]);
+    await myConn.query("DELETE FROM articulos WHERE id_articulo = ?", [id]);
+    
+    req.flash("success", "Ropa Eliminado Correctamente");
+    res.redirect("/articulos/ropa");
+}
+
 // Articulos Calzado Agregar
 artController.newCalzado = async (req, res) => {
     const { 
@@ -302,6 +313,17 @@ artController.editArticuloCalzado = async (req, res) => {
 
     res.redirect("/articulos/calzado")
 
+}
+
+// ---------- Eliminar Calzado
+artController.deleteCalzado = async (req, res) => {
+    const { id } = req.params;
+
+    await myConn.query("DELETE FROM calzado WHERE id_articulo = ?", [id]);
+    await myConn.query("DELETE FROM articulos WHERE id_articulo = ?", [id]);
+    
+    req.flash("success", "Calzado Eliminado Correctamente");
+    res.redirect("/articulos/calzado");
 }
 
 // Articulos Accesorio Agregar
@@ -406,6 +428,16 @@ artController.editArticuloAccesorio = async (req, res) => {
 
 }
 
+// ---------- Eliminar Accesorio
+artController.deleteAccesorio = async (req, res) => {
+    const { id } = req.params;
+
+    await myConn.query("DELETE FROM accesorios WHERE id_articulo = ?", [id]);
+    await myConn.query("DELETE FROM articulos WHERE id_articulo = ?", [id]);
+    
+    req.flash("success", "Accesorio Eliminado Correctamente");
+    res.redirect("/articulos/accesorios");
+}
 
 /* ------------- FIN ARTICULOS ------------- */
 
@@ -452,6 +484,18 @@ artController.editMarca = async (req, res) => {
     res.redirect("/articulos/marcas");
 }
 
+// -- Eliminar Marca
+artController.deleteMarca = async (req, res) => {
+    const { id } = req.params;
+    await myConn.query("DELETE FROM marca WHERE id_marca = ?", [
+      id
+    ]);
+    
+    req.flash("success", "Marca Eliminada Correctamente");
+    
+    res.redirect("/articulos/marcas");
+}
+
 /* ---------- COLORES ----------- */
 
 // Colores Listar
@@ -492,6 +536,18 @@ artController.editColor = async (req, res) => {
     req.flash("success", "Color Actualizado Correctamente")
 
     res.redirect("/articulos/colores")
+}
+
+// -- Eliminar Marca
+artController.deleteColor = async (req, res) => {
+    const { id } = req.params;
+    await myConn.query("DELETE FROM color_articulo WHERE id_color = ?", [
+      id
+    ]);
+    
+    req.flash("success", "Color Eliminado Correctamente");
+    
+    res.redirect("/articulos/colores");
 }
 
 /* Tipos de Articulo List */
@@ -537,6 +593,18 @@ artController.editTipoRopa = async (req, res) => {
     ])
 
     req.flash("success", "Tipo de Ropa Editado Correctamente");
+    
+    res.redirect("/articulos/tipos/ropa");
+}
+
+// -- Eliminar Tipo de Ropa
+artController.deleteTipoRopa = async (req, res) => {
+    const { id } = req.params;
+    await myConn.query("DELETE FROM tipos_ropa WHERE id_tiposropa = ?", [
+      id
+    ]);
+    
+    req.flash("success", "Tipo de Ropa Eliminado Correctamente");
     
     res.redirect("/articulos/tipos/ropa");
 }
@@ -589,6 +657,18 @@ artController.editTipoCalzado = async (req, res) => {
     res.redirect('/articulos/tipos/calzado')
 }
 
+// -- Eliminar Tipo de Calzado
+artController.deleteTipoCalzado = async (req, res) => {
+    const { id } = req.params;
+    await myConn.query("DELETE FROM tipos_calzado WHERE id_tipocalzado = ?", [
+      id
+    ]);
+    
+    req.flash("success", "Tipo de Calzado Eliminado Correctamente");
+    
+    res.redirect("/articulos/tipos/calzado");
+}
+
 // Accesorios
 artController.listAccesorios = async (req, res) => {
     const tipos_accesorios = await myConn.query("SELECT * FROM tipos_accesorios")
@@ -631,6 +711,18 @@ artController.editTipoAccesorio = async (req, res) => {
     req.flash("success", "Tipo de Accesorio Editado Correctamente");
     
     res.redirect('/articulos/tipos/accesorios')
+}
+
+// -- Eliminar Tipo de Accesorio
+artController.deleteTipoAccesorio = async (req, res) => {
+    const { id } = req.params;
+    await myConn.query("DELETE FROM tipos_accesorios WHERE id_tipoaccesorio = ?", [
+      id
+    ]);
+    
+    req.flash("success", "Tipo de Accesorio Eliminado Correctamente");
+    
+    res.redirect("/articulos/tipos/accesorios");
 }
 
 // JSON Tipos de Cada Articulo
@@ -705,6 +797,18 @@ artController.editProveedor = async (req, res) => {
     ])
 
     req.flash("success", "Proveedor Editado Correctamente");
+    
+    res.redirect("/articulos/proveedores");
+}
+
+// -- Eliminar Proveedor
+artController.deleteProveedor = async (req, res) => {
+    const { id } = req.params;
+    await myConn.query("DELETE FROM proveedores WHERE id_proveedor = ?", [
+      id
+    ]);
+    
+    req.flash("success", "Proveedor Eliminado Correctamente");
     
     res.redirect("/articulos/proveedores");
 }

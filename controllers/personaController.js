@@ -95,6 +95,16 @@ personaController.editCliente = async (req, res) => {
     res.redirect("/persona/clientes");
 }
 
+// ----- Eliminar Cliente
+personaController.deleteCliente = async (req, res) => {
+    const { id } = req.params;
+  
+    await myConn.query("DELETE FROM persona WHERE id_persona = ?", [id])
+    
+    req.flash("success", "Cliente Eliminado Correctamente")
+    res.redirect("/persona/clientes")
+}
+
 
 personaController.listEmpleados = async (req, res) => {
     const empleadoQuery = `SELECT persona.ID_PERSONA, concat_ws(' ', persona.NOMBRE_PERSONA, persona.APELLIDO_PERSONA) as EMPLEADOS, 
@@ -212,6 +222,17 @@ personaController.editEmpleado = async (req, res) => {
 
     res.redirect("/persona/empleados")
 
+}
+
+// ----- Eliminar Empleado
+personaController.deleteEmpleado = async (req, res) => {
+  const { id } = req.params;
+
+  await myConn.query("DELETE FROM empleado WHERE id_persona = ?", [id]);
+  await myConn.query("DELETE FROM persona WHERE id_persona = ?", [id]);
+  
+  req.flash("success", "Empleado Eliminado Correctamente")
+  res.redirect("/persona/empleados")
 }
 
 // JSON Empleado por ID

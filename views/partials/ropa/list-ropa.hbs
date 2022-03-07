@@ -46,14 +46,13 @@
                     <td> {{STOCK}} </td>
                     <td>L. {{PRECIO_UNIT}} </td>
                     <td class="text-center">
-                        <button class="btn btn-primary editRopaArt"
-                            data-toggle="modal" data-target="#editRopaArt"
+                        <button class="btn btn-primary editRopaArt" data-toggle="modal" data-target="#editRopaArt"
                             data-ropaart="{{ID_ARTICULO}}">
                             <i class="fas fa-pen"></i>
                         </button>
-                        <button href="/productos/delete/{{ID_PRODUCTOS}}" class="btn btn-danger del-item mt-2">
+                        <a href="/articulos/ropa/delete/{{ID_ARTICULO}}" class="btn btn-danger del-item mt-2">
                             <i class="fa fa-trash"></i>
-                        </button>
+                        </a>
                     </td>
                 </tr>
                 {{/each}}

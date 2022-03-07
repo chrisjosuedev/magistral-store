@@ -30,6 +30,14 @@ transaccionController.getMetodoPago = async (req, res) => {
   res.json(modo_pago)
 }
 
+//  -------- Eliminar Metodo de Pago
+transaccionController.deleteMetodoPago = async (req, res) => {
+  const { id } = req.params;
+  await myConn.query("DELETE FROM modo_pago WHERE id_modopago = ?", [id]);
+  req.flash("success", "Metodo de Pago Eliminado Correctamente");
+  res.redirect("/transacciones/metodos-pago");
+}
+
 // ------- EDITAR METODO DE PAGO
 transaccionController.editMetodoPago = async (req, res) => {
   const { id } = req.params;

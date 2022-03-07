@@ -24,14 +24,14 @@
                     <td> {{ID_TIPOACCESORIO}} </td>
                     <td> {{DESC_TIPOACCESORIO}} </td>
                     <td class="text-center">
-                        <button class="btn btn-primary editTipoAccesorio"
-                            data-toggle="modal" data-target="#editTipoAccesorio"
-                            data-taccesorio="{{ID_TIPOACCESORIO}}">
+                        <button class="btn btn-primary editTipoAccesorio" data-toggle="modal"
+                            data-target="#editTipoAccesorio" data-taccesorio="{{ID_TIPOACCESORIO}}">
                             <i class="fas fa-pen"></i>
                         </button>
-                        <button href="/productos/delete/{{ID_PRODUCTOS}}" class="btn btn-danger del-item">
+                        <a href="/articulos/tipos/accesorios/delete/{{ID_TIPOACCESORIO}}"
+                            class="btn btn-danger del-item">
                             <i class="fa fa-trash"></i>
-                        </button>
+                        </a>
                     </td>
                 </tr>
                 {{/each}}

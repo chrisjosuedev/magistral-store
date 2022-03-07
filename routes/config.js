@@ -16,8 +16,14 @@ router.get('/categoria-laboral/:id', confController.getCategoriaById)
 
 router.post('/categoria-laboral/edit/:id', confController.editCategoriaLaboral)
 
+// Eliminar Categoria Laboral
+router.get('/categoria-laboral/delete/:id', confController.deleteCatLaboral)
+
 // /usuarios
 router.get('/usuarios', confController.listUsuarios)
+
+// Eliminar Usuario
+router.get('/usuarios/delete/:username', confController.deleteUsuario)
 
 // POST Usuario
 router.post('/usuarios/new', confController.newUsuario)

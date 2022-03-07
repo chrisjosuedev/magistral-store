@@ -12,5 +12,7 @@ router.get('/metodos-pago/:id', transaccionCont.getMetodoPago)
 
 router.post('/metodos-pago/edit/:id', transaccionCont.editMetodoPago)
 
+router.get('/metodos-pago/delete/:id', transaccionCont.deleteMetodoPago)
+
 module.exports = router
 
