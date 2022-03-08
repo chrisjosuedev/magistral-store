@@ -5,6 +5,32 @@ $(function() {
 
     const idNameEmp = $("#nameEmp")
     const idCodEmp = $("#codEmp")
+    
+
+    const deleteUsuario = $('.delete-user')
+    
+    // ----- Eliminar Usuario
+    function confirmarDelete(id) {
+        Swal.fire({
+            title: '¿Confirma eliminar el Usuario?',
+            icon: 'warning',
+            confirmButtonColor: '#3F84FC',
+            cancelButtonColor: '#FC413F',
+            showCancelButton: true,
+            confirmButtonText: 'Confirmar',
+            cancelButtonText: 'Cancelar',
+          }).then((result) => {
+            if (result.isConfirmed) {   
+                window.location = '/config/usuarios/delete/' + id                             
+            }
+        })
+    }
+
+    // -- Boton Eliminar Usuario
+    deleteUsuario.on('click', function() {
+        var user = $(this).attr("id")
+        confirmarDelete(user)
+    })
 
     bEmp.on('click', function () {
         var id = idEmp.val()
@@ -30,7 +56,7 @@ $(function() {
                         }, 7000)
                     }
                     else {
-                        idNameEmp.val(empleado[0].NOMBRE_EMPLEADO)
+                        idNameEmp.val(empleado[0].NOMBRE_PERSONA + ' ' + empleado[0].APELLIDO_PERSONA)
                         idCodEmp.val(empleado[0].ID_EMPLEADO)
                         $('#user').focus()
                     }

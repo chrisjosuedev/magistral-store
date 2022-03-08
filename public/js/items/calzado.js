@@ -2,6 +2,29 @@ $(function() {
 
     const actionForm = $('#edit-calzadoart')
 
+    const deleteCalzado = $('.delete-calzado')
+      
+    function confirmarDelete(id) {
+        Swal.fire({
+            title: '¿Confirma eliminar el articulo Calzado?',
+            icon: 'warning',
+            confirmButtonColor: '#3F84FC',
+            cancelButtonColor: '#FC413F',
+            showCancelButton: true,
+            confirmButtonText: 'Confirmar',
+            cancelButtonText: 'Cancelar',
+          }).then((result) => {
+            if (result.isConfirmed) {   
+                window.location = '/articulos/calzado/delete/' + id                             
+            }
+        })
+    }
+
+    deleteCalzado.on('click', function() {
+        var id = $(this).attr("id")
+        confirmarDelete(id)
+    })
+
     $('.editCalzadoArt').click(function(){
         const dataCalzadoArt = $(this).data("calzadoart")
 

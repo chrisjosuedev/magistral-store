@@ -2,6 +2,32 @@ $(function() {
 
     const actionForm = $('#edit-empleado')
 
+    const deleteEmpleado = $('.delete-empleado')
+    
+    // ----- Eliminar Empleado
+    function confirmarDelete(id) {
+        Swal.fire({
+            title: '¿Confirma eliminar el Empleado?',
+            icon: 'warning',
+            confirmButtonColor: '#3F84FC',
+            cancelButtonColor: '#FC413F',
+            showCancelButton: true,
+            confirmButtonText: 'Confirmar',
+            cancelButtonText: 'Cancelar',
+          }).then((result) => {
+            if (result.isConfirmed) {   
+                window.location = '/persona/empleados/delete/' + id                             
+            }
+        })
+    }
+
+    // -- Boton Eliminar Empleado
+    deleteEmpleado.on('click', function() {
+        var id = $(this).attr("id")
+        confirmarDelete(id)
+    })
+
+
     $('.editEmpleado').click(function(){
         const dataEmpleado = $(this).data("empleado")
 
@@ -34,7 +60,12 @@ $(function() {
                 var month = dateLaboral.getMonth() + 1
                 var year =  dateLaboral.getFullYear()
 
-                var contratadoFecha = year + "-" + month + "-" +  day
+                if (day < 10) {
+                    var newDay = '0' + day
+                }
+
+                var contratadoFecha = year + "-" + month + "-" +  newDay
+                console.log(contratadoFecha)
 
                 $('#fecha_contratacion').val(contratadoFecha)
 

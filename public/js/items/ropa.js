@@ -2,6 +2,30 @@ $(function() {
 
     const actionForm = $('#edit-ropaart')
 
+
+    const deleteRopa = $('.delete-ropa')
+      
+    function confirmarDelete(id) {
+        Swal.fire({
+            title: '¿Confirma eliminar el articulo Ropa?',
+            icon: 'warning',
+            confirmButtonColor: '#3F84FC',
+            cancelButtonColor: '#FC413F',
+            showCancelButton: true,
+            confirmButtonText: 'Confirmar',
+            cancelButtonText: 'Cancelar',
+          }).then((result) => {
+            if (result.isConfirmed) {   
+                window.location = '/articulos/ropa/delete/' + id                             
+            }
+        })
+    }
+
+    deleteRopa.on('click', function() {
+        var id = $(this).attr("id")
+        confirmarDelete(id)
+    })
+
     $('.editRopaArt').click(function(){
         const dataRopaArt = $(this).data("ropaart")
 

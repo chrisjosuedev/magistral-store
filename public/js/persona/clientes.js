@@ -2,6 +2,33 @@ $(function() {
 
     const actionForm = $('#edit-cliente')
 
+    const deleteCliente = $('.delete-cliente')
+    
+    // ----- Eliminar Usuario
+    function confirmarDelete(id) {
+        Swal.fire({
+            title: '¿Confirma eliminar el Cliente?',
+            icon: 'warning',
+            confirmButtonColor: '#3F84FC',
+            cancelButtonColor: '#FC413F',
+            showCancelButton: true,
+            confirmButtonText: 'Confirmar',
+            cancelButtonText: 'Cancelar',
+          }).then((result) => {
+            if (result.isConfirmed) {   
+                window.location = '/persona/clientes/delete/' + id                             
+            }
+        })
+    }
+
+    // -- Boton Eliminar Cliente
+    deleteCliente.on('click', function() {
+        var id = $(this).attr("id")
+        confirmarDelete(id)
+    })
+
+
+
     $('.editCliente').click(function(){
         const dataCliente = $(this).data("cliente")
 

@@ -32,7 +32,7 @@ router.post('/empleados/edit/:id', personController.editEmpleado)
 router.get('/empleados/delete/:id', personController.deleteEmpleado)
 
 // -- GET Empleados JSON
-router.get('/empleados/:id', personController.getEmpleadobyId)
+//router.get('/empleados/:id', personController.getEmpleadobyIdPersona)
 
 
 // Lugares JSON

@@ -28,10 +28,10 @@
                             data-target="#editTipoAccesorio" data-taccesorio="{{ID_TIPOACCESORIO}}">
                             <i class="fas fa-pen"></i>
                         </button>
-                        <a href="/articulos/tipos/accesorios/delete/{{ID_TIPOACCESORIO}}"
-                            class="btn btn-danger del-item">
+                        <button id="{{ID_TIPOACCESORIO}}"
+                            class="btn btn-danger del-item delete-taccesorio">
                             <i class="fa fa-trash"></i>
-                        </a>
+                        </button>
                     </td>
                 </tr>
                 {{/each}}

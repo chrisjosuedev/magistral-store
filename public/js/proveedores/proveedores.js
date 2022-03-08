@@ -2,6 +2,32 @@ $(function() {
 
     const actionForm = $('#edit-proveedor')
 
+    const deleteProveedor = $('.delete-proveedor')
+    
+    // ----- Eliminar Proveedor
+    function confirmarDelete(id) {
+        Swal.fire({
+            title: '¿Confirma eliminar el Proveedor?',
+            icon: 'warning',
+            confirmButtonColor: '#3F84FC',
+            cancelButtonColor: '#FC413F',
+            showCancelButton: true,
+            confirmButtonText: 'Confirmar',
+            cancelButtonText: 'Cancelar',
+          }).then((result) => {
+            if (result.isConfirmed) {   
+                window.location = '/articulos/proveedores/delete/' + id                             
+            }
+        })
+    }
+
+    // -- Boton Eliminar Proveedor
+    deleteProveedor.on('click', function() {
+        var id = $(this).attr("id")
+        confirmarDelete(id)
+    })
+
+
     $('.editProveedor').click(function(){
         const dataProveedor = $(this).data("proveedor")
 

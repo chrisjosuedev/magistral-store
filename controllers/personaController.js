@@ -173,7 +173,7 @@ personaController.newEmpleado = async (req, res) => {
 personaController.getEmpleadoById = async (req, res) => {
     const { id } = req.params;
   
-    const empleado = await myConn.query("SELECT persona.*, empleado.FECHA_CONTRATACION, empleado.ID_CATEGORIA as PUESTO FROM persona INNER JOIN empleado ON empleado.ID_PERSONA = persona.ID_PERSONA HAVING id_persona = ?",
+    const empleado = await myConn.query("SELECT persona.*, empleado.ID_EMPLEADO, empleado.FECHA_CONTRATACION, empleado.ID_CATEGORIA as PUESTO FROM persona INNER JOIN empleado ON empleado.ID_PERSONA = persona.ID_PERSONA HAVING id_persona = ?",
       [id]
     );
     
@@ -235,8 +235,8 @@ personaController.deleteEmpleado = async (req, res) => {
   res.redirect("/persona/empleados")
 }
 
-// JSON Empleado por ID
-personaController.getEmpleadobyId = async (req, res) => {
+/* JSON Empleado por ID
+personaController.getEmpleadobyIdPersona = async (req, res) => {
     const { id } = req.params
     const queryEmp = `SELECT empleado.*, 
                       concat_ws(' ', persona.NOMBRE_PERSONA, persona.APELLIDO_PERSONA) as NOMBRE_EMPLEADO
@@ -246,7 +246,7 @@ personaController.getEmpleadobyId = async (req, res) => {
     const empJSON = await myConn.query(queryEmp, [id]);
     res.json(empJSON)
 }
-
+*/
 
 // JSON Ciudad por Departamento
 personaController.getDeptoByCiudad = async (req, res) => {

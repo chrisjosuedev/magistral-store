@@ -2,6 +2,29 @@ $(function() {
 
     const actionForm = $('#edit-accesorioart')
 
+    const deleteAccesorio = $('.delete-accesorio')
+      
+    function confirmarDelete(id) {
+        Swal.fire({
+            title: '¿Confirma eliminar el articulo Accesorio?',
+            icon: 'warning',
+            confirmButtonColor: '#3F84FC',
+            cancelButtonColor: '#FC413F',
+            showCancelButton: true,
+            confirmButtonText: 'Confirmar',
+            cancelButtonText: 'Cancelar',
+          }).then((result) => {
+            if (result.isConfirmed) {   
+                window.location = '/articulos/accesorios/delete/' + id                             
+            }
+        })
+    }
+
+    deleteAccesorio.on('click', function() {
+        var id = $(this).attr("id")
+        confirmarDelete(id)
+    })
+
     $('.editAccesorioArt').click(function(){
         const dataAccesorioArt = $(this).data("accesorioart")
 
