@@ -1,0 +1,150 @@
+<div class="container p-4">
+    <h1 class="mb-4"> Facturas </h1>
+    <div class="alert alert-danger d-none" role="alert" id="alert">
+        A simple danger alert—check it out!
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header font-weight-bold">
+                    <i class="fas fa-cart-plus"></i> NUEVA FACTURA
+                </div>
+                <div class="card-body">
+                    <form action="/facturacion/facturaregistro" method="POST">
+                        <label>Datos Cliente </label>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <div class="form-row">
+                                    <div class="col-md-10">
+                                        <input type="text" id="id-cliente" class="form-control" name="id_persona"
+                                            placeholder="Código Cliente">
+
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" id="btn-buscar-cliente" class="btn btn-primary">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group col-md-4">
+                                <input type="text" id="name-cli" class="form-control" placeholder="Nombre del Cliente"
+                                    disabled>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <input type="text" id="cel-cli" class="form-control" placeholder="Celular" disabled>
+                            </div>
+
+                            <div class="form-group col-lg-12">
+                                <div class="col-lg-4 float-right">
+                                    <button type="button" id="btn-new-cliente" class="btn btn-success float-right">
+                                        <i class="fas far fa-address-book"></i> Nuevo Cliente
+                                    </button>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <label>Empleado en caja</label>
+                        <div class="form-row">
+                            <input type="text" class="form-control" name="id_empleado" placeholder="Codigo"
+                                value="{{user.ID_EMPLEADO}}" hidden>
+                            <div class="form-group col-md-12">
+                                <input type="text" class="form-control" placeholder="Nombre Empleado"
+                                    value="{{user.NOMBRE}} {{user.APELLIDO}}" disabled>
+
+                            </div>
+
+                        </div>
+
+                        <label>Metodo de pago</label>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <select id="inputState sel-tipo" name="id_modopago" class="custom-select">
+                                    <option selected> - Metodo de Pago - </option>
+
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <label>Productos</label>
+
+
+                        <div class="form-row">
+
+                            <div class="form-group col-md-4">
+                                <div class="form-row">
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control" name="id-producto"
+                                            placeholder="Código del Producto" required>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" id="btn-buscar-producto" class="btn btn-primary">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <input type="number" id="cantidad-venta" class="form-control" min="1"
+                                    onkeydown="if(event.key==='.'){event.preventDefault();}" placeholder="Cantidad"
+                                    required>
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <input type="number" id="price-pro" class="form-control" min="1"
+                                    placeholder="Precio Unit." disabled>
+                            </div>
+                        </div>
+
+                        <button type="button" id="btn-agregar" class="btn btn-success float-left mb-4 mr-2">
+                            <i class="far fa-plus-square"></i> Agregar Producto
+                        </button>
+
+                        <a href="#" class="btn btn-warning mb-4 mr-2 float-right">
+                            <i class="fas fa-external-link-alt"></i> Nueva Factura
+                        </a>
+
+                        <button type="submit" id="procesar" class="btn btn-danger float-right mb-4 mr-2">
+                            <i class="fas fa-file-invoice-dollar"></i> Facturar
+                        </button>
+                        
+                        <div class="col-md-12 mt-5">
+                            <table class="table table-striped" id="table-venta">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Descripción</th>
+                                        <th scope="col">Cant.</th>
+                                        <th scope="col">Precio Unit.</th>
+                                        <th scope="col">Subtotal</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+
+                    <div class="form-group col-md-2 float-right">
+                        <label> Subtotal</label>
+                        <input type="text" id="st-venta" class="form-control" placeholder="Subtotal" disabled>
+                        <label class="mt-2"> ISV</label>
+                        <input type="text" id="isv" class="form-control " placeholder="ISV" disabled>
+                        <label class="mt-2"> Total </label>
+                        <input type="text" id="total" class="form-control" placeholder="Total" disabled>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

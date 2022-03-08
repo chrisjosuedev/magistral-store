@@ -14,5 +14,12 @@ router.post('/metodos-pago/edit/:id', transaccionCont.editMetodoPago)
 
 router.get('/metodos-pago/delete/:id', transaccionCont.deleteMetodoPago)
 
+/** COMPRAS **/
+router.get('/compras/new', transaccionCont.newCompra)
+
+
+/** FACTURAS **/
+router.get('/facturas/new', transaccionCont.newFactura)
+
 module.exports = router
 

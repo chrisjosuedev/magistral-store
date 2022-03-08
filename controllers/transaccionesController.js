@@ -54,4 +54,17 @@ transaccionController.editMetodoPago = async (req, res) => {
   res.redirect("/transacciones/metodos-pago");
 }
 
+/* ------------------------- Transacciones ----------------------------- */
+
+// Compra a proveedores
+transaccionController.newCompra = async (req, res) => {
+  res.render('transacciones/comprar')
+}
+
+// Facturar un producto
+transaccionController.newFactura = async (req, res) => {
+  res.render('transacciones/facturar')
+}
+
+
 module.exports = transaccionController

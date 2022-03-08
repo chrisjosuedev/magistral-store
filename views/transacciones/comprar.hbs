@@ -1,0 +1,124 @@
+<div class="container p-4">
+    <h1 class="mb-4">Compras </h1>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header font-weight-bold">
+                    <i class="fas fa-cart-plus"></i> NUEVA COMPRA
+                </div>
+                <div class="card-body">
+                    <form action="/facturacion/compra" method="POST">
+                        <label>Datos Proveedor </label>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <div class="form-row">
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control" id="proveedor-tipo" name="id_proveedor"
+                                            placeholder="Código del Proveedor">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" id="btn-buscar-proveedor" class="btn btn-primary">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <input type="text" class="form-control" name="nombre_proveedor" placeholder="Proveedor"
+                                    id="nombre_proveedor" disabled>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <input type="text" class="form-control" id="cel-pro" placeholder="Celular" disabled>
+                            </div>
+
+                            <div class="form-group col-lg-12">
+                                <div class="col-lg-4 float-right">
+                                    <button type="button" id="btn-new-proveedor" class="btn btn-success float-right">
+                                        <i class="fas fa-address-card"></i> Nuevo Proveedor
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label>Productos</label>
+
+
+                            <div class="form-row">
+
+                                <div class="form-group col-md-4">
+                                    <div class="form-row">
+                                        <div class="col-md-10">
+                                            <input type="text" class="form-control" name="id-producto"
+                                                placeholder="Código del Producto" required>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button type="button" id="btn-buscar-producto" class="btn btn-primary">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <input type="number" class="form-control" id="cantidad-compra" min="1"
+                                        onkeydown="if(event.key==='.'){event.preventDefault();}" placeholder="Cantidad"
+                                        required>
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <input type="number" class="form-control" id="precio-compra" min="0" step="0.01"
+                                        placeholder="Precio Compra" required>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Boton Save -->
+
+                        <button type="submit" class="btn btn-danger float-right mb-4 mr-2">
+                            <i class="fas fa-file-invoice-dollar"></i> Procesar
+                        </button>
+
+                        <button type="button" id="btn-agregar" class="btn btn-success float-right mb-4 mr-2">
+                            <i class="far fa-plus-square"></i> Agregar Producto
+                        </button>
+
+                        {{!-- Tablas ---}}
+                        <div class="col-md-12 mt-5">
+                            <table class="table table-striped" id="table-compra">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Descripción</th>
+                                        <th scope="col">Cant.</th>
+                                        <th scope="col">Precio Compra</th>
+                                        <th scope="col">Subtotal</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+
+                    <div class="form-group col-md-2 float-right">
+                        <label> Subtotal</label>
+                        <input type="text" id="st-compra" class="form-control" placeholder="Subtotal" disabled>
+                        <label class="mt-2"> ISV</label>
+                        <input type="text" id="isv" class="form-control " placeholder="ISV" disabled>
+                        <label class="mt-2"> Total </label>
+                        <input type="text" id="total" class="form-control" placeholder="Total" disabled>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
