@@ -22,6 +22,16 @@ artController.listArticulos = async (req, res) => {
     res.render('articulos/items', { articulos, color, marca, linea_articulo })
 }
 
+
+/* GET ARTICULO POR ID */
+artController.getArticuloById = async (req, res) => {
+    const { id } = req.params
+
+    const articulos = await myConn.query("SELECT * FROM articulos WHERE ID_ARTICULO = ?", [id])
+
+    res.json(articulos)
+}
+
 // Ropa Listar
 artController.listRopaArticulos = async (req, res ) => {
     const queryRopa = `SELECT ropa.*, articulos.*, marca.NOMBRE_MARCA, linea_articulo.DESC_LINEA, color_articulo.DESC_COLOR, 
@@ -750,6 +760,7 @@ artController.listTiposAccesorios = async (req, res) => {
 // Proveedores
 artController.listProveedores = async (req, res) => {
     const proveedores = await myConn.query("SELECT * FROM proveedores")
+    console.log(proveedores)
     res.render('articulos/proveedores', { proveedores })
 }
 
