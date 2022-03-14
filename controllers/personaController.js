@@ -99,10 +99,18 @@ personaController.editCliente = async (req, res) => {
 personaController.deleteCliente = async (req, res) => {
     const { id } = req.params;
   
-    await myConn.query("DELETE FROM persona WHERE id_persona = ?", [id])
+    await myConn.query("DELETE FROM persona WHERE id_persona = ?", [id],
+    (error, results) => {
+      if (error) {
+          req.flash("warning", "El Cliente seleccionado no puede ser eliminado");
+          res.redirect("/persona/clientes")  
+      }
+      else {
+          req.flash("success", "Cliente Eliminado Correctamente")
+          res.redirect("/persona/clientes")
+      }
+    })
     
-    req.flash("success", "Cliente Eliminado Correctamente")
-    res.redirect("/persona/clientes")
 }
 
 

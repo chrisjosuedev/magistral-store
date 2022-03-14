@@ -48,9 +48,18 @@ confController.editCategoriaLaboral = async (req, res) => {
 //  -------- Eliminar Categoria Laboral
 confController.deleteCatLaboral = async (req, res) => {
     const { id } = req.params;
-    await myConn.query("DELETE FROM categoria_laboral WHERE id_categoria = ?", [id]);
-    req.flash("success", "Categoria Laboral Eliminada Correctamente");
-    res.redirect("/config/categoria-laboral");
+    await myConn.query("DELETE FROM categoria_laboral WHERE id_categoria = ?", [id],
+    (error, results) => {
+        if (error) {
+            req.flash("warning", "La categoría seleccionada no puede ser eliminada");
+            res.redirect("/config/categoria-laboral");  
+        }
+        else {
+            req.flash("success", "Categoria Laboral Eliminada Correctamente");
+            res.redirect("/config/categoria-laboral");
+        }
+    });
+    
 }
 
 // ---------------- USUARIOS

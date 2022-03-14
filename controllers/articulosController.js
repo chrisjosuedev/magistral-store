@@ -496,13 +496,17 @@ artController.editMarca = async (req, res) => {
 // -- Eliminar Marca
 artController.deleteMarca = async (req, res) => {
     const { id } = req.params;
-    await myConn.query("DELETE FROM marca WHERE id_marca = ?", [
-      id
-    ]);
+    await myConn.query("DELETE FROM marca WHERE id_marca = ?", [id], (error, results) => {
+        if (error) {
+            req.flash("warning", "La marca seleccionada no puede ser eliminada");
+            res.redirect("/articulos/marcas");
+        }
+        else {
+            req.flash("success", "Marca Eliminada Correctamente");
+            res.redirect("/articulos/marcas");   
+        }
+    });
     
-    req.flash("success", "Marca Eliminada Correctamente");
-    
-    res.redirect("/articulos/marcas");
 }
 
 /* ---------- COLORES ----------- */
@@ -550,13 +554,17 @@ artController.editColor = async (req, res) => {
 // -- Eliminar Marca
 artController.deleteColor = async (req, res) => {
     const { id } = req.params;
-    await myConn.query("DELETE FROM color_articulo WHERE id_color = ?", [
-      id
-    ]);
-    
-    req.flash("success", "Color Eliminado Correctamente");
-    
-    res.redirect("/articulos/colores");
+    await myConn.query("DELETE FROM color_articulo WHERE id_color = ?", [id],
+    (error, results) => {
+        if (error) {
+            req.flash("warning", "El Color seleccionado no puede ser eliminado");
+            res.redirect("/articulos/colores");    
+        }
+        else {
+            req.flash("success", "Color Eliminado Correctamente");
+            res.redirect("/articulos/colores");  
+        }
+    });
 }
 
 /* Tipos de Articulo List */
@@ -609,13 +617,17 @@ artController.editTipoRopa = async (req, res) => {
 // -- Eliminar Tipo de Ropa
 artController.deleteTipoRopa = async (req, res) => {
     const { id } = req.params;
-    await myConn.query("DELETE FROM tipos_ropa WHERE id_tiposropa = ?", [
-      id
-    ]);
-    
-    req.flash("success", "Tipo de Ropa Eliminado Correctamente");
-    
-    res.redirect("/articulos/tipos/ropa");
+    await myConn.query("DELETE FROM tipos_ropa WHERE id_tiposropa = ?", [id],
+    (error, results) => {
+        if (error) {
+            req.flash("warning", "El tipo de Ropa seleccionado no puede ser eliminado");
+            res.redirect("/articulos/tipos/ropa");   
+        }
+        else {
+            req.flash("success", "Tipo de Ropa Eliminado Correctamente");
+            res.redirect("/articulos/tipos/ropa");  
+        }
+    });
 }
 
 // Calzado
@@ -669,13 +681,17 @@ artController.editTipoCalzado = async (req, res) => {
 // -- Eliminar Tipo de Calzado
 artController.deleteTipoCalzado = async (req, res) => {
     const { id } = req.params;
-    await myConn.query("DELETE FROM tipos_calzado WHERE id_tipocalzado = ?", [
-      id
-    ]);
-    
-    req.flash("success", "Tipo de Calzado Eliminado Correctamente");
-    
-    res.redirect("/articulos/tipos/calzado");
+    await myConn.query("DELETE FROM tipos_calzado WHERE id_tipocalzado = ?", [id],
+    (error, results) => {
+        if (error) {
+            req.flash("warning", "El tipo de Calzado seleccionado no puede ser eliminado");
+            res.redirect("/articulos/tipos/calzado");  
+        }
+        else {
+            req.flash("success", "Tipo de Calzado Eliminado Correctamente");
+            res.redirect("/articulos/tipos/calzado");   
+        }
+    });
 }
 
 // Accesorios
@@ -725,13 +741,17 @@ artController.editTipoAccesorio = async (req, res) => {
 // -- Eliminar Tipo de Accesorio
 artController.deleteTipoAccesorio = async (req, res) => {
     const { id } = req.params;
-    await myConn.query("DELETE FROM tipos_accesorios WHERE id_tipoaccesorio = ?", [
-      id
-    ]);
-    
-    req.flash("success", "Tipo de Accesorio Eliminado Correctamente");
-    
-    res.redirect("/articulos/tipos/accesorios");
+    await myConn.query("DELETE FROM tipos_accesorios WHERE id_tipoaccesorio = ?", [id], 
+    (error, results) => {
+        if (error) {
+            req.flash("warning", "El tipo de Accesorio seleccionado no puede ser eliminado");
+            res.redirect("/articulos/tipos/accesorios");
+        }
+        else {
+            req.flash("success", "Tipo de Accesorio Eliminado Correctamente");
+            res.redirect("/articulos/tipos/accesorios");   
+        }
+    });   
 }
 
 // JSON Tipos de Cada Articulo

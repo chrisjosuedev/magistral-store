@@ -33,9 +33,18 @@ transaccionController.getMetodoPago = async (req, res) => {
 //  -------- Eliminar Metodo de Pago
 transaccionController.deleteMetodoPago = async (req, res) => {
   const { id } = req.params;
-  await myConn.query("DELETE FROM modo_pago WHERE id_modopago = ?", [id]);
-  req.flash("success", "Metodo de Pago Eliminado Correctamente");
-  res.redirect("/transacciones/metodos-pago");
+  await myConn.query("DELETE FROM modo_pago WHERE id_modopago = ?", [id],
+  (error, results) => {
+    if (error) {
+        req.flash("warning", "El Metodo de Pago seleccionado no puede ser eliminado");
+        res.redirect("/transacciones/metodos-pago");  
+    }
+    else {
+        req.flash("success", "Metodo de Pago Eliminado Correctamente");
+        res.redirect("/transacciones/metodos-pago");
+    }
+  });
+  
 }
 
 // ------- EDITAR METODO DE PAGO

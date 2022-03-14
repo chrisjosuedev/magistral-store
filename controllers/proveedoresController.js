@@ -58,13 +58,18 @@ provController.editProveedor = async (req, res) => {
 // -- Eliminar Proveedor
 provController.deleteProveedor = async (req, res) => {
   const { id } = req.params;
-  await myConn.query("DELETE FROM proveedores WHERE id_proveedor = ?", [
-    id
-  ]);
-  
-  req.flash("success", "Proveedor Eliminado Correctamente");
-  
-  res.redirect("/proveedores");
+  await myConn.query("DELETE FROM proveedores WHERE id_proveedor = ?", [id], 
+  (error, results) => {
+    if (error) {
+        req.flash("warning", "El Proveedor seleccionado no puede ser eliminado");
+        res.redirect("/proveedores");   
+    }
+    else {
+        req.flash("success", "Proveedor Eliminado Correctamente");
+        res.redirect("/proveedores");
+    }
+  });
+
 }
 
 
