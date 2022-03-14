@@ -16,7 +16,7 @@ $(function() {
             cancelButtonText: 'Cancelar',
           }).then((result) => {
             if (result.isConfirmed) {   
-                window.location = '/articulos/proveedores/delete/' + id                             
+                window.location = '/proveedores/delete/' + id                             
             }
         })
     }
@@ -31,12 +31,12 @@ $(function() {
     $('.editProveedor').click(function(){
         const dataProveedor = $(this).data("proveedor")
 
-        var urlProveedorForm = '/articulos/proveedores/edit/' + dataProveedor
+        var urlProveedorForm = '/proveedores/edit/' + dataProveedor
 
         actionForm.prop('action', urlProveedorForm)
         
         $.ajax({
-            url: '/articulos/proveedores/' + dataProveedor,
+            url: '/proveedores/' + dataProveedor,
             success: function(res) {
                 $('#id_proveedor').val(res[0].ID_PROVEEDOR);
                 $('#nombre_proveedor').val(res[0].NOMBRE_PROVEEDOR);

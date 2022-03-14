@@ -114,7 +114,7 @@ $(function() {
 
     function foundProveedor(id) {
         $.ajax({
-            url: '/articulos/proveedores/' + id,
+            url: '/proveedores/' + id,
             success: function(res) {
                 if (JSON.stringify(res).includes(id)) {
                     $('#nombre_proveedor').val(res[0].NOMBRE_PROVEEDOR)
@@ -131,7 +131,7 @@ $(function() {
 
     function foundArticulo (codigo) {
         $.ajax({
-            url: '/articulos/' + codigo,
+            url: '/articulos/general/' + codigo,
             success: function(res) {
                 if (JSON.stringify(res).includes(codigo)) {
                     $('#descripcion').val(res[0].DESCRIPCION)

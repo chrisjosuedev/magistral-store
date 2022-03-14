@@ -22,9 +22,8 @@ artController.listArticulos = async (req, res) => {
     res.render('articulos/items', { articulos, color, marca, linea_articulo })
 }
 
-
 /* GET ARTICULO POR ID */
-artController.getArticuloById = async (req, res) => {
+artController.getArtById = async (req, res) => {
     const { id } = req.params
 
     const articulos = await myConn.query("SELECT * FROM articulos WHERE ID_ARTICULO = ?", [id])
@@ -756,72 +755,5 @@ artController.listTiposAccesorios = async (req, res) => {
 }
 
 /* Fin Tipos de Articulos */
-
-// Proveedores
-artController.listProveedores = async (req, res) => {
-    const proveedores = await myConn.query("SELECT * FROM proveedores")
-    console.log(proveedores)
-    res.render('articulos/proveedores', { proveedores })
-}
-
-/* POST Proveedores */
-artController.newProveedor = async (req, res) => {
-    const { id_proveedor, 
-        nombre_proveedor, 
-        email_proveedor, 
-        cel_proveedor } = req.body;
-
-    const newProveedor = {
-      id_proveedor,
-      nombre_proveedor,
-      email_proveedor,
-      cel_proveedor,
-    }
-
-    await myConn.query("INSERT INTO proveedores set ?", [newProveedor])
-
-    req.flash("success", "Proveedor Agregado Correctamente")
-
-    res.redirect("/articulos/proveedores");
-}
-
-// -- Editar Proveedor
-artController.getProveedorById = async (req, res) => {
-    const { id } = req.params;
-    const proveedores = await myConn.query("SELECT * FROM proveedores WHERE id_proveedor = ?",
-      [id]
-    )
-    res.json(proveedores)
-}
-
-artController.editProveedor = async (req, res) => {
-    const { id } = req.params;
-    const { nombre_proveedor, email_proveedor, cel_proveedor } = req.body;
-    const newProveedor = {
-      nombre_proveedor,
-      email_proveedor,
-      cel_proveedor,
-    };
-    await myConn.query("UPDATE proveedores set ? WHERE id_proveedor = ?", [
-      newProveedor,
-      id,
-    ])
-
-    req.flash("success", "Proveedor Editado Correctamente");
-    
-    res.redirect("/articulos/proveedores");
-}
-
-// -- Eliminar Proveedor
-artController.deleteProveedor = async (req, res) => {
-    const { id } = req.params;
-    await myConn.query("DELETE FROM proveedores WHERE id_proveedor = ?", [
-      id
-    ]);
-    
-    req.flash("success", "Proveedor Eliminado Correctamente");
-    
-    res.redirect("/articulos/proveedores");
-}
 
 module.exports = artController

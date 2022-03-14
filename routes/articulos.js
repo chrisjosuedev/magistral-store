@@ -6,10 +6,10 @@ const articulosController = require('../controllers/articulosController')
 // GET 
 router.get('/', articulosController.listArticulos)
 
-router.get('/:id', articulosController.getArticuloById)
+router.get('/general/:id', articulosController.getArtById)
 
 // Ropa
-router.get('/ropa/view', articulosController.listRopaArticulos)
+router.get('/ropa', articulosController.listRopaArticulos)
 
 /* Editar Ropa */
 router.get('/ropa/:id', articulosController.getArticuloByRopa)
@@ -20,7 +20,7 @@ router.post('/ropa/edit/:id', articulosController.editArticuloRopa)
 router.get('/ropa/delete/:id', articulosController.deleteRopa)
 
 // Calzado
-router.get('/calzado/view', articulosController.listRopaCalzado)
+router.get('/calzado', articulosController.listRopaCalzado)
 
 /* Editar Calzado */
 router.get('/calzado/:id', articulosController.getArticuloByCalzado)
@@ -31,7 +31,7 @@ router.post('/calzado/edit/:id', articulosController.editArticuloCalzado)
 router.get('/calzado/delete/:id', articulosController.deleteCalzado)
 
 // Accesorio
-router.get('/accesorios/view', articulosController.listRopaAccesorio)
+router.get('/accesorios', articulosController.listRopaAccesorio)
 
 /* Editar Accesorios */
 router.get('/accesorios/:id', articulosController.getArticuloByAccesorio)
@@ -57,7 +57,7 @@ router.post('/newAccesorio', articulosController.newAccesorio)
 
 
 // /articulos/marcas
-router.get('/marcas/view', articulosController.listMarcas)
+router.get('/marcas', articulosController.listMarcas)
 
 /* --- POST DE MARCAS --- */
 router.post('/marcas/new', articulosController.newMarca)
@@ -72,7 +72,7 @@ router.get('/marcas/delete/:id', articulosController.deleteMarca)
 
 // /articulos/colores
 /* --- GET --- */
-router.get('/colores/view', articulosController.listColores)
+router.get('/colores', articulosController.listColores)
 
 /* --- POST --- */
 router.post('/colores/new', articulosController.newColor)
@@ -137,19 +137,5 @@ router.get('/tipos/accesorios-list', articulosController.listTiposAccesorios)
 
 /* --- POST DE TIPO DE ACCESORIO --- */
 router.post('/tipos/accesorios-list/new', articulosController.newTipoAccesorio)
-
-// /articulos/proveedores
-router.get('/proveedores/view', articulosController.listProveedores)
-
-/* --- POST DE PROVEEDORES --- */
-router.post('/proveedores/new', articulosController.newProveedor)
-
-/* Editar Proveedores */
-router.get('/proveedores/:id', articulosController.getProveedorById)
-
-router.post('/proveedores/edit/:id', articulosController.editProveedor)
-
-// Eliminar Proveedores
-router.get('/proveedores/delete/:id', articulosController.deleteProveedor)
 
 module.exports = router
