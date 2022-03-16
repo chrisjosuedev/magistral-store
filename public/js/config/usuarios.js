@@ -5,7 +5,14 @@ $(function() {
 
     const idNameEmp = $("#nameEmp")
     const idCodEmp = $("#codEmp")
+
+    const actionForm = $('#edit-Usuario')
+
+    const user = $('#user')
+    const msg = $('#msg-valid')
     
+
+    const formusers = $('#users_form')
 
     const deleteUsuario = $('.delete-user')
     
@@ -32,6 +39,18 @@ $(function() {
         confirmarDelete(user)
     })
 
+    // ------------- Mensaje de Validacion
+    function msgValidacion (msg) {
+        noRows.text(msg)
+        noRows.removeClass('d-none')
+
+        setTimeout(function () {
+            noRows.addClass('d-none')
+        }, 5000)
+    }
+
+
+    // ----------------- Agregar Usuario -------------------- //
     bEmp.on('click', function () {
         var id = idEmp.val()
 
@@ -39,38 +58,78 @@ $(function() {
             url: "/persona/empleados/" + id,
             success: function (empleado) {
                 if (empleado.length === 0) {
-                    noRows.text("Empleado no existe, ingrese el DNI correctamente.")
-                    noRows.removeClass('d-none')
-
-                    setTimeout(function () {
-                        noRows.addClass('d-none')
-                    }, 5000)
+                    msgValidacion("Empleado no existe, ingrese el DNI correctamente.")
+                    $('#idEmp').focus()
                 }
                 else {
-                    if (empleado[0].ID_CATEGORIA === 2) {
-                        noRows.text("ADVERTENCIA: Al personal de seguridad no puede asignarsele un usuario, por favor intente con otro empleado.")
-                        noRows.removeClass('d-none')
-
-                        setTimeout(function () {
-                            noRows.addClass('d-none')
-                        }, 7000)
+                    if (empleado[0].PUESTO === 2) {
+                        msgValidacion("ADVERTENCIA: Al personal de seguridad no puede asignarsele un usuario, por favor intente con otro empleado.")
+                        $('#idEmp').val('')
+                        $('#idEmp').focus()
                     }
                     else {
-                        idNameEmp.val(empleado[0].NOMBRE_PERSONA + ' ' + empleado[0].APELLIDO_PERSONA)
+                        
                         idCodEmp.val(empleado[0].ID_EMPLEADO)
-                        $('#user').focus()
+                    
+                        if (userId(idCodEmp.val())){
+                            // No tiene usuario
+                            idNameEmp.val(empleado[0].NOMBRE_PERSONA + ' ' + empleado[0].APELLIDO_PERSONA)
+                            $('#user').focus()
+                        }
+                        else {
+                            // Tiene usuario
+                            idEmp.focus()
+                            msgValidacion("El empleado ya tiene un perfil registrado")
+                            
+                        }
+
                     }
                 }
 
             }
         })
+
+        
         
     });
 
+    // Evento si el Usuario está disponible
+    user.keyup(function() {
+        var usuario =  $(this).val()
+        verifyUsuario(usuario)
+    })
+
+    // Verificar el disponibilidad del usuario
+    function verifyUsuario(usuario) {
+        var submitUsuario = false
+        $.ajax({
+            url: '/config/usuarios/' + usuario,
+            async: false,
+            success: function(res) {
+                if (res.length === 0) {
+                    user.removeClass('is-invalid')
+                    msg.addClass('valid-feedback')
+                    msg.text("Nombre de usuario disponible")
+                    user.addClass('is-valid')
+                    msg.removeClass('invalid-feedback')
+                    submitUsuario = true
+                }
+                else {
+                    user.addClass('is-invalid')
+                    user.removeClass('is-valid')
+                    msg.addClass('invalid-feedback')
+                    msg.text("Nombre de usuario no disponible")
+                    msg.removeClass('valid-feedback')
+                    submitUsuario = false
+                }
+            }
+        })
+        return submitUsuario
+    }
+
+
     // ---------- Editar ----------------
-
-
-    const actionForm = $('#edit-Usuario')
+       
 
     $('.editUsuario').click(function(){
         const dataUsuarios = $(this).data("usuario")
@@ -98,6 +157,38 @@ $(function() {
         else {
             $('#password').addClass('d-none')
         }
+    })
+
+    // Verificar si el empleado ya tiene un usuario
+    function userId(cod) {
+        var flag = true
+        $.ajax({
+            url: '/config/usuarios/empleados/' + cod,
+            async: false,
+            success: function(res) {
+                if (res.length === 0) {
+                    flag = true
+                }
+                else {
+                    flag = false
+                }
+            }
+        })
+        return flag
+    }
+
+
+    // ------------------- Validar Envio de Formulario -------------
+    
+
+    formusers.submit(function(event) {
+
+        if (verifyUsuario(user.val())) {
+            return
+        }
+
+        msgValidacion("Por favor, cambie el nombre de usuario.")
+        event.preventDefault()   
     })
     
 

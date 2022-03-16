@@ -22,6 +22,9 @@ router.get('/categoria-laboral/delete/:id', confController.deleteCatLaboral)
 // /usuarios
 router.get('/usuarios', confController.listUsuarios)
 
+// /usuarios by ID Empleado
+router.get('/usuarios/empleados/:id', confController.getUserByIdEmpleado)
+
 // Eliminar Usuario
 router.get('/usuarios/delete/:username', confController.deleteUsuario)
 

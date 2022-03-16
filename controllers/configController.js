@@ -95,6 +95,7 @@ confController.newUsuario = async (req, res) => {
     await myConn.query("INSERT INTO usuario set ?", [newUser])
     req.flash("success", "Usuario Guardado Correctamente")
     res.redirect("/config/usuarios");
+    
 }
 
 confController.getEmpleadoByUser = async (req, res) => {
@@ -128,6 +129,13 @@ confController.editUser = async (req, res) => {
   res.redirect("/config/usuarios");
 }
 
+confController.getUserByIdEmpleado = async (req, res) => {
+    const { id } = req.params;
+    
+    const users = await myConn.query("SELECT * FROM usuario WHERE id_empleado = ?", [id])
+
+    res.json(users)
+}
 
 //  -------- Eliminar Usuario
 confController.deleteUsuario = async (req, res) => {

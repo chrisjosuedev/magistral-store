@@ -54,20 +54,8 @@ $(function() {
 
                 $('#sel-laboral').val(res[0].PUESTO)
 
-                var dateLaboral = new Date(res[0].FECHA_CONTRATACION)
-
-                var day = dateLaboral.getDate()
-                var month = dateLaboral.getMonth() + 1
-                var year =  dateLaboral.getFullYear()
-
-                if (day < 10) {
-                    var newDay = '0' + day
-                }
-
-                var contratadoFecha = year + "-" + month + "-" +  newDay
-                console.log(contratadoFecha)
-
-                $('#fecha_contratacion').val(contratadoFecha)
+                
+                $('#fecha_contratacion').val(formatDateLaboral(res[0].FECHA_CONTRATACION))
 
                 $('#select-depto').val(res[0].ID_DEPTO)
 
@@ -81,6 +69,23 @@ $(function() {
             }
         })
     })
+
+    function formatDateLaboral(fecha) {
+        var d = new Date(fecha),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+        if (month.length < 2) {
+            month = '0' + month;
+        }
+            
+        if (day.length < 2) {
+            day = '0' + day;
+        }
+            
+        return [year, month, day].join('-');
+    }
 
     function getEditByCiudad(id, idCity) {
         $.ajax({
