@@ -13,7 +13,7 @@
                     <label> Datos Generales </label>
                     <div class="form-group">
                         <input type="text" id="descripcion" class="form-control" name="descripcion"
-                            placeholder="Descripción del artículo" required>
+                            placeholder="Descripción del artículo" maxlength="50" required>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
@@ -25,7 +25,7 @@
                             </select>
                         </div>
                         <div class="form-group col-md-6">
-                            <select id="linea" name="id_linea_articulo" class="custom-select" require>
+                            <select id="linea" name="id_linea_articulo" class="custom-select" required>
                                 <option value="0" selected> - Seleccione Línea - </option>
                                 {{#each linea_articulo}}
                                 <option value="{{ID_LINEA_ARTICULO}}"> {{DESC_LINEA}}</option>
@@ -52,7 +52,7 @@
 
 
                         <div class="form-group col-md-6">
-                            <input type="text" id="talla" class="form-control" name="talla" placeholder="Talla">
+                            <input type="text" id="talla" class="form-control" name="talla" placeholder="Talla" maxlength="15" required>
                         </div>
 
                         <div class="form-group col-md-6">

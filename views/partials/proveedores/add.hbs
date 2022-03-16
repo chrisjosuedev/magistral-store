@@ -10,18 +10,17 @@
                 <form action="/proveedores/new" method="post">
                     <label> Datos de Proveedor </label>
                     <div class="form-group">
-                        <input type="text" class="form-control" name="id_proveedor" placeholder="R.T.N." autofocus
+                        <input type="text" class="form-control" name="id_proveedor" placeholder="R.T.N." autofocus maxlength="14" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="nombre_proveedor" placeholder="Proveedor" maxlength="50"
                             required>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" name="nombre_proveedor" placeholder="Proveedor"
-                            required>
+                        <input type="email" class="form-control" name="email_proveedor" placeholder="Email" maxlength="45" required>
                     </div>
                     <div class="form-group">
-                        <input type="email" class="form-control" name="email_proveedor" placeholder="Email" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" name="cel_proveedor" placeholder="Celular" required>
+                        <input type="text" class="form-control" name="cel_proveedor" placeholder="Celular" maxlength="8" required>
                     </div>
 
 

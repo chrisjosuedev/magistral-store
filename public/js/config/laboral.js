@@ -28,7 +28,7 @@ $(function() {
         confirmarDelete(id)
     })
 
-    $('.editUsuario').click(function(){
+    $('.editCatLaboral').click(function(){
         const dataCatLaboral = $(this).data("catlaboral")
 
         var urlCatLaboralForm = '/config/categoria-laboral/edit/' + dataCatLaboral

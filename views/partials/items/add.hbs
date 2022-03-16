@@ -10,7 +10,7 @@
         <form action="" id="form-newArticulo" method="post">
           <label> Datos Generales </label>
           <div class="form-group">
-            <input type="text" class="form-control" name="descripcion" placeholder="Descripción del artículo" required>
+            <input type="text" class="form-control" name="descripcion" placeholder="Descripción del artículo" maxlength="50" required>
           </div>
           <div class="form-row">
             <div class="form-group col-md-6">
@@ -46,16 +46,14 @@
             </div>
           </div>
           <div class="form-row">
-
-
             <div class="form-group col-md-6">
-              <input type="text" class="form-control" name="talla" placeholder="Talla">
+              <input type="text" class="form-control" name="talla" placeholder="Talla" maxlength="15" required>
             </div>
           </div>
           <label> Tipo de Artículo </label>
           <div class="form-row">
             <div class="form-group col-md-6">
-              <select id="tipo_articulo" name="tipo_articulo" class="custom-select" require>
+              <select id="tipo_articulo" name="tipo_articulo" class="custom-select" required>
                 <option value="0" selected> - Seleccione Tipo - </option>
                 <option value="1"> ROPA </option>
                 <option value="2"> CALZADO </option>
