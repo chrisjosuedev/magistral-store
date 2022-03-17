@@ -13,6 +13,7 @@ $(function() {
     
 
     const formusers = $('#users_form')
+    const guardarUsuario = $('#saveUsuario')
 
     const deleteUsuario = $('.delete-user')
     
@@ -60,6 +61,7 @@ $(function() {
                 if (empleado.length === 0) {
                     msgValidacion("Empleado no existe, ingrese el DNI correctamente.")
                     $('#idEmp').focus()
+                    
                 }
                 else {
                     if (empleado[0].PUESTO === 2) {
@@ -75,11 +77,13 @@ $(function() {
                             // No tiene usuario
                             idNameEmp.val(empleado[0].NOMBRE_PERSONA + ' ' + empleado[0].APELLIDO_PERSONA)
                             $('#user').focus()
+                            guardarUsuario.attr('disabled', false)
                         }
                         else {
                             // Tiene usuario
                             idEmp.focus()
                             msgValidacion("El empleado ya tiene un perfil registrado")
+
                             
                         }
 
@@ -93,14 +97,8 @@ $(function() {
         
     });
 
-    // Evento si el Usuario está disponible
-    user.keyup(function() {
-        var usuario =  $(this).val()
-        verifyUsuario(usuario)
-    })
-
     // Verificar el disponibilidad del usuario
-    function verifyUsuario(usuario) {
+    function verificarUsuario(usuario) {
         var submitUsuario = false
         $.ajax({
             url: '/config/usuarios/' + usuario,
@@ -183,7 +181,7 @@ $(function() {
 
     formusers.submit(function(event) {
 
-        if (verifyUsuario(user.val())) {
+        if (verificarUsuario(user.val())) {
             return
         }
 

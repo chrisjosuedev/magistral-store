@@ -3,6 +3,13 @@ $(function() {
     const actionForm = $('#edit-empleado')
 
     const deleteEmpleado = $('.delete-empleado')
+
+    const empleadosForm = $('#empleadosForm')
+
+    const msg = $('#msg-valid')
+    const msgCiudad = $('#ciudad-valid')
+    const msgDepto = $('#depto-valid')
+    const idEmpleado = $('#id-empleado')
     
     // ----- Eliminar Empleado
     function confirmarDelete(id) {
@@ -101,4 +108,94 @@ $(function() {
             }
         })
     }
+
+    // Funcion que verifica si se ha seleccionado departamento y ciudad
+    function verificarSelects() {
+        if ($('#depto').val() === '0' || $('#ciudad').val() === '0') {
+            $('#depto').addClass('is-invalid')
+            $('#depto').removeClass('is-valid')
+            msgDepto.addClass('invalid-feedback')
+            msgDepto.text("Seleccione un departamento válido")
+            msgDepto.removeClass('valid-feedback')
+
+            $('#ciudad').addClass('is-invalid')
+            $('#ciudad').removeClass('is-valid')
+            msgCiudad.addClass('invalid-feedback')
+            msgCiudad.text("Seleccione una Ciudad válida")
+            msgCiudad.removeClass('valid-feedback')
+
+            return false
+
+        }
+        else {
+            $('#depto').removeClass('is-invalid')
+            msgDepto.addClass('valid-feedback')
+            msgDepto.text("Departamento valido")
+            $('#depto').addClass('is-valid')
+            msgDepto.removeClass('invalid-feedback')
+
+            $('#ciudad').removeClass('is-invalid')
+            msgCiudad.addClass('valid-feedback')
+            msgCiudad.text("Ciudad valido")
+            $('#ciudad').addClass('is-valid')
+            msgCiudad.removeClass('invalid-feedback')
+
+            return true
+        }
+    }
+
+
+    // Funcion que verifica si el empleado ya fue registrado
+    function verificarEmpleado(id) {
+        var submitEmpleado = false
+
+        // Comprobar si tiene el formato requerido
+        if (!isNaN(id)) {
+            $.ajax({
+                url: '/persona/general/' + id,
+                async: false,
+                success: function(res) {
+                    if (res.length === 0) {
+                        idEmpleado.removeClass('is-invalid')
+                        msg.addClass('valid-feedback')
+                        msg.text("Identificacion correcta")
+                        idEmpleado.addClass('is-valid')
+                        msg.removeClass('invalid-feedback')
+                        submitEmpleado = true
+                    }
+                    else {
+                        idEmpleado.addClass('is-invalid')
+                        idEmpleado.removeClass('is-valid')
+                        msg.addClass('invalid-feedback')
+                        msg.text("Identificacion ya fue registrada")
+                        msg.removeClass('valid-feedback')
+                        submitEmpleado = false
+                    }
+                }
+            })
+            return submitEmpleado
+        }
+        else {
+            idEmpleado.addClass('is-invalid')
+            idEmpleado.removeClass('is-valid')
+            msg.addClass('invalid-feedback')
+            msg.text("Porfavor, ingrese en formato requerido. (Ej. 0101182127099, sin guiones)")
+            msg.removeClass('valid-feedback')
+            return submitEmpleado
+        }
+    }
+
+    // ----------- Validacion Formulario Agregar Empleado
+    empleadosForm.submit(function(event) {
+        var id = $('#id-empleado').val()
+
+        if (verificarEmpleado(id) && verificarSelects()) {
+            return
+        }
+        
+        event.preventDefault() 
+        
+    })    
+
+
 })

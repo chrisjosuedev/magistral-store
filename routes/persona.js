@@ -35,6 +35,10 @@ router.get('/empleados/delete/:id', personController.deleteEmpleado)
 //router.get('/empleados/:id', personController.getEmpleadobyIdPersona)
 
 
+// Busqueda de Persona
+router.get('/general/:id', personController.getPersonaById)
+
+
 // Lugares JSON
 router.get('/ciudad/:id', personController.getDeptoByCiudad)
 

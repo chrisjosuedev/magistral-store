@@ -12,20 +12,20 @@
                     <div class="form-group">
                         <div class="form-group">
                             <input type="text" class="form-control" id="id_persona" name="id_persona"
-                                placeholder="Identidad" disabled>
+                                placeholder="IDENTIDAD" disabled>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <div class="form-group">
-                            <input type="text" id="nombre_persona" class="form-control" name="nombre_persona"
-                                placeholder="Nombre" maxlength="50" required>
+                            <input type="text" id="nombre_persona" class="form-control to-mayus" name="nombre_persona"
+                                placeholder="Nombre" maxlength="50" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="form-group">
-                            <input type="text" id="apellido_persona" class="form-control" name="apellido_persona"
-                                placeholder="Apellidos" maxlength="50" required>
+                            <input type="text" id="apellido_persona" class="form-control to-mayus" name="apellido_persona"
+                                placeholder="Apellidos" maxlength="50" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
                         </div>
                     </div>
 
@@ -42,7 +42,7 @@
                             </div>
                         </div>
                         <div class="form-group col-lg-6">
-                            <input type="text" id="celular" class="form-control" name="celular" placeholder="Celular" maxlength="8" required >
+                            <input type="text" id="celular" class="form-control" name="celular" placeholder="Celular" maxlength="8" required pattern="[0-9]{8}">
                         </div>
                     </div>
 
@@ -56,7 +56,6 @@
                     <div class="form-row">
                         <div class="form-group col-md-6" id="tipo">
                             <select id="select-depto" name="id_depto" class="custom-select depto">
-                                <option value="0" selected> - Departamento - </option>
                                 {{#each departamentos}}
                                 <option value="{{ID_DEPTO}}"> {{NOMBRE_DEPTO}} </option>
                                 {{/each}}
@@ -64,7 +63,6 @@
                         </div>
                         <div class="form-group col-md-6">
                             <select id="select-ciudad" name="id_ciudad" class="custom-select ciudad">
-                                <option selected> - Ciudad - </option>
                             </select>
                         </div>
                     </div>

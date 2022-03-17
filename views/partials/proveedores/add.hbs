@@ -11,6 +11,7 @@
                     <label> Datos de Proveedor </label>
                     <div class="form-group">
                         <input type="text" class="form-control" name="id_proveedor" placeholder="R.T.N." autofocus maxlength="14" required>
+                        <div id="msg-valid" class="valid-feedback"></div>
                     </div>
                     <div class="form-group">
                         <input type="text" class="form-control" name="nombre_proveedor" placeholder="Proveedor" maxlength="50"
@@ -20,7 +21,7 @@
                         <input type="email" class="form-control" name="email_proveedor" placeholder="Email" maxlength="45" required>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" name="cel_proveedor" placeholder="Celular" maxlength="8" required>
+                        <input type="text" class="form-control" name="cel_proveedor" placeholder="Celular" maxlength="8" pattern="[0-9]{8}" required>
                     </div>
 
 

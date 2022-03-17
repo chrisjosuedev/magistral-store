@@ -2,6 +2,15 @@ const myConn = require('../db')
 const personaController = {}
 
 // Persona
+personaController.getPersonaById = async (req, res) => {
+    const { id } = req.params;
+  
+    const persona = await myConn.query("SELECT * FROM persona WHERE id_persona = ?",
+      [id]
+    );
+  
+    res.json(persona)
+}
 
 // Clientes
 personaController.listClientes = async (req, res) => { 
