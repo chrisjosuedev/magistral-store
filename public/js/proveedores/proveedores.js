@@ -3,6 +3,11 @@ $(function() {
     const actionForm = $('#edit-proveedor')
 
     const deleteProveedor = $('.delete-proveedor')
+
+    const proveedoresForm = $('#proveedores_form')
+
+    const msg = $('#msg-valid')
+    const rtnProveedor = $('#rtn')
     
     // ----- Eliminar Proveedor
     function confirmarDelete(id) {
@@ -45,6 +50,59 @@ $(function() {
             }
         })
 
+    })
+
+    // --------------------------- Validacion de Envio de Proveedores
+    // Funcion que verifica si el proveedor ya fue registrado
+    function verificarProveedor(id) {
+        var submitProveedor = false
+
+        // Comprobar si tiene el formato requerido
+        if (!isNaN(id)) {
+            $.ajax({
+                url: '/proveedores/' + id,
+                async: false,
+                success: function(res) {
+                    if (res.length === 0) {
+                        rtnProveedor.removeClass('is-invalid')
+                        msg.addClass('valid-feedback')
+                        msg.text("RTN correcto")
+                        rtnProveedor.addClass('is-valid')
+                        msg.removeClass('invalid-feedback')
+                        submitProveedor = true
+                    }
+                    else {
+                        rtnProveedor.addClass('is-invalid')
+                        rtnProveedor.removeClass('is-valid')
+                        msg.addClass('invalid-feedback')
+                        msg.text("RTN ya fue registrado")
+                        msg.removeClass('valid-feedback')
+                        submitProveedor = false
+                    }
+                }
+            })
+            return submitProveedor
+        }
+        else {
+            rtnProveedor.addClass('is-invalid')
+            rtnProveedor.removeClass('is-valid')
+            msg.addClass('invalid-feedback')
+            msg.text("Porfavor, ingrese en formato requerido. (Ej. 01011821270992, sin guiones)")
+            msg.removeClass('valid-feedback')
+            return submitProveedor
+        }
+    }
+
+    // ----------- Validacion Formulario Agregar Proveedor
+    proveedoresForm.submit(function(event) {
+        var id = $('#rtn').val()
+
+        if (verificarProveedor(id)) {
+            return
+        }
+        
+        event.preventDefault() 
+        
     })
     
 })

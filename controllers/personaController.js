@@ -245,25 +245,19 @@ personaController.editEmpleado = async (req, res) => {
 personaController.deleteEmpleado = async (req, res) => {
   const { id } = req.params;
 
-  await myConn.query("DELETE FROM empleado WHERE id_persona = ?", [id]);
-  await myConn.query("DELETE FROM persona WHERE id_persona = ?", [id]);
-  
-  req.flash("success", "Empleado Eliminado Correctamente")
-  res.redirect("/persona/empleados")
+  await myConn.query("DELETE FROM empleado WHERE id_persona = ?", [id],
+  (error, results) => {
+    if (error) {
+      req.flash("warning", "El Empleado seleccionado no puede ser eliminado");
+      res.redirect("/persona/empleados")
+    }
+    else {
+      myConn.query("DELETE FROM persona WHERE id_persona = ?", [id]);
+      req.flash("success", "Empleado Eliminado Correctamente")
+      res.redirect("/persona/empleados")
+    }
+  });
 }
-
-/* JSON Empleado por ID
-personaController.getEmpleadobyIdPersona = async (req, res) => {
-    const { id } = req.params
-    const queryEmp = `SELECT empleado.*, 
-                      concat_ws(' ', persona.NOMBRE_PERSONA, persona.APELLIDO_PERSONA) as NOMBRE_EMPLEADO
-                      FROM empleado
-                      INNER JOIN persona ON persona.ID_PERSONA = empleado.ID_PERSONA
-                      WHERE empleado.ID_PERSONA = ?`
-    const empJSON = await myConn.query(queryEmp, [id]);
-    res.json(empJSON)
-}
-*/
 
 // JSON Ciudad por Departamento
 personaController.getDeptoByCiudad = async (req, res) => {
