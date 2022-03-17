@@ -3,6 +3,7 @@ $(function() {
     const noFound = $('#alert')
     const tableCompra = $('tbody')
     const btnAgregar = $('#btn-agregar')
+    const comprasForm = $('#compra_form')
 
     // Evitar Submit Post
     $('.compra_input').keypress(function(e) {
@@ -50,40 +51,80 @@ $(function() {
         }   
     })
 
-    // Agregar a Tabla
 
+    // ENTER PRECIO COMPRA
+    $('#precio_compra').keypress(function(e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if (code == 13) {
+            agregarTabla()            
+        } 
+    })
+    
+    // Boton agregar
     btnAgregar.click(function() {
-
-        let cantidad = $('#cantidad_compra').val()
-        let precioUnit = $('#precio_compra').val()
-
-        let stItem = parseInt(cantidad) * parseFloat(precioUnit)
-
-        tableCompra.append(`
-            <tr>
-                <td> ${$("#id_producto").val()} </td>
-                <td> ${$("#descripcion").val()} </td>
-                <td> ${cantidad} </td>
-                <td> ${precioUnit} </td>
-                <td> L. ${stItem.toFixed(2)} </td>
-                <td>
-                    <button class="btn btn-danger btnDeleteItem">
-                        <i class="fa fa-trash"></i>
-                    </button>
-                </td>
-            </tr>
-        `)
-
-        cleanFields()
-
-        $('.btnDeleteItem').click(function() {
-            $(this).closest("tr").remove()
-        })
+        agregarTabla()
     })
 
     
     // ------------- FUNCIONES
 
+    // Agregar a tabla
+    function agregarTabla() {
+        let cantidad = $('#cantidad_compra').val()
+        let precioUnit = $('#precio_compra').val()
+        let proveedor = $("#id_proveedor").val()
+
+        if (cantidad === '' || precioUnit === '' || proveedor === '') {
+            alertFound("Por favor, ingrese todos los datos solicitados.")
+        }
+        else {
+            let stItem = parseInt(cantidad) * parseFloat(precioUnit)
+
+            tableCompra.append(`
+                <tr class="isRow">
+                    <td> ${$("#id_producto").val()} </td>
+                    <td> ${$("#descripcion").val()} </td>
+                    <td> ${cantidad} </td>
+                    <td> ${precioUnit} </td>
+                    <td> L. ${stItem.toFixed(2)} </td>
+                    <td>
+                        <button class="btn btn-danger btnDeleteItem">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `)
+            
+            cleanFields()
+            
+            $('.btnDeleteItem').click(function() {
+                $(this).closest("tr").remove()
+                sumarDatos()
+            })
+        }
+
+        sumarDatos()
+    }
+
+    // Calculo de Subtotal
+    function sumarDatos() {
+        var st = 0
+        var isv = 0
+        var total = 0
+
+        $('#table-compra tbody tr').each(function() {
+            var stColumn = $(this).find('td').eq(4).html()
+            var newStColumn = stColumn.substring(4, stColumn.length - 1)
+            st += parseFloat(newStColumn)
+        })
+
+        isv = st * 0.15
+        total = st + isv
+
+        $('#st-compra').val('L. ' + st.toFixed(2))
+        $('#isv').val('L. ' + isv.toFixed(2))
+        $('#total').val('L. ' + total.toFixed(2))
+    }
    
 
     function cleanFields() {
@@ -145,22 +186,6 @@ $(function() {
         })
     }
 
-
-    function noNextFocus(input) {
-        //$(input).focusout(function(e){
-            //if($(this).val() != ""){
-            //    return true;
-            //}
-            //else{
-                var self = $(input);
-                setTimeout(function(){
-                  self.focus();
-                }, 1);            
-                return false;
-            //}
-        //})
-    }
-
     function alertFound(msg) {
         noFound.text(msg)
         noFound.removeClass('d-none')
@@ -169,5 +194,29 @@ $(function() {
             noFound.addClass('d-none')
         }, 5000)
     }
+
+    function contarFilas() {
+        var numFilas = 0
+        $(".isRow").each(function() {
+            numFilas++;
+        })
+        return numFilas
+    }
+
+    // -------------------- Validar Formulario
+    comprasForm.submit(function(event) {
+
+        alert(contarFilas())
+
+        // Si filas === 0, un Alert para indicar que agregue registros
+        // Verificar que existe un RTN de Proveedor Valido
+
+        //if (algo()) {
+        //   return
+        //}
+        
+        event.preventDefault() 
+        
+    })
 
 })

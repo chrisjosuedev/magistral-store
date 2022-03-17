@@ -10,14 +10,14 @@
                     <i class="fas fa-cart-plus"></i> NUEVA COMPRA
                 </div>
                 <div class="card-body">
-                    <form action="/" method="POST">
+                    <form action="/" method="POST" id="compra_form">
                         <label>Datos Proveedor </label>
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <div class="form-row">
                                     <div class="col-md-10">
-                                        <input type="text" class="form-control compra_input" id="id_proveedor" name="id_proveedor"
-                                            placeholder="Código del Proveedor" autofocus>
+                                        <input type="text" class="form-control compra_input" id="id_proveedor"
+                                            name="id_proveedor" placeholder="Código del Proveedor" autofocus>
                                     </div>
                                     <div class="col-md-2">
                                         <button type="button" id="btn_buscar_proveedor" class="btn btn-primary">
@@ -74,14 +74,14 @@
                                 <div class="form-group col-md-4">
                                     <div class="form-row">
                                         <div class="col-md-6">
-                                            <input type="number" class="form-control compra_input" id="cantidad_compra" min="1"
-                                                onkeydown="if(event.key==='.'){event.preventDefault();}"
+                                            <input type="number" class="form-control compra_input" id="cantidad_compra"
+                                                min="1" onkeydown="if(event.key==='.'){event.preventDefault();}"
                                                 placeholder="Cantidad">
                                         </div>
 
                                         <div class="col-md-6">
-                                            <input type="number" class="form-control compra_input" id="precio_compra" min="0"
-                                                step="0.01" placeholder="Precio Compra">
+                                            <input type="number" class="form-control compra_input" id="precio_compra"
+                                                min="0" step="0.01" placeholder="Precio Compra">
                                         </div>
                                     </div>
 
@@ -124,11 +124,11 @@
 
                     <div class="form-group col-md-2 float-right">
                         <label> Subtotal</label>
-                        <input type="text" id="st-compra" class="form-control" placeholder="0.00" disabled>
+                        <input type="text" id="st-compra" class="form-control" placeholder="L. 0.00" disabled>
                         <label class="mt-2"> ISV</label>
-                        <input type="text" id="isv" class="form-control " placeholder="0.00" disabled>
+                        <input type="text" id="isv" class="form-control" placeholder="L. 0.00" disabled>
                         <label class="mt-2"> Total </label>
-                        <input type="text" id="total" class="form-control" placeholder="0.00" disabled>
+                        <input type="text" id="total" class="form-control" placeholder="L. 0.00" disabled>
                     </div>
                 </div>
             </div>
