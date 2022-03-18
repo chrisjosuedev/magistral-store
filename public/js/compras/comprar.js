@@ -82,10 +82,16 @@ $(function() {
 
             tableCompra.append(`
                 <tr class="isRow">
-                    <td> ${$("#id_producto").val()} </td>
+                    <td> ${$("#id_producto").val()} 
+                        <input type="number" name="id_articulo" value="${$("#id_producto").val()}" hidden/> 
+                    </td>
                     <td> ${$("#descripcion").val()} </td>
-                    <td> ${cantidad} </td>
-                    <td> ${precioUnit} </td>
+                    <td> ${cantidad} 
+                        <input type="number" name="cantidad" value="${cantidad}" hidden/>
+                    </td>
+                    <td> ${precioUnit} 
+                        <input type="number" name="precio_compra" value="${precioUnit}" hidden/>
+                    </td>
                     <td> L. ${stItem.toFixed(2)} </td>
                     <td>
                         <button class="btn btn-danger btnDeleteItem">
@@ -124,6 +130,8 @@ $(function() {
         $('#st-compra').val('L. ' + st.toFixed(2))
         $('#isv').val('L. ' + isv.toFixed(2))
         $('#total').val('L. ' + total.toFixed(2))
+        // Contador de Filas
+        $('#contadorFilas').val(contarFilas())
     }
    
 
@@ -157,15 +165,14 @@ $(function() {
         $.ajax({
             url: '/proveedores/' + id,
             success: function(res) {
-                if (JSON.stringify(res).includes(id)) {
+                if (res.length === 0) {
+                    alertFound("Proveedor no existe, revise el código ingresado")
+                }
+                else {
                     $('#nombre_proveedor').val(res[0].NOMBRE_PROVEEDOR)
                     $('#cel_pro').val(res[0].CEL_PROVEEDOR)
                     $('#id_producto').focus()
                 }
-                else {
-                    alertFound("Proveedor no existe, revise el código ingresado")
-                }
-                
             }
         })
     }
@@ -174,12 +181,12 @@ $(function() {
         $.ajax({
             url: '/articulos/general/' + codigo,
             success: function(res) {
-                if (JSON.stringify(res).includes(codigo)) {
-                    $('#descripcion').val(res[0].DESCRIPCION)
-                    $('#cantidad_compra').focus()
+                if (res.length === 0) {
+                    alertFound("Artículo no existe, revise el código ingresado")
                 }
                 else {
-                    alertFound("Artículo no existe, revise el código ingresado")
+                    $('#descripcion').val(res[0].DESCRIPCION)
+                    $('#cantidad_compra').focus()   
                 }
                 
             }
@@ -204,17 +211,37 @@ $(function() {
     }
 
     // -------------------- Validar Formulario
+    // ----- Verificar que no ha modificado el Proveedor
+    function verificarProveedor(rtn) {
+        var flag = true
+        $.ajax({
+            url: '/proveedores/' + rtn,
+            async: false,
+            success: function(res) {
+                if (res.length === 0) {
+                    alertFound("Proveedor no existe, revise el código ingresado")
+                    $("#id_proveedor").focus()
+                    flag = false
+                }
+                else {
+                    flag = true
+                }
+            }
+        })
+        return flag
+    }
+
     comprasForm.submit(function(event) {
+        var rtn = $("#id_proveedor").val()
 
-        alert(contarFilas())
-
-        // Si filas === 0, un Alert para indicar que agregue registros
+        // Si filas === 0
         // Verificar que existe un RTN de Proveedor Valido
-
-        //if (algo()) {
-        //   return
-        //}
         
+        if ((verificarProveedor(rtn)) && (contarFilas() > 0)) {
+            return
+        }
+
+        alertFound("Por favor, ingrese los datos correctamente.")
         event.preventDefault() 
         
     })

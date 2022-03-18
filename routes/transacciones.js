@@ -17,6 +17,7 @@ router.get('/metodos-pago/delete/:id', transaccionCont.deleteMetodoPago)
 /** COMPRAS **/
 router.get('/compras/new', transaccionCont.newCompra)
 
+router.post('/compras/agregar', transaccionCont.agregarCompra)
 
 /** FACTURAS **/
 router.get('/facturas/new', transaccionCont.newFactura)

@@ -70,6 +70,73 @@ transaccionController.newCompra = async (req, res) => {
   res.render('transacciones/comprar')
 }
 
+// ------------------------ Registrar Compra a Proveedor ----------------- //
+transaccionController.agregarCompra = async (req, res) => {
+  const { id_proveedor, id_articulo, cantidad, precio_compra, filas } = req.body
+
+  // Almacenar Compra del articulo
+  const newCompraArticulo = {
+    id_proveedor
+  }
+
+  await myConn.query("INSERT INTO compra_articulo set ?", [newCompraArticulo]);
+
+  // Capturar el ID de la ultima compra generada
+  const idCompraQuery = `SELECT ID_COMPRA FROM compra_articulo
+                        ORDER BY ID_COMPRA DESC
+                        LIMIT 1`;
+
+  // Almacenar el valor del ID de la ultima Compra
+  const idCompra = await myConn.query(idCompraQuery);
+
+  // Insertar en Compra Articulo Detalle
+  const detalleCompraQuery = 
+    `
+      INSERT INTO compra_articulo_detalle (ID_COMPRA, ID_ARTICULO, CANTIDAD, PRECIO_COMPRA) 
+      VALUES (?, ?, ?, ?)
+    `;
+
+  // Si filas === 1 el carrito tiene solamente 1 producto
+  if (filas === '1') {
+
+    // Insertar en Tabla normal
+    await myConn.query(detalleCompraQuery, [idCompra[0].ID_COMPRA, id_articulo, cantidad, precio_compra])
+
+    // Actualizar en Stock
+    await myConn.query(`UPDATE articulos set STOCK = (STOCK + ?) 
+    WHERE ID_ARTICULO = ?;`, [cantidad, id_articulo])
+
+  }
+  // Si no, el carrito tiene mas de 1 producto
+  else {
+    let idArticulo = Object.values(id_articulo)
+    let amount = Object.values(cantidad)
+    let price = Object.values(precio_compra)
+
+
+    for (index in idArticulo) {
+      await myConn.query(detalleCompraQuery, [
+        idCompra[0].ID_COMPRA,
+        idArticulo[index],
+        amount[index],
+        price[index]
+      ])
+    }
+
+    // Actualizar Stock
+    const updateStockQuery = `UPDATE articulos set STOCK = (STOCK + ?) 
+    WHERE ID_ARTICULO = ?;`;
+
+    for (key in id_articulo) {
+      await myConn.query(updateStockQuery, [amount[key], idArticulo[key]]);
+    }
+  }
+
+  req.flash("success", "Compra almacenada correctamente satisfactoriamente")
+  res.redirect('/transacciones/compras/new')
+}
+
+
 // Facturar un producto
 transaccionController.newFactura = async (req, res) => {
   res.render('transacciones/facturar')
