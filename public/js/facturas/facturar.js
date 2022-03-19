@@ -4,7 +4,7 @@ $(function () {
   const btnAgregar = $("#btn-agregar");
   const ventasForm = $("#facturar_form");
 
-  // Evitar Submit Post
+  // Evitar Submit Post ---
   $(".factura_input").keypress(function (e) {
     var code = e.keyCode ? e.keyCode : e.which;
     if (code == 13) {
