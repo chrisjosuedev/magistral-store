@@ -132,10 +132,81 @@ transaccionController.agregarCompra = async (req, res) => {
     }
   }
 
-  req.flash("success", "Compra almacenada correctamente satisfactoriamente")
+  req.flash("success", "Compra almacenada satisfactoriamente")
   res.redirect('/transacciones/compras/new')
 }
 
+// -------------------- Registrar una Nueva Factura ------------------------------ //
+transaccionController.agregarFactura = async (req, res) => {
+  const { 
+    id_persona, 
+    id_empleado, 
+    id_modopago, 
+    id_articulo, 
+    cantidad, 
+    precio_unit, 
+    filas } = req.body
+
+    // Almacenar nueva factura
+    const newFactura = {
+      id_persona,
+      id_empleado,
+      id_modopago
+    }
+
+    // Guardar Factura General
+    await myConn.query("INSERT INTO factura set ?", [newFactura])
+
+    // Capturar ID de Factura
+    const idVentaQuery = `SELECT ID_FACTURA FROM factura
+                        ORDER BY ID_FACTURA DESC
+                        LIMIT 1`
+
+    const idVenta = await myConn.query(idVentaQuery)
+
+    // Insertar Venta Factura_Detalle
+    const detalleVentaQuery = 
+    `
+    INSERT INTO factura_detalle (ID_FACTURA, ID_ARTICULO, CANTIDAD, PRECIO_UNIT) 
+    VALUES (?, ?, ?, ?)
+    `;
+
+    if (filas === '1') {
+      await myConn.query(detalleVentaQuery, [idVenta[0].ID_FACTURA, id_articulo, cantidad, precio_unit])
+
+      // Actualizar en Stock
+      await myConn.query(`UPDATE articulos set STOCK = (STOCK - ?) 
+      WHERE ID_ARTICULO = ?;`, [cantidad, id_articulo])
+
+    }
+    else {
+      let idArticulo = Object.values(id_articulo);
+      let amount = Object.values(cantidad);
+      let price = Object.values(precio_unit);
+
+      for (index in idArticulo) {
+        await myConn.query(detalleVentaQuery, [
+          idVenta[0].ID_FACTURA,
+          idArticulo[index],
+          amount[index],
+          price[index],
+        ]);
+      }
+
+      // Actualizar Stock
+      const updateStockQuery = `UPDATE articulos set STOCK = (STOCK - ?) 
+                            WHERE ID_ARTICULO = ?;`;
+
+      for (key in idArticulo) {
+        await myConn.query(updateStockQuery, [amount[key], idArticulo[key]]);
+      }
+    }
+
+    req.flash("success", "Venta registrada satisfactoriamente")
+    res.redirect('/transacciones/facturas/new')
+
+
+}
 
 // Facturar un producto
 transaccionController.newFactura = async (req, res) => {

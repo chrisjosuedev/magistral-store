@@ -22,5 +22,7 @@ router.post('/compras/agregar', transaccionCont.agregarCompra)
 /** FACTURAS **/
 router.get('/facturas/new', transaccionCont.newFactura)
 
+router.post('/facturas/agregar', transaccionCont.agregarFactura)
+
 module.exports = router
 
