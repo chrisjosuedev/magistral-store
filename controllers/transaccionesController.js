@@ -139,7 +139,8 @@ transaccionController.agregarCompra = async (req, res) => {
 
 // Facturar un producto
 transaccionController.newFactura = async (req, res) => {
-  res.render('transacciones/facturar')
+  const metodopago = await myConn.query("SELECT * FROM modo_pago");
+  res.render('transacciones/facturar', {metodopago})
 }
 
 

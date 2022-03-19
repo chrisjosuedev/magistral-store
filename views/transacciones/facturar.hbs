@@ -10,18 +10,18 @@
                     <i class="fas fa-cart-plus"></i> NUEVA FACTURA
                 </div>
                 <div class="card-body">
-                    <form action="/facturacion/facturaregistro" method="POST">
+                    <form action="/transacciones/facturar/agregar" method="POST" id="facturar_form">
                         <label>Datos Cliente </label>
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <div class="form-row">
                                     <div class="col-md-10">
-                                        <input type="text" id="id-cliente" class="form-control" name="id_persona"
-                                            placeholder="Código Cliente">
+                                        <input type="text" id="id_cliente" class="form-control factura_input"
+                                            name="id_persona" placeholder="Código Cliente" maxlength="13">
 
                                     </div>
                                     <div class="col-md-2">
-                                        <button type="button" id="btn-buscar-cliente" class="btn btn-primary">
+                                        <button type="button" id="btn_buscar_cliente" class="btn btn-primary">
                                             <i class="fas fa-search"></i>
                                         </button>
                                     </div>
@@ -50,8 +50,12 @@
 
                         <label>Empleado en caja</label>
                         <div class="form-row">
-                            <input type="text" class="form-control" name="id_empleado" placeholder="Codigo"
-                                value="{{user.ID_EMPLEADO}}" hidden>
+
+                            {{!--- Codigo Empleado Temporal --}}
+
+                            <input type="text" class="form-control" name="id_empleado" placeholder="Codigo" value="7"
+                                hidden>
+
                             <div class="form-group col-md-12">
                                 <input type="text" class="form-control" placeholder="Nombre Empleado"
                                     value="{{user.NOMBRE}} {{user.APELLIDO}}" disabled>
@@ -63,57 +67,78 @@
                         <label>Metodo de pago</label>
                         <div class="form-row">
                             <div class="form-group col-md-4">
-                                <select id="inputState sel-tipo" name="id_modopago" class="custom-select">
-                                    <option selected> - Metodo de Pago - </option>
-
+                                <select id="modo_pago" name="id_modopago" class="custom-select factura_input">
+                                    {{#each metodopago}}
+                                    <option value="{{ID_MODOPAGO}}"> {{DESC_MODOPAGO}} </option>
+                                    {{/each}}
                                 </select>
                             </div>
                         </div>
 
 
-                        <label>Productos</label>
+                        <div class="form-group">
+                            <label>Artículos</label>
 
 
-                        <div class="form-row">
+                            <div class="form-row">
 
-                            <div class="form-group col-md-4">
-                                <div class="form-row">
-                                    <div class="col-md-10">
-                                        <input type="text" class="form-control" name="id-producto"
-                                            placeholder="Código del Producto" required>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <button type="button" id="btn-buscar-producto" class="btn btn-primary">
-                                            <i class="fas fa-search"></i>
-                                        </button>
+                                <div class="form-group col-md-4">
+                                    <div class="form-row">
+                                        <div class="col-md-10">
+                                            <input type="text" class="form-control factura_input" name="id-producto"
+                                                placeholder="Código del Artículo" id="id_producto">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button type="button" id="btn_buscar_producto" class="btn btn-primary">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="form-group col-md-4">
-                                <input type="number" id="cantidad-venta" class="form-control" min="1"
-                                    onkeydown="if(event.key==='.'){event.preventDefault();}" placeholder="Cantidad"
-                                    required>
-                            </div>
+                                <div class="form-group col-md-4">
+                                    <input type="text" class="form-control" name="descripcion"
+                                        placeholder="Descripción Artículo" id="descripcion" disabled>
+                                </div>
 
-                            <div class="form-group col-md-4">
-                                <input type="number" id="price-pro" class="form-control" min="1"
-                                    placeholder="Precio Unit." disabled>
+                                <div class="form-group col-md-4">
+                                    <div class="form-row">
+                                        <div class="col-md-6">
+                                            <input type="number" class="form-control factura_input" id="cantidad_compra"
+                                                min="1" onkeydown="if(event.key==='.'){event.preventDefault();}"
+                                                placeholder="Cantidad">
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <input type="number" class="form-control" id="precio_unit" min="0"
+                                                step="0.01" placeholder="Precio Unit." disabled>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-2">
+                                    <input type="number" class="form-control" id="contadorFilas" min="0" value="0"
+                                        name="filas" hidden>
+                                </div>
+
                             </div>
                         </div>
+
+
 
                         <button type="button" id="btn-agregar" class="btn btn-success float-left mb-4 mr-2">
                             <i class="far fa-plus-square"></i> Agregar Producto
                         </button>
 
-                        <a href="#" class="btn btn-warning mb-4 mr-2 float-right">
+                        <button href="#" class="btn btn-warning mb-4 mr-2 float-right" disabled>
                             <i class="fas fa-external-link-alt"></i> Nueva Factura
-                        </a>
+                        </button>
 
                         <button type="submit" id="procesar" class="btn btn-danger float-right mb-4 mr-2">
                             <i class="fas fa-file-invoice-dollar"></i> Facturar
                         </button>
-                        
+
                         <div class="col-md-12 mt-5">
                             <table class="table table-striped" id="table-venta">
                                 <thead>
@@ -127,9 +152,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -137,14 +159,16 @@
 
                     <div class="form-group col-md-2 float-right">
                         <label> Subtotal</label>
-                        <input type="text" id="st-venta" class="form-control" placeholder="Subtotal" disabled>
+                        <input type="text" id="st-venta" class="form-control" placeholder="L. 0.00" disabled>
                         <label class="mt-2"> ISV</label>
-                        <input type="text" id="isv" class="form-control " placeholder="ISV" disabled>
+                        <input type="text" id="isv" class="form-control " placeholder="L. 0.00" disabled>
                         <label class="mt-2"> Total </label>
-                        <input type="text" id="total" class="form-control" placeholder="Total" disabled>
+                        <input type="text" id="total" class="form-control" placeholder="L. 0.00" disabled>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script src="/js/facturas/facturar.js"></script>
