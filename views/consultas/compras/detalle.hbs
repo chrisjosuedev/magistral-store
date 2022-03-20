@@ -6,10 +6,17 @@
         <i class="fas fa-list"></i> Lista Detalle de Compra
       </div>
       <div class="card-body">
-        <div class="form-group col-md-6">
-          <p> N° Compra </p>
-          <h3> {{compraDetails.1.ID_COMPRA}} </h3>
+        <div class="row">
+          <div class="form-group col-md-6">
+            <p> N° Compra </p>
+            <h3> {{proveedorCompra.ID_COMPRA}} </h3>
+          </div>
+          <div class="form-group col-md-6">
+            <p> Proveedor </p>
+            <h3> {{proveedorCompra.NOMBRE_PROVEEDOR}} </h3>
+          </div>
         </div>
+
         <table class="table table-striped">
           <thead>
             <tr>
@@ -47,11 +54,10 @@
           <input type="text" id="st-venta" class="form-control" placeholder="Subtotal" disabled
             value="L. {{compraTotal.SUBTOTAL}}">
           <label class="mt-2"> ISV </label>
-          <input type="text" id="isv" class="form-control " placeholder="ISV" disabled 
-          value="L. {{compraTotal.ISV}}">
+          <input type="text" id="isv" class="form-control " placeholder="ISV" disabled value="L. {{compraTotal.ISV}}">
           <label class="mt-2"> Total </label>
-          <input type="text" id="total" class="form-control" placeholder="Total" disabled 
-          value="L. {{compraTotal.TOTAL}}">
+          <input type="text" id="total" class="form-control" placeholder="Total" disabled
+            value="L. {{compraTotal.TOTAL}}">
         </div>
       </div>
     </div>

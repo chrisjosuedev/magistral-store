@@ -56,6 +56,14 @@ consultasController.getCompraByID = async (req, res) => {
 
   const compraDetails = await myConn.query(queryDetails, [id]);
 
+  const proveedorCompra = await myConn.query(`
+      SELECT compra_articulo.ID_COMPRA, proveedores.NOMBRE_PROVEEDOR
+      FROM compra_articulo
+      INNER JOIN proveedores ON compra_articulo.ID_PROVEEDOR = proveedores.ID_PROVEEDOR
+      WHERE ID_COMPRA = ?
+      GROUP BY compra_articulo.ID_COMPRA;
+  `, [id])
+
   const querySubISV = `SELECT @subtotal:=round(sum(compra_articulo_detalle.CANTIDAD * compra_articulo_detalle.PRECIO_COMPRA), 2), 
                         @isv:=round(sum(compra_articulo_detalle.CANTIDAD * compra_articulo_detalle.PRECIO_COMPRA) * 0.15, 2)
                         FROM compra_articulo_detalle WHERE ID_COMPRA = ?;`;
@@ -70,6 +78,7 @@ consultasController.getCompraByID = async (req, res) => {
   res.render("consultas/compras/detalle", {
     compraDetails,
     compraTotal: compraTotal[0],
+    proveedorCompra: proveedorCompra[0]
   });
 
 }
