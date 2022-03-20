@@ -1,5 +1,5 @@
 $(function() {
-  const tableCompras = $('tbody')
+  const tableVentas= $('tbody')
 
   // Revisar si está checado
   if ($('#filterDate').prop('checked')) {
@@ -26,7 +26,6 @@ $(function() {
     }
   })
 
-
   $("#fecha-out").on("change", function(){
     var fechaIn = $('#fecha-in').val()
     var fechaOut = $(this).val();
@@ -40,7 +39,7 @@ $(function() {
       }, 5000)
     }
     else {
-      comprasByDate(fechaIn, fechaOut)
+      ventasByDate(fechaIn, fechaOut)
     }
   });
 
@@ -52,15 +51,15 @@ $(function() {
   }
 
   function limpiarTabla() {
-    tableCompras.html('')
+    tableVentas.html('')
   }
   
-  function comprasByDate(init, out) {
+  function ventasByDate(init, out) {
     $.ajax({
-      url: '/consultas/compras/fecha/' + init + '/' + out,
+      url: '/consultas/ventas/fecha/' + init + '/' + out,
       success: function (res) {
         if (res.length === 0) {
-          $('#alert').html("No hay compras registradas entre el " + '<strong>' + init + '</strong>' +  " y el " + '<strong>' + out + '</strong>')
+          $('#alert').html("No hay ventas registradas entre el " + '<strong>' + init + '</strong>' +  " y el " + '<strong>' + out + '</strong>')
           $('#alert').removeClass('d-none')
 
           setTimeout(function () {
@@ -77,26 +76,29 @@ $(function() {
             var yyyy = fecha.getFullYear();
             fecha = dd + '/' + mm + '/' + yyyy
 
-            tableCompras.append(`
-            <tr>
+            tableVentas.append(`
+              <tr>
                 <td>
-                  ${res.ID_COMPRA}
+                  ${res.ID_FACTURA}
                 </td>
                 <td>
-                  ${res.NOMBRE_PROVEEDOR}
+                  ${res.NOMBRE_PERSONA} ${res.APELLIDO_PERSONA}
                 </td>
                 <td>
                   ${fecha}
                 </td>
                 <td>
-                  <a href="/consultas/compras/detalle/${res.ID_COMPRA}" class="btn btn-secondary">
+                  ${res.DESC_MODOPAGO}
+                </td>
+                <td class="text-right">
+                  <a href="/consultas/ventas/detalle/${res.ID_FACTURA}" class="btn btn-secondary">
                     <i class="fas fa-eye"></i>
                   </a>
                   <a href="#" class="btn btn-danger">
                     <i class="fas fa-file-pdf"></i>
                   </a>
                 </td>
-            </tr>
+              </tr>
             `)
 
           });
@@ -108,7 +110,7 @@ $(function() {
 
   function defaultTable() {
     $.ajax({
-      url: '/consultas/compras/listado',
+      url: '/consultas/ventas/listado',
       success: function(res) {
 
         res.forEach(res => {
@@ -119,26 +121,29 @@ $(function() {
           var yyyy = fecha.getFullYear();
           fecha = dd + '/' + mm + '/' + yyyy
           
-          tableCompras.append(`
-          <tr>
+          tableVentas.append(`
+            <tr>
               <td>
-                ${res.ID_COMPRA}
+                ${res.ID_FACTURA}
               </td>
               <td>
-                ${res.NOMBRE_PROVEEDOR}
+                ${res.NOMBRE_PERSONA} ${res.APELLIDO_PERSONA}
               </td>
               <td>
                 ${fecha}
               </td>
               <td>
-                <a href="/consultas/compras/detalle/${res.ID_COMPRA}" class="btn btn-secondary">
+                ${res.DESC_MODOPAGO}
+              </td>
+              <td class="text-right">
+                <a href="/consultas/ventas/detalle/${res.ID_FACTURA}" class="btn btn-secondary">
                   <i class="fas fa-eye"></i>
                 </a>
                 <a href="#" class="btn btn-danger">
                   <i class="fas fa-file-pdf"></i>
                 </a>
               </td>
-          </tr>
+            </tr>
           `)
           
         });
@@ -146,5 +151,8 @@ $(function() {
       }
     })
   }
+
+
+
 
 })

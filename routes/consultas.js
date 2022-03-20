@@ -14,5 +14,16 @@ router.get('/compras/fecha/:fechain/:fechaout', consultasController.findCompraBy
 // Ver detalle de la compra
 router.get('/compras/detalle/:id', consultasController.getCompraByID)
 
+// Ver Ventas
+router.get('/ventas', consultasController.listVentas)
+
+// JSON Ventas
+router.get('/ventas/listado', consultasController.totalVentas)
+
+// Ver ventas por rango de fechas
+router.get('/ventas/fecha/:fechain/:fechaout', consultasController.findVentaByDate)
+
+// Ver detalle de la compra
+router.get('/ventas/detalle/:id', consultasController.getVentaByID)
 
 module.exports = router

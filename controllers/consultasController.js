@@ -83,6 +83,98 @@ consultasController.getCompraByID = async (req, res) => {
 
 }
 
+/* ------------------- FACTURAS -------------------- */
+consultasController.listVentas = async (req, res) => {
+  const ventasQuery = `
+    SELECT factura.*, persona.NOMBRE_PERSONA, persona.APELLIDO_PERSONA, modo_pago.DESC_MODOPAGO
+    FROM factura_detalle
+    INNER JOIN factura ON factura.ID_FACTURA = factura_detalle.ID_FACTURA
+    INNER JOIN persona ON factura.ID_PERSONA = persona.ID_PERSONA
+    INNER JOIN modo_pago ON modo_pago.ID_MODOPAGO = factura.ID_MODOPAGO 
+    GROUP BY factura.ID_FACTURA
+    ORDER BY factura.ID_FACTURA ASC`;
+  const ventas = await myConn.query(ventasQuery);
+  res.render("consultas/ventas/general", { ventas });
+}
+
+// JSON
+consultasController.totalVentas = async (req, res) => {
+  const ventasQuery = `
+    SELECT factura.*, persona.NOMBRE_PERSONA, persona.APELLIDO_PERSONA, modo_pago.DESC_MODOPAGO
+    FROM factura_detalle
+    INNER JOIN factura ON factura.ID_FACTURA = factura_detalle.ID_FACTURA
+    INNER JOIN persona ON factura.ID_PERSONA = persona.ID_PERSONA
+    INNER JOIN modo_pago ON modo_pago.ID_MODOPAGO = factura.ID_MODOPAGO 
+    GROUP BY factura.ID_FACTURA
+    ORDER BY factura.ID_FACTURA ASC`;
+  const ventas = await myConn.query(ventasQuery);
+  res.json(ventas);
+}
+
+// Filtrado de Ventas por Fecha
+consultasController.findVentaByDate = async (req, res) => {
+  const { fechain, fechaout } = req.params
+
+  const ventasDateQuery = `
+  SELECT factura.*, persona.NOMBRE_PERSONA, persona.APELLIDO_PERSONA, modo_pago.DESC_MODOPAGO
+  FROM factura_detalle
+  INNER JOIN factura ON factura.ID_FACTURA = factura_detalle.ID_FACTURA
+  INNER JOIN persona ON factura.ID_PERSONA = persona.ID_PERSONA
+  INNER JOIN modo_pago ON modo_pago.ID_MODOPAGO = factura.ID_MODOPAGO
+  WHERE factura.FECHA BETWEEN ? AND ?
+  GROUP BY factura.ID_FACTURA
+  `
+  const ventas = await myConn.query(ventasDateQuery, [fechain, fechaout])
+  res.json(ventas)
+}
+
+// Detalle Venta
+consultasController.getVentaByID = async (req, res) => {
+  const { id } = req.params;
+  const queryDetails = `
+    SELECT factura_detalle.ID_FACTURA, factura_detalle.ID_ARTICULO, articulos.DESCRIPCION,
+    factura_detalle.CANTIDAD, factura_detalle.PRECIO_UNIT,
+    round(sum(factura_detalle.CANTIDAD * factura_detalle.PRECIO_UNIT), 2) as SUBTOTAL
+    FROM factura_detalle
+    INNER JOIN articulos ON articulos.ID_ARTICULO = factura_detalle.ID_ARTICULO
+    WHERE ID_FACTURA = ?
+    GROUP BY factura_detalle.ID_ARTICULO;
+  `;
+  const facturaDetails = await myConn.query(queryDetails, [id]);
+
+  const querySubISV = `SELECT @subtotal:=round(sum(factura_detalle.CANTIDAD * factura_detalle.PRECIO_UNIT), 2), @isv:=round(sum(factura_detalle.CANTIDAD * factura_detalle.PRECIO_UNIT) * 0.15, 2)
+  FROM factura_detalle WHERE ID_FACTURA = ?;`;
+
+  const queryTotal = `
+  SELECT factura_detalle.ID_FACTURA, @subtotal as SUBTOTAL, @isv as ISV, 
+  round((@subtotal + @isv), 2) as Total
+  FROM factura_detalle WHERE ID_FACTURA = ? GROUP BY factura_detalle.ID_FACTURA;`;
+
+  await myConn.query(querySubISV, [id]);
+
+  const facturaTotal = await myConn.query(queryTotal, [id]);
+
+  // General Factura
+  const queryGeneral = `
+  SELECT ID_FACTURA, FECHA, (SELECT concat_ws(' ', persona.NOMBRE_PERSONA, persona.APELLIDO_PERSONA) FROM persona, factura
+  WHERE persona.ID_PERSONA = factura.ID_PERSONA AND ID_FACTURA = ?) as Cliente, 
+  (SELECT concat_ws(' ', persona.NOMBRE_PERSONA, persona.APELLIDO_PERSONA) FROM persona, empleado,  factura
+  WHERE persona.ID_PERSONA = empleado.ID_PERSONA AND empleado.ID_EMPLEADO = factura.ID_EMPLEADO AND ID_FACTURA = ?) as Empleado,
+  modo_pago.DESC_MODOPAGO
+  FROM factura
+  INNER JOIN modo_pago ON modo_pago.ID_MODOPAGO = factura.ID_MODOPAGO
+  Where ID_FACTURA = ?;
+  `;
+
+  const facturaGeneral = await myConn.query(queryGeneral, [id, id, id]);
+
+  res.render("consultas/ventas/detalle", {
+    facturaDetails,
+    facturaTotal: facturaTotal[0],
+    facturaGeneral: facturaGeneral[0],
+  });
+
+}
 
 
 module.exports = consultasController
