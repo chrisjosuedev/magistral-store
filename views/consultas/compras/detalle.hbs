@@ -1,0 +1,59 @@
+<div class="container">
+  <h1 class="mb-4"> Detalle de la Compra </h1>
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header font-weight-bold">
+        <i class="fas fa-list"></i> Lista Detalle de Compra
+      </div>
+      <div class="card-body">
+        <div class="form-group col-md-6">
+          <p> N° Compra </p>
+          <h3> {{compraDetails.1.ID_COMPRA}} </h3>
+        </div>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">ID Producto</th>
+              <th scope="col">Descripción</th>
+              <th scope="col">Cantidad</th>
+              <th scope="col">Precio Compra</th>
+              <th scope="col"> Subtotal </th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each compraDetails}}
+            <tr>
+              <td>
+                {{ID_ARTICULO}}
+              </td>
+              <td>
+                {{DESCRIPCION}}
+              </td>
+              <td>
+                {{CANTIDAD}}
+              </td>
+              <td>
+                L. {{PRECIO_COMPRA}}
+              </td>
+              <td>
+                L. {{SUBTOTAL}}
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+        <div class="form-group col-md-2 float-right">
+          <label> Subtotal</label>
+          <input type="text" id="st-venta" class="form-control" placeholder="Subtotal" disabled
+            value="L. {{compraTotal.SUBTOTAL}}">
+          <label class="mt-2"> ISV </label>
+          <input type="text" id="isv" class="form-control " placeholder="ISV" disabled 
+          value="L. {{compraTotal.ISV}}">
+          <label class="mt-2"> Total </label>
+          <input type="text" id="total" class="form-control" placeholder="Total" disabled 
+          value="L. {{compraTotal.TOTAL}}">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
