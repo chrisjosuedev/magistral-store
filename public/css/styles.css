@@ -22,3 +22,16 @@
   font-size: 0.8rem !important;
   font-weight: 500 !important;
 }
+
+.signin {
+  font-size: .9rem;
+  padding: 1.2rem 1.1rem
+}
+
+.brand {
+  font-size: 0.9rem;
+}
+
+.login {
+  background-color:#3F84FC;
+}

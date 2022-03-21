@@ -3,7 +3,7 @@ const router = express.Router()
 
 // Dashboard
 router.get('/', (req, res) => {
-    res.send("Login")
+    res.render('auth/signin')
 })
 
 module.exports = router
