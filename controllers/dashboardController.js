@@ -53,7 +53,7 @@ dashboardController.ventasDiarias = async (req, res) => {
   FROM factura_detalle
   INNER JOIN factura ON factura.ID_FACTURA = factura_detalle.ID_FACTURA
   group by day(factura.FECHA)
-  order by factura.FECHA DESC
+  order by factura.FECHA ASC
   LIMIT 5;`;
 
   const queryVentasNivel = await myConn.query(queryNivel);
@@ -66,7 +66,8 @@ dashboardController.totalStock = async (req, res) => {
     SELECT DESCRIPCION, STOCK
     FROM articulos
     GROUP BY ID_ARTICULO
-    ORDER BY ID_ARTICULO ASC;;
+    ORDER BY STOCK ASC
+    LIMIT 10;
   `)
 
   res.json(queryStock)
