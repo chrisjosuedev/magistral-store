@@ -9,8 +9,16 @@ const flash = require('connect-flash')
 const sessions = require('express-session')
 const MySqlStore = require('express-mysql-session')
 
+const passport = require('passport')
+
+// --
+const { isLoggedIn } = require('./lib/auth')
+
 // DB Conection Variables
 const { database } = require('./keys')
+
+// Init
+require('./lib/passport')
 
 // Config Port
 const app = express()
@@ -44,12 +52,17 @@ app.use(express.urlencoded({
     extended: false
 }))
 
+app.use(passport.initialize())
+app.use(passport.session())
+
 app.use((req, res, next) => {
     app.locals.success = req.flash('success')
     app.locals.warning = req.flash('warning')
+    app.locals.error = req.flash('error')
     app.locals.user = req.user
     next()
 })
+
 
 // Routes
 app.use(require('./routes'))
@@ -64,6 +77,11 @@ app.use('/analiticas', require('./routes/analiticas'))
 
 // Public
 app.use(express.static(path.join(__dirname, 'public')))
+
+// 404
+app.get('*', isLoggedIn, (req, res) => {
+    res.render('error/404')
+})
 
 app.listen(app.get('port'), () => {
     console.log('Server on Port', app.get('port'))

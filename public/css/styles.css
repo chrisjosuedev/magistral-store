@@ -35,3 +35,12 @@
 .login {
   background-color:#3F84FC;
 }
+
+.not-found {
+  width: 12.5rem;
+}
+
+.profile {
+  height: 2rem;
+  width: 2rem;
+}

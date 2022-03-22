@@ -1,28 +1,28 @@
 const express = require('express')
 const router = express.Router()
 const transaccionCont = require('../controllers/transaccionesController')
-
+const { isLoggedIn } = require('../lib/auth')
 
 /** METODOS DE PAGO **/
-router.get('/metodos-pago', transaccionCont.listMetodosPago)
+router.get('/metodos-pago', isLoggedIn, transaccionCont.listMetodosPago)
 
-router.post('/metodos-pago/new', transaccionCont.newMetodoPago)
+router.post('/metodos-pago/new', isLoggedIn, transaccionCont.newMetodoPago)
 
-router.get('/metodos-pago/:id', transaccionCont.getMetodoPago)
+router.get('/metodos-pago/:id', isLoggedIn, transaccionCont.getMetodoPago)
 
-router.post('/metodos-pago/edit/:id', transaccionCont.editMetodoPago)
+router.post('/metodos-pago/edit/:id', isLoggedIn, transaccionCont.editMetodoPago)
 
-router.get('/metodos-pago/delete/:id', transaccionCont.deleteMetodoPago)
+router.get('/metodos-pago/delete/:id', isLoggedIn, transaccionCont.deleteMetodoPago)
 
 /** COMPRAS **/
-router.get('/compras/new', transaccionCont.newCompra)
+router.get('/compras/new', isLoggedIn, transaccionCont.newCompra)
 
-router.post('/compras/agregar', transaccionCont.agregarCompra)
+router.post('/compras/agregar', isLoggedIn, transaccionCont.agregarCompra)
 
 /** FACTURAS **/
-router.get('/facturas/new', transaccionCont.newFactura)
+router.get('/facturas/new', isLoggedIn, transaccionCont.newFactura)
 
-router.post('/facturas/agregar', transaccionCont.agregarFactura)
+router.post('/facturas/agregar', isLoggedIn, transaccionCont.agregarFactura)
 
 module.exports = router
 
