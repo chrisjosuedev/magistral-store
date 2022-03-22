@@ -17,7 +17,7 @@
           </div>
         </div>
 
-        <table class="table table-striped">
+        <table class="table table-striped" id="detalle-compra">
           <thead>
             <tr>
               <th scope="col">ID Producto</th>
@@ -42,9 +42,7 @@
               <td>
                 L. {{PRECIO_COMPRA}}
               </td>
-              <td>
-                L. {{SUBTOTAL}}
-              </td>
+              <td> L. {{SUBTOTAL}} </td>
             </tr>
             {{/each}}
           </tbody>
@@ -52,14 +50,17 @@
         <div class="form-group col-md-2 float-right">
           <label> Subtotal</label>
           <input type="text" id="st-venta" class="form-control" placeholder="Subtotal" disabled
-            value="L. {{compraTotal.SUBTOTAL}}">
+            value="">
           <label class="mt-2"> ISV </label>
-          <input type="text" id="isv" class="form-control " placeholder="ISV" disabled value="L. {{compraTotal.ISV}}">
+          <input type="text" id="isv" class="form-control " placeholder="ISV" disabled 
+          value="">
           <label class="mt-2"> Total </label>
           <input type="text" id="total" class="form-control" placeholder="Total" disabled
-            value="L. {{compraTotal.TOTAL}}">
+          value="">
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<script src="/js/consultas/compra-detalle.js"></script>

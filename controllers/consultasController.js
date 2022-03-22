@@ -64,20 +64,8 @@ consultasController.getCompraByID = async (req, res) => {
       GROUP BY compra_articulo.ID_COMPRA;
   `, [id])
 
-  const querySubISV = `SELECT @subtotal:=round(sum(compra_articulo_detalle.CANTIDAD * compra_articulo_detalle.PRECIO_COMPRA), 2), 
-                        @isv:=round(sum(compra_articulo_detalle.CANTIDAD * compra_articulo_detalle.PRECIO_COMPRA) * 0.15, 2)
-                        FROM compra_articulo_detalle WHERE ID_COMPRA = ?;`;
-
-  const queryTotal = `SELECT compra_articulo_detalle.ID_COMPRA, @subtotal as SUBTOTAL, @isv as ISV, round((@subtotal + @isv), 2) as TOTAL
-                      FROM compra_articulo_detalle WHERE ID_COMPRA = ? GROUP BY compra_articulo_detalle.ID_COMPRA;`;
-
-  await myConn.query(querySubISV, [id]);
-
-  const compraTotal = await myConn.query(queryTotal, [id]);
-
   res.render("consultas/compras/detalle", {
     compraDetails,
-    compraTotal: compraTotal[0],
     proveedorCompra: proveedorCompra[0]
   });
 
@@ -142,18 +130,6 @@ consultasController.getVentaByID = async (req, res) => {
   `;
   const facturaDetails = await myConn.query(queryDetails, [id]);
 
-  const querySubISV = `SELECT @subtotal:=round(sum(factura_detalle.CANTIDAD * factura_detalle.PRECIO_UNIT), 2), @isv:=round(sum(factura_detalle.CANTIDAD * factura_detalle.PRECIO_UNIT) * 0.15, 2)
-  FROM factura_detalle WHERE ID_FACTURA = ?;`;
-
-  const queryTotal = `
-  SELECT factura_detalle.ID_FACTURA, @subtotal as SUBTOTAL, @isv as ISV, 
-  round((@subtotal + @isv), 2) as Total
-  FROM factura_detalle WHERE ID_FACTURA = ? GROUP BY factura_detalle.ID_FACTURA;`;
-
-  await myConn.query(querySubISV, [id]);
-
-  const facturaTotal = await myConn.query(queryTotal, [id]);
-
   // General Factura
   const queryGeneral = `
   SELECT ID_FACTURA, FECHA, (SELECT concat_ws(' ', persona.NOMBRE_PERSONA, persona.APELLIDO_PERSONA) FROM persona, factura
@@ -170,7 +146,6 @@ consultasController.getVentaByID = async (req, res) => {
 
   res.render("consultas/ventas/detalle", {
     facturaDetails,
-    facturaTotal: facturaTotal[0],
     facturaGeneral: facturaGeneral[0],
   });
 
