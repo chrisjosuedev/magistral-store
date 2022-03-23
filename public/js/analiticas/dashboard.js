@@ -2,7 +2,6 @@ $(function() {
   ultimasVentas()
   cantidadStock()
 
-
   // Ultimas 5 ventas diarias
   function ultimasVentas() {
     $.ajax({

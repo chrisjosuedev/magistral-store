@@ -31,7 +31,7 @@ $(function() {
       position: 'center',
       icon: 'success',
       confirmButtonColor: '#3F84FC',
-      title: 'Proveedor Guardado',
+      title: 'Proveedor Guardado Satisfactoriamente',
       showConfirmButton: true
     }).then((result) => {
       if (result.isConfirmed) {   

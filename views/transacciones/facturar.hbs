@@ -39,9 +39,10 @@
 
                             <div class="form-group col-lg-12">
                                 <div class="col-lg-4 float-right">
-                                    <button type="button" id="btn-new-cliente" class="btn btn-success float-right">
+                                    <a href="#newClienteFromVentas" class="btn btn-success float-right" data-toggle="modal"
+                                        id="btn-new-cliente">
                                         <i class="fas far fa-address-book"></i> Nuevo Cliente
-                                    </button>
+                                    </a>
                                 </div>
 
                             </div>
@@ -53,8 +54,8 @@
 
                             {{!--- Codigo Empleado ¡¡¡¡Temporal!!!! --}}
 
-                            <input type="text" class="form-control" name="id_empleado" placeholder="Codigo" value="{{user.ID_EMPLEADO}}"
-                                hidden>
+                            <input type="text" class="form-control" name="id_empleado" placeholder="Codigo"
+                                value="{{user.ID_EMPLEADO}}" hidden>
 
                             <div class="form-group col-md-12">
                                 <input type="text" class="form-control" placeholder="Nombre Empleado"
@@ -171,4 +172,12 @@
     </div>
 </div>
 
+{{!-- Agregar Articulo --}}
+{{> transacciones/nuevo-cliente }}
+
+{{!--- Script ---}}
 <script src="/js/facturas/facturar.js"></script>
+{{!-- Scripts Proveedores --}}
+<script src="/js/facturas/nuevoCliente.js"></script>
+{{!-- Script de Select de Ciudad Dinamico --}}
+<script src="/js/ciudad.js"></script>

@@ -4,6 +4,7 @@ const transaccionController = {}
 /** METODOS DE PAGO **/
 
 transaccionController.listMetodosPago = async (req, res) => {
+    
     const modo_pago = await myConn.query("SELECT * FROM modo_pago")
     res.render('transacciones/metodo-pago', { modo_pago })
 }
@@ -211,7 +212,8 @@ transaccionController.agregarFactura = async (req, res) => {
 // Facturar un producto
 transaccionController.newFactura = async (req, res) => {
   const metodopago = await myConn.query("SELECT * FROM modo_pago");
-  res.render('transacciones/facturar', {metodopago})
+  const departamentos = await myConn.query("SELECT * FROM departamentos")
+  res.render('transacciones/facturar', {metodopago, departamentos})
 }
 
 

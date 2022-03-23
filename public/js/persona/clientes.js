@@ -115,7 +115,7 @@ $(function() {
 
             $('#ciudad').removeClass('is-invalid')
             msgCiudad.addClass('valid-feedback')
-            msgCiudad.text("Ciudad valido")
+            msgCiudad.text("Ciudad valida")
             $('#ciudad').addClass('is-valid')
             msgCiudad.removeClass('invalid-feedback')
 
