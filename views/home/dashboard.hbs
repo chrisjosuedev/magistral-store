@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid d-none" id="dashboard_main">
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -138,7 +138,37 @@
             </div>
         </div>
     </div>
+
+
+</div>
+<!-- AUTOR -->
+<div class="container-fluid d-none" id="dashboard_autor">
+    <div class="row mb-4">
+        <!-- Dashboard Para Rol de AUTOR -->
+        <div class="text-center">
+            <div class="container mx-auto">
+                <img class="autor" src="/img/autor.png" alt="autor">
+            </div>
+            <h1 class="mb-4">¡Bienvenido!</h1>
+
+            <a href="/transacciones/facturas/new">&larr; Comenzar a Facturar...</a>
+        </div>
+    </div>
 </div>
 
 <!-- Page level plugins -->
 <script src="/js/analiticas/dashboard.js"></script>
+
+<script>
+    var tipoPrivilegio = `{{user.ID_ROL}}`
+    // Autor
+    if (tipoPrivilegio === '3') {
+        $('#dashboard_main').remove()
+        $('#dashboard_autor').removeClass('d-none')
+    }
+    else {
+        $('#dashboard_autor').remove()
+        $('#dashboard_main').removeClass('d-none')
+    }
+    
+</script>
