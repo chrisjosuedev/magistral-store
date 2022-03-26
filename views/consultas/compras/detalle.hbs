@@ -1,5 +1,13 @@
 <div class="container">
+  <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/dashboard"> <i class="fas fa-home"></i> </a></li>
+      <li class="breadcrumb-item"><a href="/consultas/compras">General</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Detalle de Compra</li>
+    </ol>
+  </nav>
   <h1 class="mb-4"> Detalle de la Compra </h1>
+
   <div class="col-md-12">
     <div class="card">
       <div class="card-header font-weight-bold">
@@ -49,14 +57,11 @@
         </table>
         <div class="form-group col-md-2 float-right">
           <label> Subtotal</label>
-          <input type="text" id="st-venta" class="form-control" placeholder="Subtotal" disabled
-            value="">
+          <input type="text" id="st-venta" class="form-control" placeholder="Subtotal" disabled value="">
           <label class="mt-2"> ISV </label>
-          <input type="text" id="isv" class="form-control " placeholder="ISV" disabled 
-          value="">
+          <input type="text" id="isv" class="form-control " placeholder="ISV" disabled value="">
           <label class="mt-2"> Total </label>
-          <input type="text" id="total" class="form-control" placeholder="Total" disabled
-          value="">
+          <input type="text" id="total" class="form-control" placeholder="Total" disabled value="">
         </div>
       </div>
     </div>

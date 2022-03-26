@@ -1,4 +1,10 @@
 <div class="container p-4">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/dashboard"> <i class="fas fa-home"></i> </a></li>
+            <li class="breadcrumb-item active" aria-current="page"> Facturar </li>
+        </ol>
+    </nav>
     <h1 class="mb-4"> Facturas </h1>
     <div class="alert alert-danger d-none" role="alert" id="alert">
         A simple danger alert—check it out!
@@ -39,8 +45,8 @@
 
                             <div class="form-group col-lg-12">
                                 <div class="col-lg-4 float-right">
-                                    <a href="#newClienteFromVentas" class="btn btn-success float-right" data-toggle="modal"
-                                        id="btn-new-cliente">
+                                    <a href="#newClienteFromVentas" class="btn btn-success float-right"
+                                        data-toggle="modal" id="btn-new-cliente">
                                         <i class="fas far fa-address-book"></i> Nuevo Cliente
                                     </a>
                                 </div>
