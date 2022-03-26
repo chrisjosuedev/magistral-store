@@ -8,7 +8,7 @@
             </div>
             <div class="modal-body">
 
-                <div class="alert alert-danger d-none" role="alert" id="alert">
+                <div class="alert alert-danger d-none alert-users" role="alert" id="alert">
                     Alerta Simple
                 </div>
 
@@ -55,11 +55,12 @@
 
                     <label> Seleccionar Rol del Usuario </label>
                     <div class="form-group">
-                        <select id="inputState sel-tipo" name="id_rol" class="custom-select" required>
+                        <select id="rol-selected" name="id_rol" class="custom-select" required>
                             {{#each roles}}
                             <option value="{{ID_ROL}}"> {{DESC_ROL}} </option>
                             {{/each}}
                         </select>
+
                     </div>
 
                     <button type="submit" class="btn btn-primary mt-4 float-right" id="saveUsuario" disabled>

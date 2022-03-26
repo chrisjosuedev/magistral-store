@@ -15,6 +15,19 @@ $(function () {
             "infoEmpty": "Mostrando 0 a 0 de 0 entradas",
             "infoFiltered": "(Filtrado de _MAX_ total de entradas)",
             "lengthMenu": "Mostrar _MENU_ entradas"
-        }
+        },
+        responsive: "true",
+        dom: "Bfrtilp",
+        buttons:[
+            {
+                extend: 'excelHtml5',
+                text: '<i class="fas fa-file-excel"></i>',
+                titleAttr: 'Exportar a Excel',
+                title: 'Magistral Store',
+                messageTop: 'USUARIOS DEL PORTAL ONLINE',
+                filename: 'Usuarios Magistral Store',
+                className: 'btn btn-success'
+            }
+        ]
     });
 });

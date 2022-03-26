@@ -175,19 +175,45 @@ $(function() {
         return flag
     }
 
+    // --------- Verificar Roles
+    function verificarRol(id) {
+        var rol = false
+        $.ajax({
+            url: "/persona/empleados/" + id,
+            async: false,
+            success: function (empleado) {
+                if ($('#rol-selected').val() === '1' && empleado.PUESTO != 5) {
+                    rol = false
+                }
+                else if ($('#rol-selected').val() === '4' && empleado.PUESTO != 6) {
+                    rol = false
+                }
+                else {
+                    rol = true
+                }
+            }
+        })
+        return rol
+    }
+
 
     // ------------------- Validar Envio de Formulario -------------
     
 
     formusers.submit(function(event) {
+        var idEmpleado = $('#codEmp').val()
 
-        if (verificarUsuario(user.val())) {
+        if (verificarUsuario(user.val()) && verificarRol(idEmpleado)) {
             return
         }
 
-        msgValidacion("Por favor, cambie el nombre de usuario.")
+        if (!verificarRol(idEmpleado)) {
+            msgValidacion("El empleado no puede tener el control de acceso seleccionado.")
+        }
+        else if (!verificarUsuario(user.val())) {
+            msgValidacion("Por favor, cambie el nombre de usuario.")
+        }
         event.preventDefault()   
     })
-    
 
 })

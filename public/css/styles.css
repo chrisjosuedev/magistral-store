@@ -18,6 +18,10 @@
   text-transform: uppercase;
 }
 
+.btn-group, .btn-group-vertical {
+  position: absolute !important;
+}
+
 .swal2-popup {
   font-size: 0.8rem !important;
   font-weight: 500 !important;
@@ -43,7 +47,6 @@
 .autor {
   width: 21rem;
 }
-
 
 .profile {
   height: 2rem;
