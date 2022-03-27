@@ -19,4 +19,9 @@ $(function() {
   $('#logout').on('click', function() {
       confirmarSalir()
   })
+
+  // Regresar atras
+  function back() {
+    window.history.back()
+  }
 })
