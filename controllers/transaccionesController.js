@@ -393,8 +393,6 @@ transaccionController.agregarFactura = async (req, res) => {
   doc.render();
   doc.end();
 
-
-
   //req.flash("success", "Venta registrada satisfactoriamente");
   //res.redirect("/transacciones/facturas/new");
 };

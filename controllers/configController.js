@@ -18,6 +18,7 @@ confController.newCategoriaLaboral = async (req, res) => {
   await myConn.query("INSERT INTO categoria_laboral set ?", [
     newCategoriaLaboral,
   ]);
+
   req.flash("success", "Categoria Agregada Correctamente");
   res.redirect("/config/categoria-laboral");
 };
