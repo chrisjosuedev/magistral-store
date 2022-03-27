@@ -1,6 +1,23 @@
-const { app, BrowserWindow} = require("electron");
+const { app, BrowserWindow, Menu } = require("electron");
 
 const server = require("./app");
+
+const templateMenu = [
+  {
+    label: 'Ajustes',
+    submenu: [
+      {
+        label: 'Salir',
+        accelerator: 'Ctrl+Q',
+        click() {
+          app.quit()
+        }
+      }
+    ]
+  }
+]
+
+const mainMenu = Menu.buildFromTemplate(templateMenu)
 
 let mainWindow;
 
@@ -18,6 +35,8 @@ function createWindow() {
     mainWindow = null;
   });
   mainWindow.maximize()
+  Menu.setApplicationMenu(mainMenu)
+  
 }
 
 app.on("ready", createWindow);
