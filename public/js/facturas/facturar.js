@@ -251,7 +251,7 @@ $(function () {
     var id = $("#id_cliente").val();
 
     if (verificarCliente(id) && contarFilas() > 0) {
-      return;
+      return;      
     }
 
     alertFound("Por favor, ingrese los datos correctamente.");

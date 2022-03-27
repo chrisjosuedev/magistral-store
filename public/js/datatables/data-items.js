@@ -36,15 +36,6 @@ $(function () {
                 filename: 'Artículos en Inventario',
                 messageTop: 'Listado de Articulo en Inventario:',
                 className: 'btn btn-danger',
-            },
-            {
-                extend: 'print',
-                text: '<i class="fas fa-print"></i>',
-                titleAttr: 'Imprimir',
-                title: 'Magistral Store',
-                filename: 'Artículos en Inventario',
-                messageTop: 'Listado de Articulos',
-                className: 'btn btn-info'
             }
         ]
     });

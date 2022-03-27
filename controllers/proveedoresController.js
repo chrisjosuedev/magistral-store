@@ -7,6 +7,7 @@ provController.listProveedores = async (req, res) => {
   res.render('proveedores/proveedores', { proveedores })
 }
 
+
 /* POST Proveedores */
 provController.newProveedor = async (req, res) => {
   const { id_proveedor, 

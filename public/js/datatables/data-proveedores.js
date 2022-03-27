@@ -36,15 +36,6 @@ $(function () {
                 filename: 'Listado de Proveedores',
                 messageTop: 'Listado de Proveedores',
                 className: 'btn btn-danger',
-            },
-            {
-                extend: 'print',
-                text: '<i class="fas fa-print"></i>',
-                titleAttr: 'Imprimir',
-                title: 'Magistral Store',
-                filename: 'Listado de Proveedores',
-                messageTop: 'Listado de Proveedores',
-                className: 'btn btn-info'
             }
         ]
     });

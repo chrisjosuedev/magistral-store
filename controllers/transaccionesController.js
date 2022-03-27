@@ -1,52 +1,59 @@
-const myConn = require('../db')
-const transaccionController = {}
+const myConn = require("../db");
+const transaccionController = {};
+const PDF = require("pdfkit-construct");
 
 /** METODOS DE PAGO **/
 
 transaccionController.listMetodosPago = async (req, res) => {
-    
-    const modo_pago = await myConn.query("SELECT * FROM modo_pago")
-    res.render('transacciones/metodo-pago', { modo_pago })
-}
+  const modo_pago = await myConn.query("SELECT * FROM modo_pago");
+  res.render("transacciones/metodo-pago", { modo_pago });
+};
 
 transaccionController.newMetodoPago = async (req, res) => {
-    const { desc_modopago } = req.body
-    const newModoPago = {
-      desc_modopago,
-    }
+  const { desc_modopago } = req.body;
+  const newModoPago = {
+    desc_modopago,
+  };
 
-    await myConn.query("INSERT INTO modo_pago set ?", [newModoPago]);
+  await myConn.query("INSERT INTO modo_pago set ?", [newModoPago]);
 
-    req.flash("success", "Metodo de Pago Agregado Correctamente")
+  req.flash("success", "Metodo de Pago Agregado Correctamente");
 
-    res.redirect("/transacciones/metodos-pago");
-}
+  res.redirect("/transacciones/metodos-pago");
+};
 
 // JSON Tipos Metodos Pago
 transaccionController.getMetodoPago = async (req, res) => {
-  const { id } = req.params
+  const { id } = req.params;
 
-  const modo_pago = await myConn.query("SELECT * FROM modo_pago WHERE id_modopago = ?", [id])
+  const modo_pago = await myConn.query(
+    "SELECT * FROM modo_pago WHERE id_modopago = ?",
+    [id]
+  );
 
-  res.json(modo_pago)
-}
+  res.json(modo_pago);
+};
 
 //  -------- Eliminar Metodo de Pago
 transaccionController.deleteMetodoPago = async (req, res) => {
   const { id } = req.params;
-  await myConn.query("DELETE FROM modo_pago WHERE id_modopago = ?", [id],
-  (error, results) => {
-    if (error) {
-        req.flash("warning", "El Metodo de Pago seleccionado no puede ser eliminado");
-        res.redirect("/transacciones/metodos-pago");  
-    }
-    else {
+  await myConn.query(
+    "DELETE FROM modo_pago WHERE id_modopago = ?",
+    [id],
+    (error, results) => {
+      if (error) {
+        req.flash(
+          "warning",
+          "El Metodo de Pago seleccionado no puede ser eliminado"
+        );
+        res.redirect("/transacciones/metodos-pago");
+      } else {
         req.flash("success", "Metodo de Pago Eliminado Correctamente");
         res.redirect("/transacciones/metodos-pago");
+      }
     }
-  });
-  
-}
+  );
+};
 
 // ------- EDITAR METODO DE PAGO
 transaccionController.editMetodoPago = async (req, res) => {
@@ -58,27 +65,28 @@ transaccionController.editMetodoPago = async (req, res) => {
   await myConn.query("UPDATE modo_pago set ? WHERE id_modopago = ?", [
     newModoPago,
     id,
-  ])
+  ]);
 
   req.flash("success", "Modo Pago Actualizado Correctamente");
   res.redirect("/transacciones/metodos-pago");
-}
+};
 
 /* ------------------------- Transacciones ----------------------------- */
 
 // Compra a proveedores
 transaccionController.newCompra = async (req, res) => {
-  res.render('transacciones/comprar')
-}
+  res.render("transacciones/comprar");
+};
 
 // ------------------------ Registrar Compra a Proveedor ----------------- //
 transaccionController.agregarCompra = async (req, res) => {
-  const { id_proveedor, id_articulo, cantidad, precio_compra, filas } = req.body
+  const { id_proveedor, id_articulo, cantidad, precio_compra, filas } =
+    req.body;
 
   // Almacenar Compra del articulo
   const newCompraArticulo = {
-    id_proveedor
-  }
+    id_proveedor,
+  };
 
   await myConn.query("INSERT INTO compra_articulo set ?", [newCompraArticulo]);
 
@@ -91,37 +99,41 @@ transaccionController.agregarCompra = async (req, res) => {
   const idCompra = await myConn.query(idCompraQuery);
 
   // Insertar en Compra Articulo Detalle
-  const detalleCompraQuery = 
-    `
+  const detalleCompraQuery = `
       INSERT INTO compra_articulo_detalle (ID_COMPRA, ID_ARTICULO, CANTIDAD, PRECIO_COMPRA) 
       VALUES (?, ?, ?, ?)
     `;
 
   // Si filas === 1 el carrito tiene solamente 1 producto
-  if (filas === '1') {
-
+  if (filas === "1") {
     // Insertar en Tabla normal
-    await myConn.query(detalleCompraQuery, [idCompra[0].ID_COMPRA, id_articulo, cantidad, precio_compra])
+    await myConn.query(detalleCompraQuery, [
+      idCompra[0].ID_COMPRA,
+      id_articulo,
+      cantidad,
+      precio_compra,
+    ]);
 
     // Actualizar en Stock
-    await myConn.query(`UPDATE articulos set STOCK = (STOCK + ?) 
-    WHERE ID_ARTICULO = ?;`, [cantidad, id_articulo])
-
+    await myConn.query(
+      `UPDATE articulos set STOCK = (STOCK + ?) 
+    WHERE ID_ARTICULO = ?;`,
+      [cantidad, id_articulo]
+    );
   }
   // Si no, el carrito tiene mas de 1 producto
   else {
-    let idArticulo = Object.values(id_articulo)
-    let amount = Object.values(cantidad)
-    let price = Object.values(precio_compra)
-
+    let idArticulo = Object.values(id_articulo);
+    let amount = Object.values(cantidad);
+    let price = Object.values(precio_compra);
 
     for (index in idArticulo) {
       await myConn.query(detalleCompraQuery, [
         idCompra[0].ID_COMPRA,
         idArticulo[index],
         amount[index],
-        price[index]
-      ])
+        price[index],
+      ]);
     }
 
     // Actualizar Stock
@@ -133,88 +145,265 @@ transaccionController.agregarCompra = async (req, res) => {
     }
   }
 
-  req.flash("success", "Compra almacenada satisfactoriamente")
-  res.redirect('/transacciones/compras/new')
-}
+  req.flash("success", "Compra almacenada satisfactoriamente");
+  res.redirect("/transacciones/compras/new");
+};
 
 // -------------------- Registrar una Nueva Factura ------------------------------ //
 transaccionController.agregarFactura = async (req, res) => {
-  const { 
-    id_persona, 
-    id_empleado, 
-    id_modopago, 
-    id_articulo, 
-    cantidad, 
-    precio_unit, 
-    filas } = req.body
+  const {
+    id_persona,
+    id_empleado,
+    id_modopago,
+    id_articulo,
+    cantidad,
+    precio_unit,
+    filas,
+  } = req.body;
 
-    // Almacenar nueva factura
-    const newFactura = {
-      id_persona,
-      id_empleado,
-      id_modopago
-    }
+  // Almacenar nueva factura
+  const newFactura = {
+    id_persona,
+    id_empleado,
+    id_modopago,
+  };
 
-    // Guardar Factura General
-    await myConn.query("INSERT INTO factura set ?", [newFactura])
+  // Guardar Factura General
+  await myConn.query("INSERT INTO factura set ?", [newFactura]);
 
-    // Capturar ID de Factura
-    const idVentaQuery = `SELECT ID_FACTURA FROM factura
+  // Capturar ID de Factura
+  const idVentaQuery = `SELECT ID_FACTURA FROM factura
                         ORDER BY ID_FACTURA DESC
-                        LIMIT 1`
+                        LIMIT 1`;
 
-    const idVenta = await myConn.query(idVentaQuery)
+  const idVenta = await myConn.query(idVentaQuery);
 
-    // Insertar Venta Factura_Detalle
-    const detalleVentaQuery = 
-    `
+  // Insertar Venta Factura_Detalle
+  const detalleVentaQuery = `
     INSERT INTO factura_detalle (ID_FACTURA, ID_ARTICULO, CANTIDAD, PRECIO_UNIT) 
     VALUES (?, ?, ?, ?)
     `;
 
-    if (filas === '1') {
-      await myConn.query(detalleVentaQuery, [idVenta[0].ID_FACTURA, id_articulo, cantidad, precio_unit])
+  if (filas === "1") {
+    await myConn.query(detalleVentaQuery, [
+      idVenta[0].ID_FACTURA,
+      id_articulo,
+      cantidad,
+      precio_unit,
+    ]);
 
-      // Actualizar en Stock
-      await myConn.query(`UPDATE articulos set STOCK = (STOCK - ?) 
-      WHERE ID_ARTICULO = ?;`, [cantidad, id_articulo])
+    // Actualizar en Stock
+    await myConn.query(
+      `UPDATE articulos set STOCK = (STOCK - ?) 
+      WHERE ID_ARTICULO = ?;`,
+      [cantidad, id_articulo]
+    );
+  } else {
+    let idArticulo = Object.values(id_articulo);
+    let amount = Object.values(cantidad);
+    let price = Object.values(precio_unit);
 
+    for (index in idArticulo) {
+      await myConn.query(detalleVentaQuery, [
+        idVenta[0].ID_FACTURA,
+        idArticulo[index],
+        amount[index],
+        price[index],
+      ]);
     }
-    else {
-      let idArticulo = Object.values(id_articulo);
-      let amount = Object.values(cantidad);
-      let price = Object.values(precio_unit);
 
-      for (index in idArticulo) {
-        await myConn.query(detalleVentaQuery, [
-          idVenta[0].ID_FACTURA,
-          idArticulo[index],
-          amount[index],
-          price[index],
-        ]);
-      }
-
-      // Actualizar Stock
-      const updateStockQuery = `UPDATE articulos set STOCK = (STOCK - ?) 
+    // Actualizar Stock
+    const updateStockQuery = `UPDATE articulos set STOCK = (STOCK - ?) 
                             WHERE ID_ARTICULO = ?;`;
 
-      for (key in idArticulo) {
-        await myConn.query(updateStockQuery, [amount[key], idArticulo[key]]);
-      }
+    for (key in idArticulo) {
+      await myConn.query(updateStockQuery, [amount[key], idArticulo[key]]);
     }
+  }
 
-    req.flash("success", "Venta registrada satisfactoriamente")
-    res.redirect('/transacciones/facturas/new')
+  //* -------------- Crear PDF ---------------- *//
+  var id = idVenta[0].ID_FACTURA
+
+  const queryDetails = `
+    SELECT factura_detalle.ID_FACTURA, factura_detalle.ID_ARTICULO, articulos.DESCRIPCION,
+    factura_detalle.CANTIDAD, factura_detalle.PRECIO_UNIT,
+    round(sum(factura_detalle.CANTIDAD * factura_detalle.PRECIO_UNIT), 2) as SUBTOTAL
+    FROM factura_detalle
+    INNER JOIN articulos ON articulos.ID_ARTICULO = factura_detalle.ID_ARTICULO
+    WHERE ID_FACTURA = ?
+    GROUP BY factura_detalle.ID_ARTICULO;
+  `;
+
+  const facturaDetails = await myConn.query(queryDetails, [id]);
+
+  const queryTotal = `SELECT round(sum(factura_detalle.CANTIDAD * factura_detalle.PRECIO_UNIT), 2) as Total
+  FROM factura_detalle WHERE ID_FACTURA = ?;`;
 
 
-}
+  const facturaTotal = await myConn.query(queryTotal, [id]);
+
+  // General Factura
+  const queryGeneral = `SELECT FECHA, (SELECT concat_ws(' ', persona.NOMBRE_PERSONA, persona.APELLIDO_PERSONA) FROM persona, factura
+      WHERE persona.ID_PERSONA = factura.ID_PERSONA AND ID_FACTURA = ?) as Cliente, 
+    (SELECT concat_ws(' ', persona.NOMBRE_PERSONA, persona.APELLIDO_PERSONA) FROM persona, empleado, factura
+      WHERE persona.ID_PERSONA = empleado.ID_PERSONA AND empleado.ID_EMPLEADO = factura.ID_EMPLEADO AND ID_FACTURA = ?) as Empleado,
+       modo_pago.DESC_MODOPAGO
+    FROM factura
+    INNER JOIN modo_pago ON modo_pago.ID_MODOPAGO = factura.ID_MODOPAGO
+    Where ID_FACTURA = ?;`;
+
+  const facturaGeneral = await myConn.query(queryGeneral, [id, id, id]);
+
+  // Format de Fecha
+  var now = new Date(facturaGeneral[0].FECHA);
+  var day = now.getDate();
+  var month = now.getMonth() + 1;
+  var year = now.getFullYear();
+  var time = now.toLocaleString("en-US", {
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    hour12: true,
+  });
+  var fecha = day + "/" + month + "/" + year + " " + time;
+
+  // Generacion PDF
+  const doc = new PDF({ bufferPages: true });
+
+  const filename = `Factura-Descripcion-#${id}.pdf`;
+
+  const stream = res.writeHead(200, {
+    "Content-Type": "application/pdf",
+    "Content-disposition": `attachment;filename=${filename}`,
+  });
+
+  doc.on("data", (data) => {
+    stream.write(data);
+  });
+  doc.on("data", () => {
+    stream.end();
+  });
+
+  // Header
+  doc.setDocumentHeader(
+    {
+      height: "30",
+    },
+    () => {
+      doc
+        .fontSize(18)
+        .text(`MAGISTRAL STORE`, {
+          align: "center",
+          paragraphGap: 6,
+        });
+
+      doc
+        .fontSize(12)
+        .text(`Comayagua, Honduras`, {
+          align: "center",
+          paragraphGap: 6,
+        });
+      
+        doc
+      .fontSize(12)
+      .text(`Email: magistralstore@gmail.com | Celular: 27728893`, {
+        align: "center",
+        paragraphGap: 6,
+      });
+
+      doc.fontSize(11);
+
+      doc.text(`Factura N°: ${facturaDetails[0].ID_FACTURA}`, { align: "left" });
+      doc.text(`Fecha: ${fecha}`, { align: "left" });
+
+      doc.text(` `, { align: "left" });
+
+      doc.text(`Cliente: ${facturaGeneral[0].Cliente}`, { align: "left" });
+
+      doc.text(`Atendió: ${facturaGeneral[0].Empleado}`, { align: "left" });
+
+      doc.text(`Pagó con: ${facturaGeneral[0].DESC_MODOPAGO}`, {
+        align: "left",
+      });
+    }
+  );
+
+  const invoice = facturaDetails.map((fact) => {
+    const item = {
+      description: fact.DESCRIPCION,
+      amount: fact.CANTIDAD,
+      unit_price: fact.PRECIO_UNIT,
+      subtotal: fact.SUBTOTAL,
+    };
+
+    return item;
+  });
+
+  doc.addTable(
+    [
+      { key: "description", label: "Descripcion", align: "center" },
+      { key: "amount", label: "Cantidad", align: "center" },
+      { key: "unit_price", label: "Precio Unit", align: "center" },
+      { key: "subtotal", label: "Subtotal", align: "center" },
+    ],
+    invoice,
+    {
+      border: null,
+      align: "center",
+      width: "fill_body",
+      striped: true,
+      headBackground: "#23282A",
+      headColor: "#FFFFFF",
+      headFont: "Helvetica-Bold",
+      headFontSize: 9,
+      cellsFont: "Helvetica",
+      cellsFontSize: 9,
+      headAlign: "center",
+    }
+  );
+
+  // Footer
+  doc.setDocumentFooter(
+    {
+      height: "40",
+    },
+    () => {
+      doc.fontSize(11);
+      doc.text(
+        `Subtotal: L. ${facturaTotal[0].Total}`,
+        { align: "right" },
+        doc.footer.y + 10
+      );
+      doc.text(` `, { align: "right" });
+      doc.text(
+        `ISV: L. ${(facturaTotal[0].Total * 0.15).toFixed(2)}`,
+        { align: "right" },
+        doc.footer.y + 25
+      );
+      doc.text(` `, { align: "right" });
+      doc.text(
+        `Total: L. ${(facturaTotal[0].Total + (facturaTotal[0].Total * 0.15)).toFixed(2)}`,
+        { align: "right" },
+        doc.footer.y + 40
+      );
+    }
+  );
+
+  // render tables
+  doc.render();
+  doc.end();
+
+
+
+  //req.flash("success", "Venta registrada satisfactoriamente");
+  //res.redirect("/transacciones/facturas/new");
+};
 
 // Facturar un producto
 transaccionController.newFactura = async (req, res) => {
   const metodopago = await myConn.query("SELECT * FROM modo_pago");
-  const departamentos = await myConn.query("SELECT * FROM departamentos")
-  res.render('transacciones/facturar', {metodopago, departamentos})
-}
+  const departamentos = await myConn.query("SELECT * FROM departamentos");
+  res.render("transacciones/facturar", { metodopago, departamentos });
+};
 
-
-module.exports = transaccionController
+module.exports = transaccionController;

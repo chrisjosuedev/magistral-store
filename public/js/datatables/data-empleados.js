@@ -36,15 +36,6 @@ $(function () {
                 filename: 'Empleados de Magistral Store',
                 messageTop: 'Empleados de Magistral Store',
                 className: 'btn btn-danger',
-            },
-            {
-                extend: 'print',
-                text: '<i class="fas fa-print"></i>',
-                titleAttr: 'Imprimir',
-                title: 'Magistral Store',
-                filename: 'Empleados de Magistral Store',
-                messageTop: 'Empleados de Magistral Store',
-                className: 'btn btn-info'
             }
         ]
     });

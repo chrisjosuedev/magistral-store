@@ -36,15 +36,6 @@ $(function () {
                 filename: 'Clientes de Magistral Store',
                 messageTop: 'Clientes Registrados de Magistral Store',
                 className: 'btn btn-danger',
-            },
-            {
-                extend: 'print',
-                text: '<i class="fas fa-print"></i>',
-                titleAttr: 'Imprimir',
-                title: 'Magistral Store',
-                filename: 'Clientes de Magistral Store',
-                messageTop: 'Clientes Registrados de Magistral Store',
-                className: 'btn btn-info'
             }
         ]
     });
