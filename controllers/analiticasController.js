@@ -6,18 +6,20 @@ const analiticasController = {}
 // General
 analiticasController.ventasAnaliticas = async (req, res) => {
   const ventasTotal = await myConn.query(`
-  SELECT FORMAT(sum(CANTIDAD * PRECIO_UNIT), 2) as Total FROM factura_detalle;
+  SELECT FORMAT(sum(CANTIDAD * PRECIO_UNIT) + (sum(CANTIDAD * PRECIO_UNIT) * 0.15), 2) as Total FROM factura_detalle;
   `)
   res.render('analiticas/ventas', {ventasTotal: ventasTotal[0]})
 }
 
 // Ventas Diarias
 analiticasController.ventasDiarias = async (req, res) => {
-  const queryNivel = `SELECT factura.FECHA, sum(CANTIDAD * PRECIO_UNIT) as Total
-                      FROM factura_detalle
-                      INNER JOIN factura ON factura.ID_FACTURA = factura_detalle.ID_FACTURA
-                      group by day(factura.FECHA)
-                      order by factura.FECHA;`;
+  const queryNivel = `
+  SELECT factura.FECHA, (sum(CANTIDAD * PRECIO_UNIT) + (sum(CANTIDAD * PRECIO_UNIT) * 0.15)) as Total
+  FROM factura_detalle
+  INNER JOIN factura ON factura.ID_FACTURA = factura_detalle.ID_FACTURA
+  group by factura.FECHA
+  order by factura.FECHA DESC
+  LIMIT 15;`;
 
   const queryVentasNivel = await myConn.query(queryNivel);
   res.json(queryVentasNivel)
@@ -26,7 +28,7 @@ analiticasController.ventasDiarias = async (req, res) => {
 // Ventas Mensuales
 analiticasController.ventasMensuales = async (req, res) => {
   const queryMensual = `
-    SELECT upper(monthname(factura.FECHA)) as Mes, sum(CANTIDAD * PRECIO_UNIT) as Total
+    SELECT upper(monthname(factura.FECHA)) as Mes, (sum(CANTIDAD * PRECIO_UNIT) + (sum(CANTIDAD * PRECIO_UNIT) * 0.15)) as Total
     FROM factura_detalle
     INNER JOIN factura ON factura.ID_FACTURA = factura_detalle.ID_FACTURA
     group by month(factura.FECHA)
@@ -85,11 +87,12 @@ analiticasController.comprasAnaliticas = async (req, res) => {
 // Diarias
 analiticasController.comprasDiarias = async (req, res) => {
   const queryNivel = `
-  SELECT compra_articulo.FECHA, round((sum(CANTIDAD * PRECIO_COMPRA) + (sum(CANTIDAD * PRECIO_COMPRA) * 0.15)), 2) as Total
-  FROM compra_articulo_detalle
-  INNER JOIN compra_articulo ON compra_articulo.ID_COMPRA = compra_articulo_detalle.ID_COMPRA
-  group by day(compra_articulo.FECHA)
-  order by compra_articulo.FECHA;
+  SELECT factura.FECHA, (sum(CANTIDAD * PRECIO_UNIT) + (sum(CANTIDAD * PRECIO_UNIT) * 0.15)) as Total
+  FROM factura_detalle
+  INNER JOIN factura ON factura.ID_FACTURA = factura_detalle.ID_FACTURA
+  group by factura.FECHA
+  order by factura.FECHA DESC
+  LIMIT 15;
   `;
 
   const queryComprasNivel = await myConn.query(queryNivel);

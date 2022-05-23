@@ -49,11 +49,11 @@ dashboardController.dashboardData = async (req, res) => {
 // Ventas de los ultimos 5 dias
 dashboardController.ventasDiarias = async (req, res) => {
   const queryNivel = `
-  SELECT factura.FECHA, sum(CANTIDAD * PRECIO_UNIT) + (sum(CANTIDAD * PRECIO_UNIT) * 0.15) as Total
+  SELECT factura.FECHA, (sum(CANTIDAD * PRECIO_UNIT) + (sum(CANTIDAD * PRECIO_UNIT) * 0.15)) as Total
   FROM factura_detalle
   INNER JOIN factura ON factura.ID_FACTURA = factura_detalle.ID_FACTURA
-  group by day(factura.FECHA)
-  order by factura.FECHA ASC
+  group by factura.FECHA
+  order by factura.FECHA DESC
   LIMIT 5;`;
 
   const queryVentasNivel = await myConn.query(queryNivel);
