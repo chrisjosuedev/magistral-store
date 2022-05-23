@@ -1,2 +1,2 @@
 # magistral-store
-Clothing Store Software developed with Node.JS
+Clothing Store Software developed (Node.JS, MySQL, ElectronJS)
