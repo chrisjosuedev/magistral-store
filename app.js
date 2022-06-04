@@ -74,6 +74,7 @@ app.use('/transacciones', require('./routes/transacciones'))
 app.use('/persona', require('./routes/persona'))
 app.use('/consultas', require('./routes/consultas'))
 app.use('/analiticas', require('./routes/analiticas'))
+app.use('/sys', require('./routes/sys'))
 
 // Public
 app.use(express.static(path.join(__dirname, 'public')))

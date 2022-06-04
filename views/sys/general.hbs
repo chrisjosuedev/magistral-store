@@ -1,0 +1,114 @@
+<div class="container">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/dashboard"> <i class="fas fa-home"></i> </a></li>
+            <li class="breadcrumb-item active" aria-current="page">General</li>
+        </ol>
+    </nav>
+    <div class="col-md-12 mb-4">
+        <h1 class="mb-4"> Datos Generales </h1>
+
+        <div class="d-grid gap-2 d-md-block">
+            <div class="text-right">
+                {{!-- Editar Datos de la Empresa Modal --}}
+                <a href="#editarEmpresa" class="btn btn-primary diseño" data-toggle="modal">
+                    <i class="fas fa-edit mr-2"></i> Editar
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="row ">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header font-weight-bold">
+                    <i class="fas fa-industry"></i> DATOS GENERALES DE LA EMPRESA
+                </div>
+                <div class="card-body">
+                    <label>R.T.N.</label>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <input type="text" class="form-control" readonly="readonly" onfocus="this.blur();"
+                                value="{{empresa.RTN_EMPRESA}}">
+                        </div>
+                    </div>
+                    <label>Razón Social</label>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <input type="text" class="form-control" readonly="readonly" onfocus="this.blur();"
+                                value="{{empresa.RAZON_SOCIAL}}">
+                        </div>
+                    </div>
+                    <label>R.T.N. Representante Legal</label>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <input type="text" class="form-control" readonly="readonly" onfocus="this.blur();"
+                                value="{{empresa.RTN_REP_LEGAL}}">
+                        </div>
+                    </div>
+                    <label>Nombre del Representante Legal</label>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <input type="text" class="form-control" readonly="readonly" onfocus="this.blur();"
+                                value="{{empresa.REP_LEGAL}}">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Email de la Empresa</label>
+                            <input type="text" class="form-control" readonly="readonly" onfocus="this.blur();"
+                                value="{{empresa.EMAIL}}">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Teléfono de la Empresa</label>
+                            <input type="text" class="form-control" readonly="readonly" onfocus="this.blur();"
+                                value="{{empresa.CELULAR}}">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6" id="tipo">
+                            <label>Departamento </label>
+                            <input type="text" class="form-control" readonly="readonly" onfocus="this.blur();"
+                                value="{{empresa.NOMBRE_DEPTO}}">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Ciudad </label>
+                            <input type="text" class="form-control" readonly="readonly" onfocus="this.blur();"
+                                value="{{empresa.CIUDAD}}">
+                        </div>
+                    </div>
+
+                    <label>Direccion de la Empresa</label>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <textarea class="form-control" name="direccion_residencia" id="direccion_residencia"
+                                cols="30" rows="4" readonly="readonly" onfocus="this.blur();">{{empresa.DIRECCION_EMPRESA}}
+                                </textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Inicio Periodo</label>
+                            <input type="text" class="form-control" readonly="readonly" onfocus="this.blur();" value="{{format empresa.INICIO_PERIODO}}">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Fin del Periodo</label>
+                            <input type="text" class="form-control" readonly="readonly" onfocus="this.blur();" value="{{format empresa.FIN_PERIODO}}">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{{!-- Modales --}}
+{{!-- Agregar Articulo --}}
+{{> sys/empresa/edit }}
+
+{{!-- Scripts SRC --}}
+<script src="/js/empresa/empresa.js"></script>

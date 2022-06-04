@@ -2,7 +2,7 @@ $(function() {
   
   function confirmarSalir() {
     Swal.fire({
-        title: '¿Desea salir de Magistral Store Online?',
+        title: '¿Desea salir de la Aplicación?',
         icon: 'warning',
         confirmButtonColor: '#3F84FC',
         cancelButtonColor: '#FC413F',
