@@ -80,6 +80,14 @@ sysController.editInfoResolucion = async (req, res) => {
 
   await myConn.query("UPDATE resoluciones SET ? WHERE id_resolucion = ?", [newResolucion, id])
 
+  const numRes = await myConn.query("SELECT NUM_INICIAL FROM resoluciones WHERE id_resolucion = ?;", [id])
+
+  var numInicial = parseInt(numRes[0].NUM_INICIAL)
+
+  console.log(numInicial)
+
+  await myConn.query("ALTER TABLE factura AUTO_INCREMENT = ?", [ numInicial ])
+
   req.flash("success", "Resolucion Actualizada Correctamente")
 
   res.redirect("/sys/resoluciones")

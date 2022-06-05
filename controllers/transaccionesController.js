@@ -1,6 +1,7 @@
 const myConn = require("../db");
 const transaccionController = {};
 const PDF = require("pdfkit-construct");
+const { lineGap } = require("pdfkit-construct");
 
 /** METODOS DE PAGO **/
 
@@ -159,6 +160,7 @@ transaccionController.agregarFactura = async (req, res) => {
     cantidad,
     precio_unit,
     filas,
+    efectivo,
   } = req.body;
 
   // Almacenar nueva factura
@@ -167,6 +169,14 @@ transaccionController.agregarFactura = async (req, res) => {
     id_empleado,
     id_modopago,
   };
+
+  
+  if (id_modopago === '2') {
+    var factEfectivo = 0.00
+  }
+  else {
+    var factEfectivo = Number(parseFloat(efectivo).toFixed(2))
+  }
 
   // Guardar Factura General
   await myConn.query("INSERT INTO factura set ?", [newFactura]);
@@ -225,7 +235,7 @@ transaccionController.agregarFactura = async (req, res) => {
   var id = idVenta[0].ID_FACTURA
 
   const queryDetails = `
-    SELECT factura_detalle.ID_FACTURA, factura_detalle.ID_ARTICULO, articulos.DESCRIPCION,
+    SELECT LPAD(factura_detalle.ID_FACTURA, 8, '0') as ID_DOC, factura_detalle.ID_ARTICULO, articulos.DESCRIPCION,
     factura_detalle.CANTIDAD, factura_detalle.PRECIO_UNIT,
     round(sum(factura_detalle.CANTIDAD * factura_detalle.PRECIO_UNIT), 2) as SUBTOTAL
     FROM factura_detalle
@@ -236,6 +246,8 @@ transaccionController.agregarFactura = async (req, res) => {
 
   const facturaDetails = await myConn.query(queryDetails, [id]);
 
+  var numDocumento = facturaDetails[0].ID_DOC
+
   const queryTotal = `SELECT round(sum(factura_detalle.CANTIDAD * factura_detalle.PRECIO_UNIT), 2) as Total
   FROM factura_detalle WHERE ID_FACTURA = ?;`;
 
@@ -244,7 +256,9 @@ transaccionController.agregarFactura = async (req, res) => {
 
   // General Factura
   const queryGeneral = `SELECT FECHA, (SELECT concat_ws(' ', persona.NOMBRE_PERSONA, persona.APELLIDO_PERSONA) FROM persona, factura
-      WHERE persona.ID_PERSONA = factura.ID_PERSONA AND ID_FACTURA = ?) as Cliente, 
+      WHERE persona.ID_PERSONA = factura.ID_PERSONA AND ID_FACTURA = ?) as Cliente,
+      (SELECT persona.ID_PERSONA FROM persona, factura
+        WHERE persona.ID_PERSONA = factura.ID_PERSONA AND ID_FACTURA = ?) as ID_PERSONA,
     (SELECT concat_ws(' ', persona.NOMBRE_PERSONA, persona.APELLIDO_PERSONA) FROM persona, empleado, factura
       WHERE persona.ID_PERSONA = empleado.ID_PERSONA AND empleado.ID_EMPLEADO = factura.ID_EMPLEADO AND ID_FACTURA = ?) as Empleado,
        modo_pago.DESC_MODOPAGO
@@ -252,7 +266,17 @@ transaccionController.agregarFactura = async (req, res) => {
     INNER JOIN modo_pago ON modo_pago.ID_MODOPAGO = factura.ID_MODOPAGO
     Where ID_FACTURA = ?;`;
 
-  const facturaGeneral = await myConn.query(queryGeneral, [id, id, id]);
+  const facturaGeneral = await myConn.query(queryGeneral, [id, id, id, id]);
+
+  // Datos Empresa
+  const empresa = await myConn.query(`
+  SELECT empresa.*, upper(ciudad.NOMBRE_CIUDAD) as CIUDAD, departamentos.NOMBRE_DEPTO
+  FROM empresa
+  INNER JOIN ciudad on empresa.ID_CIUDAD = ciudad.ID_CIUDAD and ciudad.ID_DEPTO = empresa.ID_DEPTO
+  INNER JOIN departamentos on empresa.ID_DEPTO = departamentos.ID_DEPTO;`)
+
+  // Datos Resolucion
+  const resolucion = await myConn.query("SELECT * FROM resoluciones")
 
   // Format de Fecha
   var now = new Date(facturaGeneral[0].FECHA);
@@ -267,10 +291,18 @@ transaccionController.agregarFactura = async (req, res) => {
   });
   var fecha = day + "/" + month + "/" + year + " " + time;
 
+  // Format de Fecha Emision
+  var limiteEmision = new Date(resolucion[0].FECHA_LIMITE);
+  var dayEmision = limiteEmision.getDate();
+  var monthEmision = limiteEmision.getMonth() + 1;
+  var yearEmision = limiteEmision.getFullYear();
+
+  var fechaEmision = dayEmision + "/" + monthEmision + "/" + yearEmision;
+
   // Generacion PDF
   const doc = new PDF({ bufferPages: true });
 
-  const filename = `Factura-Descripcion-#${id}.pdf`;
+  const filename = `Factura-Documento-#${numDocumento}.pdf`;
 
   const stream = res.writeHead(200, {
     "Content-Type": "application/pdf",
@@ -287,38 +319,63 @@ transaccionController.agregarFactura = async (req, res) => {
   // Header
   doc.setDocumentHeader(
     {
-      height: "30",
+      height: "35",
     },
     () => {
       doc
-        .fontSize(18)
-        .text(`MAGISTRAL STORE`, {
-          align: "center",
-          paragraphGap: 6,
+        .fontSize(9)
+        .text(`${empresa[0].RAZON_SOCIAL}`, {
+          align: "center"
         });
 
       doc
-        .fontSize(12)
-        .text(`Comayagua, Honduras`, {
-          align: "center",
-          paragraphGap: 6,
+        .fontSize(9)
+        .text(`${empresa[0].DIRECCION_EMPRESA}`, {
+          align: "center"
+        });
+        
+      doc
+        .fontSize(9)
+        .text(`R.T.N.: ${empresa[0].RTN_EMPRESA}`, {
+          align: "center"
+        });
+
+      doc
+        .fontSize(9)
+        .text(`Propietario: ${empresa[0].REP_LEGAL}`, {
+          align: "center"
         });
       
-        doc
-      .fontSize(12)
-      .text(`Email: magistralstore@gmail.com | Celular: 27728893`, {
-        align: "center",
-        paragraphGap: 6,
+      doc
+      .fontSize(9)
+      .text(`${empresa[0].EMAIL}`, {
+        align: "center"
       });
 
-      doc.fontSize(11);
+      doc
+      .fontSize(9)
+      .text(`TEL.: ${empresa[0].CELULAR}`, {
+        align: "center",
+        lineGap: 4,
+      });
 
-      doc.text(`Factura N°: ${facturaDetails[0].ID_FACTURA}`, { align: "left" });
+      doc.fontSize(9);
+
+      doc.text(`CAI: ${resolucion[0].CAI}`, { align: "left" });
+
+      doc.text(`Fecha Limite de Emisión: ${fechaEmision}`, { align: "left" });
+
+      doc.text(`Rango autorizado del ${resolucion[0].SERIE}-${resolucion[0].NUM_INICIAL} al ${resolucion[0].SERIE}-${resolucion[0].NUM_FINAL}`, { align: "left" });
+
+      doc.text(`Factura N°: ${numDocumento}`, { align: "left" });
+
       doc.text(`Fecha: ${fecha}`, { align: "left" });
 
       doc.text(` `, { align: "left" });
 
       doc.text(`Cliente: ${facturaGeneral[0].Cliente}`, { align: "left" });
+
+      doc.text(`R.T.N.: ${facturaGeneral[0].ID_PERSONA}`, { align: "left" });
 
       doc.text(`Atendió: ${facturaGeneral[0].Empleado}`, { align: "left" });
 
@@ -368,24 +425,59 @@ transaccionController.agregarFactura = async (req, res) => {
       height: "40",
     },
     () => {
-      doc.fontSize(11);
+      doc.fontSize(9);
       doc.text(
-        `Subtotal: L. ${facturaTotal[0].Total}`,
+        `Subtotal:            L. ${(facturaTotal[0].Total).toFixed(2)}`,
         { align: "right" },
         doc.footer.y + 10
       );
       doc.text(` `, { align: "right" });
       doc.text(
-        `ISV: L. ${(facturaTotal[0].Total * 0.15).toFixed(2)}`,
+        `I.S.V. al 15%:       L. ${(facturaTotal[0].Total * 0.15).toFixed(2)}`,
         { align: "right" },
         doc.footer.y + 25
       );
       doc.text(` `, { align: "right" });
       doc.text(
-        `Total: L. ${(facturaTotal[0].Total + (facturaTotal[0].Total * 0.15)).toFixed(2)}`,
+        `Total a pagar:       L. ${(facturaTotal[0].Total + (facturaTotal[0].Total * 0.15)).toFixed(2)}`,
         { align: "right" },
         doc.footer.y + 40
       );
+      doc.text(` `, { align: "right" });
+      doc.text(
+        `Efectivo Recibido:   L. ${factEfectivo.toFixed(2)}`,
+        { align: "right" },
+        doc.footer.y + 60
+      );
+
+      
+
+      if (factEfectivo === 0) {
+        var totalCambio = '0.00'
+      }
+      else {
+        var totalCambio = ((factEfectivo) - (facturaTotal[0].Total + (facturaTotal[0].Total * 0.15)).toFixed(2)).toFixed(2)
+      }
+      
+      doc.text(` `, { align: "right" });
+      doc.text(
+        `Cambio entregado:    L. ${totalCambio}`,
+        { align: "right" },
+        doc.footer.y + 75
+      );
+
+      doc.text(
+        `¡LA FACTURA ES BENEFICIO DE TODOS, EXIGALA!`,
+        { align: "center" },
+        doc.footer.y + 120
+      );
+
+      doc.text(
+        `Que Dios Bendiga su dia.`,
+        { align: "center" },
+        doc.footer.y + 150
+      );
+      
     }
   );
 

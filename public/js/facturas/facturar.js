@@ -50,6 +50,39 @@ $(function () {
     }
   });
 
+  // Cambio
+  $("#txtefectivo").keyup(function (e) {
+
+      var current = parseFloat($(this).val());
+      var totalFact = parseFloat($('#total_fact').val());
+      
+      
+      if (current < totalFact) {
+        $("#cambio_efectivo").text("Por favor, ingrese una cantidad correcta.");
+      } 
+      else if ($(this).val() === ''){
+        $("#cambio_efectivo").text("El cambio es: L. 0.00")
+      }
+      else {
+        var cambio = (current - totalFact).toFixed(2);
+        $("#cambio_efectivo").text("El cambio es: L. " + cambio);
+      }
+      
+  });
+
+  // Combo Box Efectivo
+  $('#modo_pago').on('change', function () {
+    if (this.value === '2') {
+      $("#txtefectivo").val('0.00')
+      $("#cambio_efectivo").text("El cambio es: L. 0.00")
+      $('#txtefectivo').prop('disabled', true);
+    }
+    else {
+      $('#txtefectivo').prop('disabled', false);
+      $('#txtefectivo').val('');
+    }  
+})
+
   // Boton agregar
   btnAgregar.click(function () {
     agregarTabla();
@@ -65,14 +98,12 @@ $(function () {
 
     if (cantidad === "" || precioUnit === "" || cliente === "") {
       alertFound("Por favor, ingrese todos los datos solicitados.");
-    } 
-    else {
-      var artId = $("#id_producto").val()
+    } else {
+      var artId = $("#id_producto").val();
       if (!verificarStock(artId, cantidad)) {
         alertFound("No hay suficiente cantidad en stock, revise nuevamente.");
-        $("#cantidad_compra").focus()
-      } 
-      else {
+        $("#cantidad_compra").focus();
+      } else {
         let stItem = parseInt(cantidad) * parseFloat(precioUnit);
 
         tableVenta.append(`
@@ -112,20 +143,19 @@ $(function () {
 
   // Verificar si hay suficiente en STOCK
   function verificarStock(art, cant) {
-    var stock = true
+    var stock = true;
     $.ajax({
       url: "/articulos/general/" + art,
       async: false,
       success: function (res) {
-          if (res[0].STOCK >= parseInt(cant)) {
-            stock = true
-          }
-          else {
-            stock = false
-          }
+        if (res[0].STOCK >= parseInt(cant)) {
+          stock = true;
+        } else {
+          stock = false;
+        }
       },
     });
-    return stock
+    return stock;
   }
 
   // Calculo de Subtotal
@@ -146,6 +176,9 @@ $(function () {
     $("#st-venta").val("L. " + st.toFixed(2));
     $("#isv").val("L. " + isv.toFixed(2));
     $("#total").val("L. " + total.toFixed(2));
+
+    $("#total_fact").val(total.toFixed(2));
+
     // Contador de Filas
     $("#contadorFilas").val(contarFilas());
   }
@@ -200,7 +233,7 @@ $(function () {
         } else {
           $("#descripcion").val(res[0].DESCRIPCION);
           $("#precio_unit").val(res[0].PRECIO_UNIT);
-          $("#cantidad_compra").val(' ')
+          $("#cantidad_compra").val(" ");
           $("#cantidad_compra").focus();
         }
       },
@@ -251,7 +284,7 @@ $(function () {
     var id = $("#id_cliente").val();
 
     if (verificarCliente(id) && contarFilas() > 0) {
-      return;      
+      return;
     }
 
     alertFound("Por favor, ingrese los datos correctamente.");
