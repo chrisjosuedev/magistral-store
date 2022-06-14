@@ -8,3 +8,5 @@ Facturacion App is a CRM Application focused on small clothing businesses to imp
 😎 You can use this temp credentials:
 - user: chris.martinez
 - password: temp
+
+⌛️ Important: This is a version for demonstration purposes.
